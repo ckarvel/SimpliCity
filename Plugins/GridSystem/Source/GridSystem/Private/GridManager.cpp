@@ -3,7 +3,6 @@
 #include "GridManager.h"
 #include "GridSystem.h"
 #include "GridCell.h"
-#include "SimpliCityUtils.h"
 
 #include "ProceduralMeshComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
@@ -26,7 +25,6 @@ AGridManager::AGridManager()
   LineMeshComponent = CreateDefaultSubobject<UProceduralMeshComponent>("LineMesh");
   SetRootComponent(LineMeshComponent);
   SelectionMeshComponent = CreateDefaultSubobject<UProceduralMeshComponent>("SelectionMesh");
-  
 }
 
 void AGridManager::BeginPlay() {
@@ -131,7 +129,7 @@ TArray<FVector> AGridManager::GetNeighbors(FVector Location) const {
 
   if (IsLocationValid(Location) == false) {
     //UtilityLibrary::Warning("Location invalid" + FString(__FUNCTION__));
-    TRACE_WARNING_PRINTF(LogGridSystem,"Location invalid");
+    //TRACE_WARNING_PRINTF(LogGridSystem,"Location invalid");
     return NeighborLocs;
   }
   int32 idx = LocationToIndex(Location);
@@ -147,6 +145,11 @@ TArray<FVector> AGridManager::GetNeighbors(FVector Location) const {
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 void AGridManager::GenerateGridLayout() {
+  if (GridMaterial == nullptr) {
+    //TRACE_WARNING_PRINTF(LogGridSystem,"Grid Material invalid");
+    return;
+  }
+
   TArray<FVector> vertices;
   TArray<int> triangles;
   CreateLinesOnX(vertices,triangles);
@@ -208,6 +211,7 @@ void AGridManager::CreateSelectionProceduralMesh(UProceduralMeshComponent* mesh,
 }
 
 UMaterialInstanceDynamic* AGridManager::CreateMaterialInstance(FLinearColor color,float opacity) {
+  check(GridMaterial != nullptr)
   UMaterialInstanceDynamic* newMaterial = UKismetMaterialLibrary::CreateDynamicMaterialInstance(this,GridMaterial);
   newMaterial->SetVectorParameterValue("Color",color);
   newMaterial->SetScalarParameterValue("Opacity",opacity);

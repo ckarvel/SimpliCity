@@ -2,7 +2,7 @@
 	"FileVersion": 3,
 	"Version": 1,
 	"VersionName": "1.0",
-	"FriendlyName": "GridSystem",
+	"FriendlyName": "AStarPathFinder",
 	"Description": "",
 	"Category": "Other",
 	"CreatedBy": "",
@@ -16,19 +16,9 @@
 	"Installed": false,
 	"Modules": [
 		{
-			"Name": "GridSystem",
+			"Name": "AStarPathFinder",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
-		}
-	],
-	"Plugins": [
-		{
-			"Name": "ProceduralMeshComponent",
-			"Enabled": true
-		},
-		{
-			"Name": "AStarPathFinder",
-			"Enabled": true
 		}
 	]
 }

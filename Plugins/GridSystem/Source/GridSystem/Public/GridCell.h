@@ -18,9 +18,14 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Cell")
+	float travelCost;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION(BlueprintPure,Category = "Cell")
+	FORCEINLINE float GetCost() const { return travelCost; }
 };

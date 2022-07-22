@@ -4,10 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "PathFinderInterface.h"
 #include "GridManager.generated.h"
 
-UCLASS(Blueprintable)
-class AGridManager : public AActor {
+// minimalapi exports some key auto-generated functions (such as GetPrivateStaticClass) 
+UCLASS(Blueprintable,minimalapi)
+class AGridManager : public AActor, public IPathFinderInterface {
   GENERATED_BODY()
 
 protected:
@@ -64,7 +66,10 @@ public:
     void GetNeighborIndexes(int32 index,TArray<int32>& Indexes) const;
 
   UFUNCTION(BlueprintCallable,Category = "Grid")
-    TArray<FVector> GetNeighbors(FVector Location) const;
+  virtual TArray<FVector> GetNeighbors(FVector Location) const override;
+
+  UFUNCTION(BlueprintCallable,Category = "Grid")
+  virtual float GetCost(FVector Location) const override { return 1.0; } // todo
 
   //////////////////////////////////////////////////////////////////////////////////////////////
 
