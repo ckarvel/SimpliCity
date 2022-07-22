@@ -6,6 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "SimpliCityGameMode.generated.h"
 
+class AGridManager;
+
 UCLASS(minimalapi)
 class ASimpliCityGameMode : public AGameModeBase
 {
@@ -13,4 +15,8 @@ class ASimpliCityGameMode : public AGameModeBase
 
 public:
 	ASimpliCityGameMode();
+	virtual void StartPlay() override;
+
+	UPROPERTY(EditAnywhere,NoClear,BlueprintReadOnly,Category = Managers)
+	TSubclassOf<AGridManager> GridManagerClass;
 };

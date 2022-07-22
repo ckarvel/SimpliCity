@@ -14,6 +14,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMouseClick,FVector,HitLocation);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMouseHold,FVector,HitLocation);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnArrowInput,FVector,HitLocation);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMiddleMouseClick,FRotator, Delta);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnBuildMode,bool, IsEnabled);
 
 UCLASS(Blueprintable)
 class ASimpliCityPlayerController : public APlayerController
@@ -42,6 +43,8 @@ public:
 	FOnMouseCancel OnMouseCancel;
 	UPROPERTY(BlueprintAssignable)
 	FOnMiddleMouseClick OnMiddleMouseClick;
+	UPROPERTY(BlueprintAssignable)
+	FOnBuildMode OnBuildMode;
 
 protected:
 	void BeginPlay() override;
@@ -52,5 +55,5 @@ protected:
 	void HandleClickEvent(bool blockingHit,FVector location);
 	void HandleArrowEvent();
 
-	//class ASimpliCityCharacter* ThePlayer;
+	bool BuildModeEnabled;
 };

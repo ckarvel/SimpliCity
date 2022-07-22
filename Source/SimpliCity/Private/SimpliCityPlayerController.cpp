@@ -10,6 +10,7 @@
 #include "Engine/World.h"
 
 ASimpliCityPlayerController::ASimpliCityPlayerController()
+  : BuildModeEnabled(false)
 {
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Default;
@@ -98,4 +99,13 @@ void ASimpliCityPlayerController::SetupInputComponent() {
   InputComponent->BindAxis("MoveRight");
   InputComponent->BindAxis("RotationX");
   InputComponent->BindAxis("RotationY");
+
+  // workaround for using lambda with BindAction:
+  FInputActionBinding BuildModePressed("Build Mode",IE_Pressed);
+  BuildModePressed.ActionDelegate.GetDelegateForManualSet().BindLambda([this]() {
+    BuildModeEnabled = !BuildModeEnabled;
+    OnBuildMode.Broadcast(BuildModeEnabled);
+    TRACE_SCREENMSG_PRINTF("Build Mode Pressed");
+    });
+  InputComponent->AddActionBinding(BuildModePressed);
 }
