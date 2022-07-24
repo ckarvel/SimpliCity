@@ -4,6 +4,7 @@
 #include "SimpliCityFunctionLibrary.h"
 #include "SimpliCityGameInstance.h"
 #include "SimpliCityPlayerController.h"
+#include "SimpliCityBuildManager.h"
 #include "GridManager.h"
 
 #include "Kismet/GameplayStatics.h"
@@ -16,4 +17,14 @@ AGridManager* USimpliCityFunctionLibrary::GetGridManager(const UObject* WorldCon
 
 ASimpliCityPlayerController* USimpliCityFunctionLibrary::GetPlayerController(const UObject* WorldContextObject) {
   return Cast<ASimpliCityPlayerController>(UGameplayStatics::GetPlayerController(WorldContextObject, 0));
+}
+
+ASimpliCityBuildManager* USimpliCityFunctionLibrary::GetBuildManager(const UObject* WorldContextObject) {
+  return Cast<ASimpliCityBuildManager>(UGameplayStatics::GetActorOfClass(WorldContextObject,ASimpliCityBuildManager::StaticClass()));
+}
+
+bool USimpliCityFunctionLibrary::AreLocationsEqual(FVector LocationA, FVector LocationB) {
+  FVector ZAdjustedA = FVector(LocationA.X,LocationA.Y,0.0);
+  FVector ZAdjustedB = FVector(LocationB.X,LocationB.Y,0.0);
+  return ZAdjustedA.Equals(ZAdjustedB, 0.01);
 }

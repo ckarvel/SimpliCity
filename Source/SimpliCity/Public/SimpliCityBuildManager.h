@@ -22,25 +22,34 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
+public:
 	UPROPERTY(BlueprintAssignable)
 	FOnBuildCreation OnBuildCreation;
 	UPROPERTY(BlueprintAssignable)
 	FOnBuildRemoval OnBuildRemoval;
+	UFUNCTION(BlueprintCallable,Category="BuildMode")
+	void NotifySpawnedObject(class ASimpliCityRoadBase* SpawnedObject);
+	UFUNCTION(BlueprintCallable,Category="BuildMode")
+	void NotifyDespawnedObject(class ASimpliCityRoadBase* DespawnedObject);
+	UFUNCTION(BlueprintCallable,Category="BuildMode")
+	bool DoesObjectExistHere(FVector location);
 
+protected:
 	UFUNCTION(BlueprintCallable,Category="BuildMode")
 	void StartTrackingBuildPath(FVector location);
 	UFUNCTION(BlueprintCallable,Category="BuildMode")
 	void TrackBuildPath(FVector location);
 	UFUNCTION(BlueprintCallable,Category="BuildMode")
 	void FinishTrackingBuildPath();
+	void AddTemporaryToPermanentList();
 
 	bool isTrackingActive;
 	FVector startLocation;
 	FVector lastLocation; // keep track of last tile origin
 	UPROPERTY(BlueprintReadOnly,Category="BuildMode")
 	TSet<FVector> oldPath;
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
+	TArray<class ASimpliCityRoadBase*> PermanentBuildObjects;
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
+	TArray<class ASimpliCityRoadBase*> TemporaryBuildObjects;
 };

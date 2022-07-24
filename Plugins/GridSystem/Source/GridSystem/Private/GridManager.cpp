@@ -37,9 +37,9 @@ void AGridManager::BeginPlay() {
 void AGridManager::LocationToTile(FVector Location,int& OutRow,int& OutCol) const {
   FVector Origin = GetActorLocation();
   float X = (Location.X - Origin.X) / GetGridHeight();
-  OutRow = NumRows * X;
+  OutRow = FMath::Clamp(NumRows * X,0,(NumRows-1));
   float Y =  (Location.Y - Origin.Y) / GetGridWidth();
-  OutCol = NumCols * Y;
+  OutCol = FMath::Clamp(NumCols * Y,0,(NumCols-1));
 }
 
 FVector AGridManager::LocationToCenter(FVector Location) const {

@@ -6,8 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "SimpliCityRoadManager.generated.h"
 
-UCLASS()
-class SIMPLICITY_API ASimpliCityRoadManager : public AActor
+UCLASS(Blueprintable)
+class ROAD_API ASimpliCityRoadManager : public AActor
 {
 	GENERATED_BODY()
 	
@@ -19,8 +19,14 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
+	TArray<class ASimpliCityRoadBase*> PermanentRoadList;
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
+	TArray<class ASimpliCityRoadBase*> TemporaryRoadList;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
 
 };

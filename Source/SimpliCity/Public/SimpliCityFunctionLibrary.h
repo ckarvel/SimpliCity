@@ -6,19 +6,25 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "SimpliCityFunctionLibrary.generated.h"
 
-class AGridManager;
-class ASimpliCityPlayerController;
 /**
  *
  */
-UCLASS()
+UCLASS(Blueprintable)
 class SIMPLICITY_API USimpliCityFunctionLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 public:
+	// getters
   UFUNCTION(BlueprintPure,Category="SimpliLib", meta=(WorldContext="WorldContextObject", UnsafeDuringActorConstruction="true"))
-	static AGridManager* GetGridManager(const UObject* WorldContextObject);
+	static class AGridManager* GetGridManager(const UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintPure,Category="SimpliLib",meta=(WorldContext="WorldContextObject",UnsafeDuringActorConstruction="true"))
-	static ASimpliCityPlayerController* GetPlayerController(const UObject* WorldContextObject);
+	static class ASimpliCityPlayerController* GetPlayerController(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintPure,Category="SimpliLib",meta=(WorldContext="WorldContextObject",UnsafeDuringActorConstruction="true"))
+	static class ASimpliCityBuildManager* GetBuildManager(const UObject* WorldContextObject);
+	
+	// tools
+	UFUNCTION(BlueprintPure,Category="SimpliLib")
+	static bool AreLocationsEqual(FVector LocationA, FVector LocationB);
 };

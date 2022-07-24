@@ -26,6 +26,12 @@ public:
   UFUNCTION(BlueprintPure)
     FORCEINLINE float GetGridHeight() const { return NumRows * TileSize; }
 
+  UFUNCTION(BlueprintPure)
+    FORCEINLINE int GetNumCols() const { return NumCols; }
+
+  UFUNCTION(BlueprintPure)
+    FORCEINLINE int GetNumRows() const { return NumRows; }
+
   //////////////////////////////////////////////////////////////////////////////////////////////
 
   UFUNCTION(BlueprintPure,Category = "Grid")
