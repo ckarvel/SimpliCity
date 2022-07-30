@@ -3,26 +3,23 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/SceneComponent.h"
-#include "SimpliCityMarkerComponent.generated.h"
+#include "Components/ActorComponent.h"
+#include "SimpliCityRoadFixerComponent.generated.h"
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class ROAD_API USimpliCityMarkerComponent : public USceneComponent
+class SIMPLICITY_API USimpliCityRoadFixerComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	USimpliCityMarkerComponent();
+	USimpliCityRoadFixerComponent();
 
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-		
+public:
+	//void GetRoadTypeAndRotation(TSubclassOf<class ASimpliCityRoadBase>& RoadClass, FRotator& Rotation);
 };

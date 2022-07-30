@@ -27,29 +27,34 @@ public:
 	FOnBuildCreation OnBuildCreation;
 	UPROPERTY(BlueprintAssignable)
 	FOnBuildRemoval OnBuildRemoval;
-	UFUNCTION(BlueprintCallable,Category="BuildMode")
-	void NotifySpawnedObject(class ASimpliCityRoadBase* SpawnedObject);
-	UFUNCTION(BlueprintCallable,Category="BuildMode")
-	void NotifyDespawnedObject(class ASimpliCityRoadBase* DespawnedObject);
-	UFUNCTION(BlueprintCallable,Category="BuildMode")
-	bool DoesObjectExistHere(FVector location);
+
+	UFUNCTION(BlueprintCallable,Category="Build Mode")
+	void NotifySpawnedObject(class ASimpliCityBuildObjectBase* SpawnedObject);
+
+	UFUNCTION(BlueprintCallable,Category="Build Mode")
+	void NotifyDespawnedObject(class ASimpliCityBuildObjectBase* DespawnedObject);
+	UFUNCTION(BlueprintCallable,Category="Build Mode")
+	void NotifyDespawnedObjectAtLocation(FVector location);
+
+	UFUNCTION(BlueprintCallable,Category="Build Mode")
+	class ASimpliCityBuildObjectBase* GetObjectAtLocation(FVector location);
 
 protected:
-	UFUNCTION(BlueprintCallable,Category="BuildMode")
+	UFUNCTION(BlueprintCallable,Category="Build Mode")
 	void StartTrackingBuildPath(FVector location);
-	UFUNCTION(BlueprintCallable,Category="BuildMode")
+	UFUNCTION(BlueprintCallable,Category="Build Mode")
 	void TrackBuildPath(FVector location);
-	UFUNCTION(BlueprintCallable,Category="BuildMode")
+	UFUNCTION(BlueprintCallable,Category="Build Mode")
 	void FinishTrackingBuildPath();
 	void AddTemporaryToPermanentList();
 
 	bool isTrackingActive;
 	FVector startLocation;
 	FVector lastLocation; // keep track of last tile origin
-	UPROPERTY(BlueprintReadOnly,Category="BuildMode")
+	UPROPERTY(BlueprintReadOnly,Category="Build Mode")
 	TSet<FVector> oldPath;
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
-	TArray<class ASimpliCityRoadBase*> PermanentBuildObjects;
+	TArray<class ASimpliCityBuildObjectBase*> TemporaryBuildObjects;
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
-	TArray<class ASimpliCityRoadBase*> TemporaryBuildObjects;
+	class USimpliCityBuildObjectGrid* ObjectGridComponent;
 };

@@ -1,13 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "SimpliCityFunctionLibrary.h"
-#include "SimpliCityGameInstance.h"
-#include "SimpliCityPlayerController.h"
-#include "SimpliCityBuildManager.h"
-#include "GridManager.h"
+#include "Tools/SimpliCityFunctionLibrary.h"
 
 #include "Kismet/GameplayStatics.h"
+#include "GridManager.h"
+
+#include "SimpliCityGameInstance.h"
+#include "Builder/SimpliCityBuildManager.h"
+#include "SimpliCityPlayerController.h"
 
 AGridManager* USimpliCityFunctionLibrary::GetGridManager(const UObject* WorldContextObject) {
   USimpliCityGameInstance* gameInst = Cast<USimpliCityGameInstance>(UGameplayStatics::GetGameInstance(WorldContextObject));

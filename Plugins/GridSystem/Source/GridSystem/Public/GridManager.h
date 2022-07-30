@@ -8,8 +8,8 @@
 #include "GridManager.generated.h"
 
 // minimalapi exports some key auto-generated functions (such as GetPrivateStaticClass) 
-UCLASS(Blueprintable,minimalapi)
-class AGridManager : public AActor, public IPathFinderInterface {
+UCLASS(Blueprintable)
+class GRIDSYSTEM_API AGridManager : public AActor, public IPathFinderInterface {
   GENERATED_BODY()
 
 protected:

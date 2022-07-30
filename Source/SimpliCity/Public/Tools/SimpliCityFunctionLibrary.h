@@ -9,11 +9,14 @@
 /**
  *
  */
+
 UCLASS(Blueprintable)
 class SIMPLICITY_API USimpliCityFunctionLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 public:
+	USimpliCityFunctionLibrary() {};
+
 	// getters
   UFUNCTION(BlueprintPure,Category="SimpliLib", meta=(WorldContext="WorldContextObject", UnsafeDuringActorConstruction="true"))
 	static class AGridManager* GetGridManager(const UObject* WorldContextObject);

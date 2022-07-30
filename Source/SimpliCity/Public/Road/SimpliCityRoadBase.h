@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Builder/SimpliCityBuildObjectBase.h"
 #include "SimpliCityRoadBase.generated.h"
 
 UCLASS(Blueprintable)
-class ROAD_API ASimpliCityRoadBase : public AActor
+class SIMPLICITY_API ASimpliCityRoadBase : public ASimpliCityBuildObjectBase
 {
 	GENERATED_BODY()
 	
@@ -19,7 +20,7 @@ public:
 	FORCEINLINE class UStaticMeshComponent* GetStaticMeshComponent() const { return StaticMeshComponent; }
 
 	UFUNCTION(BlueprintCallable,Category="Road Base")
-	void SetNewMaterial();
+	void SetNewMaterial() override;
 
 protected:
 	// Called when the game starts or when spawned

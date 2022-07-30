@@ -7,7 +7,7 @@
 #include "SimpliCityRoadManager.generated.h"
 
 UCLASS(Blueprintable)
-class ROAD_API ASimpliCityRoadManager : public AActor
+class SIMPLICITY_API ASimpliCityRoadManager : public AActor
 {
 	GENERATED_BODY()
 	
@@ -20,13 +20,12 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
-	TArray<class ASimpliCityRoadBase*> PermanentRoadList;
-	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
-	TArray<class ASimpliCityRoadBase*> TemporaryRoadList;
+	TArray<class ASimpliCityRoadBase*> RoadList;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
+	class USimpliCityRoadFixerComponent* RoadFixerComponent;
 };
