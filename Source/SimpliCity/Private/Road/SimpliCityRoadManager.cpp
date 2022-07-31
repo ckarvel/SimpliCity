@@ -30,13 +30,13 @@ void ASimpliCityRoadManager::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void ASimpliCityRoadManager::SwapRoads(ASimpliCityRoadBase* OldRoad, ASimpliCityRoadBase* NewRoad) {
+void ASimpliCityRoadManager::SwapRoads(ASimpliCityBuildObjectBase* OldRoad,ASimpliCityBuildObjectBase* NewRoad) {
 	USimpliCityFunctionLibrary::GetBuildManager(this)->NotifyReplaceObject(OldRoad, NewRoad);
-	RoadList.Remove(OldRoad);
-	RoadList.Add(NewRoad);
+	RoadList.Remove(Cast<ASimpliCityRoadBase>(OldRoad));
+	RoadList.Add(Cast<ASimpliCityRoadBase>(NewRoad));
 }
 
-void ASimpliCityRoadManager::FixRoad(ASimpliCityRoadBase* Road) {
+void ASimpliCityRoadManager::FixRoad(ASimpliCityBuildObjectBase* Road) {
 	check(RoadFixerComponent != nullptr);
 	TSubclassOf<ASimpliCityRoadBase> SpawnRoadClass;
 	FRotator SpawnRotation;
@@ -46,11 +46,16 @@ void ASimpliCityRoadManager::FixRoad(ASimpliCityRoadBase* Road) {
 	Road->Destroy();
 }
 
-void ASimpliCityRoadManager::FixRoadAndNeighbors(ASimpliCityRoadBase* Road) {
+void ASimpliCityRoadManager::FixNeighborsOfRoad(ASimpliCityBuildObjectBase* Road) {
 	FVector roadLocation = Road->GetActorLocation();
 	TArray<ASimpliCityBuildObjectBase*> neighborRoads = USimpliCityFunctionLibrary::GetBuildManager(this)->GetNeighborsOfType(roadLocation,ESimpliCityBuildObjectEnum::BuildObject_Road);
-	FixRoad(Cast<ASimpliCityRoadBase>(Road));
-	for (auto neighbor : neighborRoads) {
-		FixRoad(Cast<ASimpliCityRoadBase>(neighbor));
+	for (auto road : neighborRoads) {
+		FixRoad(Cast<ASimpliCityRoadBase>(road));
 	}
+}
+
+void ASimpliCityRoadManager::FixRoadAndNeighbors(ASimpliCityBuildObjectBase* Road) {
+	FVector roadLocation = Road->GetActorLocation();
+	FixRoad(Road);
+	FixNeighborsOfRoad(Road);
 }
