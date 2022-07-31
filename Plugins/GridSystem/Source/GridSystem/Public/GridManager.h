@@ -71,6 +71,10 @@ public:
   UFUNCTION(BlueprintCallable,Category = "Grid")
     void GetNeighborIndexes(int32 index,TArray<int32>& Indexes) const;
 
+  // gets indexes in order: left, right, top, bottom. can return -1
+  // idx of -1 means it doesn't exist (on boundary)
+  void GetNeighborIndexes_Unsafe(int32 Index,TArray<int32>& Neighbors) const;
+
   UFUNCTION(BlueprintCallable,Category = "Grid")
   virtual TArray<FVector> GetNeighbors(FVector Location) const override;
 

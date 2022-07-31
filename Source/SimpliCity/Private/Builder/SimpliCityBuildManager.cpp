@@ -54,13 +54,9 @@ void ASimpliCityBuildManager::TrackBuildPath(FVector currentLocation) {
   TSet<FVector> removeRoads = oldPath.Difference(newPath);
   TArray<FVector> removeRoadsArr = removeRoads.Array();
   for (auto roadLoc : removeRoadsArr) {
-    if (ASimpliCityBuildObjectBase* obj = GetObjectAtLocation(roadLoc)) {
-      if (TemporaryBuildObjects.Contains(obj) == false) {
-        removeRoads.Remove(roadLoc);
-      }
-      else {
-        TRACE_SCREENMSG_PRINTF("Don't remove: Permanent object exists here!");
-      }
+    if (DoesObjectExistHere(roadLoc) && !TemporaryBuildLocations.Contains(roadLoc)) {
+      removeRoads.Remove(roadLoc);
+      TRACE_SCREENMSG_PRINTF("Don't remove: Permanent object exists here!");
     }
   }
   OnBuildRemoval.Broadcast(removeRoads.Array());
@@ -69,12 +65,9 @@ void ASimpliCityBuildManager::TrackBuildPath(FVector currentLocation) {
   TArray<FVector> createRoadsArr = createRoads.Array();
   // broadcast empty spaces to build on
   for (auto roadLoc : createRoadsArr) {
-    if (ASimpliCityBuildObjectBase* obj = GetObjectAtLocation(roadLoc)) {
-      if (TemporaryBuildObjects.Contains(obj) == false) {
-        createRoads.Remove(roadLoc);
-      } else {
-        TRACE_SCREENMSG_PRINTF("Don't create: Permanent object exists here!");
-      }
+    if (DoesObjectExistHere(roadLoc) && !TemporaryBuildLocations.Contains(roadLoc)) {
+      createRoads.Remove(roadLoc);
+      TRACE_SCREENMSG_PRINTF("Don't create: Permanent object exists here!");
     }
   }
   OnBuildCreation.Broadcast(createRoads.Array());
@@ -97,15 +90,22 @@ void ASimpliCityBuildManager::AddTemporaryToPermanentList() {
     }
   }
   TemporaryBuildObjects.Empty();
+  TemporaryBuildLocations.Empty();
+}
+
+bool ASimpliCityBuildManager::DoesObjectExistHere(FVector Location) {
+  return ObjectGridComponent->DoesObjectExistHere(Location);
 }
 
 void ASimpliCityBuildManager::NotifySpawnedObject(ASimpliCityBuildObjectBase* SpawnedObject) {
   TemporaryBuildObjects.Add(SpawnedObject);
+  TemporaryBuildLocations.Add(SpawnedObject->GetActorLocation());
   ObjectGridComponent->NotifySpawnedObject(SpawnedObject);
 }
 
 void ASimpliCityBuildManager::NotifyDespawnedObject(ASimpliCityBuildObjectBase* DespawnedObject) {
   TemporaryBuildObjects.Remove(DespawnedObject);
+  TemporaryBuildLocations.Remove(DespawnedObject->GetActorLocation());
   ObjectGridComponent->NotifyDespawnedObject(DespawnedObject);
 }
 
@@ -113,9 +113,24 @@ void ASimpliCityBuildManager::NotifyDespawnedObjectAtLocation(FVector location) 
   if (ASimpliCityBuildObjectBase* obj = GetObjectAtLocation(location)) {
     TemporaryBuildObjects.Remove(obj);
   }
+  TemporaryBuildLocations.Remove(location);
   ObjectGridComponent->NotifyDespawnedObjectAtLocation(location);
 }
 
 ASimpliCityBuildObjectBase* ASimpliCityBuildManager::GetObjectAtLocation(FVector location) {
   return ObjectGridComponent->GetObjectAtLocation(location);
+}
+
+TArray<ASimpliCityBuildObjectBase*> ASimpliCityBuildManager::GetNeighborsOfType(FVector location,TEnumAsByte<ESimpliCityBuildObjectEnum> buildType) {
+  return ObjectGridComponent->GetNeighborsOfType(location, buildType);
+}
+
+TArray<ASimpliCityBuildObjectBase*> ASimpliCityBuildManager::GetAllNeighbors_Unsafe(FVector location) {
+  return ObjectGridComponent->GetAllNeighbors_Unsafe(location);
+}
+
+void ASimpliCityBuildManager::NotifyReplaceObject(ASimpliCityBuildObjectBase* OldObj, ASimpliCityBuildObjectBase* NewObj) {
+  ObjectGridComponent->NotifySpawnedObject(NewObj);
+  TemporaryBuildObjects.Add(NewObj);
+  TemporaryBuildObjects.Remove(OldObj);
 }

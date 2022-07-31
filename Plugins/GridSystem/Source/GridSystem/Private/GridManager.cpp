@@ -123,6 +123,33 @@ void AGridManager::GetNeighborIndexes(int32 Index,TArray<int32>& Neighbors) cons
   return;
 }
 
+void AGridManager::GetNeighborIndexes_Unsafe(int32 Index,TArray<int32>& Neighbors) const {
+  if (IsIndexValid(Index) == false) {
+    //UtilityLibrary::Warning("Location invalid" + FString(__FUNCTION__));
+    return;
+  }
+  Neighbors.Empty();
+  Neighbors.Append({ -1, -1, -1, -1 });
+  // just in case a boundary cell (only affects left and right)
+  // divide by num of cols
+  bool onLeftBoundary = Index % NumCols == 0;
+  bool onRightBoundary = Index % NumCols == (NumCols - 1);
+
+  int leftIdx = Index - 1;
+  int rightIdx = Index + 1;
+  int topIdx = Index + NumCols;
+  int bottomIdx = Index - NumCols;
+  if (IsIndexValid(leftIdx) && onLeftBoundary == false)
+    Neighbors[0] = leftIdx;
+  if (IsIndexValid(rightIdx) && onRightBoundary == false)
+    Neighbors[1] = rightIdx;
+  if (IsIndexValid(topIdx))
+    Neighbors[2] = topIdx;
+  if (IsIndexValid(bottomIdx))
+    Neighbors[3] = bottomIdx;
+  return;
+}
+
 TArray<FVector> AGridManager::GetNeighbors(FVector Location) const {
   TArray<int32> NeighborIdxs;
   TArray<FVector> NeighborLocs;

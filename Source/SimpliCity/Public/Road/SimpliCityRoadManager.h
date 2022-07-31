@@ -25,7 +25,12 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	void FixRoad(ASimpliCityRoadBase* Road);
+	void SwapRoads(ASimpliCityRoadBase* OldRoad, ASimpliCityRoadBase* NewRoad);
+	UFUNCTION(BlueprintCallable,Category="Road")
+	void FixRoadAndNeighbors(ASimpliCityRoadBase* Road);
+	
 
-	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	class USimpliCityRoadFixerComponent* RoadFixerComponent;
 };

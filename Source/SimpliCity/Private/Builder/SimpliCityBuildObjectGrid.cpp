@@ -22,6 +22,37 @@ void USimpliCityBuildObjectGrid::BeginPlay()
 	BuildObjectRefGrid.Init(nullptr,gridMgr->GetNumRows() * gridMgr->GetNumCols());
 }
 
+TArray<ASimpliCityBuildObjectBase*> USimpliCityBuildObjectGrid::GetNeighborsOfType(FVector location,TEnumAsByte<ESimpliCityBuildObjectEnum> buildType) {
+	AGridManager* grdMgr = USimpliCityFunctionLibrary::GetGridManager(this);
+	int32 currentIdx = grdMgr->LocationToIndex(location);
+	TArray<int32> neighborIdxs;
+	grdMgr->GetNeighborIndexes(currentIdx,neighborIdxs);
+	TArray<ASimpliCityBuildObjectBase*> neighborsFound;
+	for (auto idx : neighborIdxs) {
+		if (ASimpliCityBuildObjectBase* obj = BuildObjectRefGrid[idx]) {
+			if (obj->Type() == buildType) {
+				neighborsFound.Add(obj);
+			}
+		}
+	}
+	return neighborsFound;
+}
+
+TArray<ASimpliCityBuildObjectBase*> USimpliCityBuildObjectGrid::GetAllNeighbors_Unsafe(FVector location) {
+	AGridManager* grdMgr = USimpliCityFunctionLibrary::GetGridManager(this);
+	int32 currentIdx = grdMgr->LocationToIndex(location);
+	TArray<int32> neighborIdxs;
+	grdMgr->GetNeighborIndexes_Unsafe(currentIdx,neighborIdxs);
+	TArray<ASimpliCityBuildObjectBase*> allNeighbors;
+	for (auto idx : neighborIdxs) {
+		if (idx < 0)
+			allNeighbors.Add(nullptr);
+		else
+			allNeighbors.Add(BuildObjectRefGrid[idx]);
+	}
+	return allNeighbors;
+}
+
 ASimpliCityBuildObjectBase* USimpliCityBuildObjectGrid::GetObjectAtLocation(FVector location) {
 	int32 index = USimpliCityFunctionLibrary::GetGridManager(this)->LocationToIndex(location);
 	return BuildObjectRefGrid[index];

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Builder/SimpliCityBuildObjectEnum.h"
 #include "SimpliCityBuildObjectGrid.generated.h"
 
 
@@ -21,6 +22,8 @@ public:
 	void NotifyDespawnedObject(class ASimpliCityBuildObjectBase* DespawnedObject);
 	void NotifyDespawnedObjectAtLocation(FVector location);
 	class ASimpliCityBuildObjectBase* GetObjectAtLocation(FVector location);
+	TArray<ASimpliCityBuildObjectBase*> GetNeighborsOfType(FVector location,TEnumAsByte<ESimpliCityBuildObjectEnum> buildType);
+	TArray<ASimpliCityBuildObjectBase*> GetAllNeighbors_Unsafe(FVector location);
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

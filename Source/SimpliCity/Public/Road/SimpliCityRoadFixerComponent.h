@@ -7,7 +7,7 @@
 #include "SimpliCityRoadFixerComponent.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS( Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SIMPLICITY_API USimpliCityRoadFixerComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -21,5 +21,25 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	//void GetRoadTypeAndRotation(TSubclassOf<class ASimpliCityRoadBase>& RoadClass, FRotator& Rotation);
+	UPROPERTY(EditAnywhere,NoClear,BlueprintReadOnly,Category = "Road Fixer")
+	TSubclassOf<class ASimpliCityRoadBase> Road4WayClass;
+	UPROPERTY(EditAnywhere,NoClear,BlueprintReadOnly,Category = "Road Fixer")
+	TSubclassOf<ASimpliCityRoadBase> Road3WayClass;
+	UPROPERTY(EditAnywhere,NoClear,BlueprintReadOnly,Category = "Road Fixer")
+	TSubclassOf<ASimpliCityRoadBase> RoadStraightClass;
+	UPROPERTY(EditAnywhere,NoClear,BlueprintReadOnly,Category = "Road Fixer")
+	TSubclassOf<ASimpliCityRoadBase> RoadCornerClass;
+	UPROPERTY(EditAnywhere,NoClear,BlueprintReadOnly,Category = "Road Fixer")
+	TSubclassOf<ASimpliCityRoadBase> RoadDeadEndClass;
+	UFUNCTION(BlueprintCallable,Category = "Road Fixer")
+	bool IsRoad(class ASimpliCityBuildObjectBase* obj);
+	UFUNCTION(BlueprintCallable,Category = "Road Fixer")
+	void GetRoadTypeAndRotationAtLocation(FVector location, TSubclassOf<class ASimpliCityRoadBase>& OutRoadClass, FRotator& OutRotation);
+
+private:
+	void Set4WayRoadInfo(FVector location,TArray<ASimpliCityBuildObjectBase*> neighbors,TSubclassOf<ASimpliCityRoadBase>& OutRoadClass,FRotator& OutRotation);
+	void Set3WayRoadInfo(FVector location,TArray<ASimpliCityBuildObjectBase*> neighbors,TSubclassOf<ASimpliCityRoadBase>& OutRoadClass,FRotator& OutRotation);
+	bool SetStraightRoadInfo(FVector location,TArray<ASimpliCityBuildObjectBase*> neighbors,TSubclassOf<ASimpliCityRoadBase>& OutRoadClass,FRotator& OutRotation);
+	void SetCornerWayRoadInfo(FVector location,TArray<ASimpliCityBuildObjectBase*> neighbors,TSubclassOf<ASimpliCityRoadBase>& OutRoadClass,FRotator& OutRotation);
+	void SetDeadEndRoadInfo(FVector location,TArray<ASimpliCityBuildObjectBase*> neighbors,TSubclassOf<ASimpliCityRoadBase>& OutRoadClass,FRotator& OutRotation);
 };

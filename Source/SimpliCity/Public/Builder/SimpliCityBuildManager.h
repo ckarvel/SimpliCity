@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Builder/SimpliCityBuildObjectEnum.h"
 #include "SimpliCityBuildManager.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnBuildCreation,const TArray<FVector>&,AddedLocations);
@@ -29,15 +30,22 @@ public:
 	FOnBuildRemoval OnBuildRemoval;
 
 	UFUNCTION(BlueprintCallable,Category="Build Mode")
+	bool DoesObjectExistHere(FVector Location);
+
+	UFUNCTION(BlueprintCallable,Category="Build Mode")
 	void NotifySpawnedObject(class ASimpliCityBuildObjectBase* SpawnedObject);
 
 	UFUNCTION(BlueprintCallable,Category="Build Mode")
-	void NotifyDespawnedObject(class ASimpliCityBuildObjectBase* DespawnedObject);
+	void NotifyDespawnedObject(ASimpliCityBuildObjectBase* DespawnedObject);
 	UFUNCTION(BlueprintCallable,Category="Build Mode")
 	void NotifyDespawnedObjectAtLocation(FVector location);
+	void NotifyReplaceObject(ASimpliCityBuildObjectBase* OldObj,ASimpliCityBuildObjectBase* NewObj);
 
 	UFUNCTION(BlueprintCallable,Category="Build Mode")
 	class ASimpliCityBuildObjectBase* GetObjectAtLocation(FVector location);
+	UFUNCTION(BlueprintCallable,Category="Build Mode")
+	TArray<ASimpliCityBuildObjectBase*> GetNeighborsOfType(FVector location,TEnumAsByte<ESimpliCityBuildObjectEnum> buildType);
+	TArray<ASimpliCityBuildObjectBase*> GetAllNeighbors_Unsafe(FVector location);
 
 protected:
 	UFUNCTION(BlueprintCallable,Category="Build Mode")
@@ -55,6 +63,8 @@ protected:
 	TSet<FVector> oldPath;
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	TArray<class ASimpliCityBuildObjectBase*> TemporaryBuildObjects;
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
+	TArray<FVector> TemporaryBuildLocations;
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	class USimpliCityBuildObjectGrid* ObjectGridComponent;
 };

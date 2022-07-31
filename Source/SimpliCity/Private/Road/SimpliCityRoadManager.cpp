@@ -3,26 +3,54 @@
 
 #include "Road/SimpliCityRoadManager.h"
 #include "Road/SimpliCityRoadFixerComponent.h"
+#include "Road/SimpliCityRoadBase.h"
+
+#include "Builder/SimpliCityBuildObjectEnum.h"
+#include "Builder/SimpliCityBuildObjectBase.h"
+#include "Builder/SimpliCityBuildManager.h"
+
+#include "Tools/SimpliCityFunctionLibrary.h"
 
 // Sets default values
 ASimpliCityRoadManager::ASimpliCityRoadManager()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-	RoadFixerComponent = CreateDefaultSubobject<USimpliCityRoadFixerComponent>(TEXT("RoadFixer"));
+	PrimaryActorTick.bCanEverTick = false;
 }
 
 // Called when the game starts or when spawned
 void ASimpliCityRoadManager::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
 void ASimpliCityRoadManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
+void ASimpliCityRoadManager::SwapRoads(ASimpliCityRoadBase* OldRoad, ASimpliCityRoadBase* NewRoad) {
+	USimpliCityFunctionLibrary::GetBuildManager(this)->NotifyReplaceObject(OldRoad, NewRoad);
+	RoadList.Remove(OldRoad);
+	RoadList.Add(NewRoad);
+}
+
+void ASimpliCityRoadManager::FixRoad(ASimpliCityRoadBase* Road) {
+	check(RoadFixerComponent != nullptr);
+	TSubclassOf<ASimpliCityRoadBase> SpawnRoadClass;
+	FRotator SpawnRotation;
+	RoadFixerComponent->GetRoadTypeAndRotationAtLocation(Road->GetActorLocation(),SpawnRoadClass,SpawnRotation);
+	ASimpliCityRoadBase* FixedRoad = GetWorld()->SpawnActor<ASimpliCityRoadBase>(SpawnRoadClass,Road->GetActorLocation(),SpawnRotation);
+	SwapRoads(Road,FixedRoad);
+	Road->Destroy();
+}
+
+void ASimpliCityRoadManager::FixRoadAndNeighbors(ASimpliCityRoadBase* Road) {
+	FVector roadLocation = Road->GetActorLocation();
+	TArray<ASimpliCityBuildObjectBase*> neighborRoads = USimpliCityFunctionLibrary::GetBuildManager(this)->GetNeighborsOfType(roadLocation,ESimpliCityBuildObjectEnum::BuildObject_Road);
+	FixRoad(Cast<ASimpliCityRoadBase>(Road));
+	for (auto neighbor : neighborRoads) {
+		FixRoad(Cast<ASimpliCityRoadBase>(neighbor));
+	}
+}
