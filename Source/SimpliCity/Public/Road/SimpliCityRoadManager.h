@@ -25,14 +25,20 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
 	void FixRoad(class ASimpliCityBuildObjectBase* Road);
+
 	UFUNCTION(BlueprintCallable,Category="Road")
 	void FixNeighborsOfRoad(ASimpliCityBuildObjectBase* Road);
+
 	void SwapRoads(ASimpliCityBuildObjectBase* OldRoad,ASimpliCityBuildObjectBase* NewRoad);
+
 	UFUNCTION(BlueprintCallable,Category="Road")
 	void FixRoadAndNeighbors(ASimpliCityBuildObjectBase* Road);
-	
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	class USimpliCityRoadFixerComponent* RoadFixerComponent;
+
+	class AMarkerManager* PedestrianMarkerGraph;
+	class AMarkerManager* VehicleMarkerGraph;
 };

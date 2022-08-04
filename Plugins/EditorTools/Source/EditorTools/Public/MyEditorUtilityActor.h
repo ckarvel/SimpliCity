@@ -47,10 +47,19 @@ public:
 		const FVector& Start,
 		const FVector& End,
 		const FLinearColor& Color,
-		uint8 DepthPriority,
 		float Thickness,
-		float LifeTime
+		float LifeTime,
+		uint8 DepthPriority = 0
 	);
+
+	UFUNCTION(BlueprintCallable)
+		void DrawPoint(
+			const FVector& Position,
+			const FLinearColor& Color,
+			float PointSize,
+			uint8 DepthPriority,
+			float LifeTime = 0.0f
+		);
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = Components,meta = (AllowPrivateAccess = "true"))
 		class ULineBatchComponent* LineBatchComponent;

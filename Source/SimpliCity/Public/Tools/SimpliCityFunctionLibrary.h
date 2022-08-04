@@ -26,6 +26,9 @@ public:
 
 	UFUNCTION(BlueprintPure,Category="SimpliLib",meta=(WorldContext="WorldContextObject",UnsafeDuringActorConstruction="true"))
 	static class ASimpliCityBuildManager* GetBuildManager(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintPure,Category="SimpliLib",meta=(WorldContext="WorldContextObject",UnsafeDuringActorConstruction="true"))
+	static class AMarkerManager* GetMarkerManager(const UObject* WorldContextObject);
 	
 	// tools
 	UFUNCTION(BlueprintPure,Category="SimpliLib")

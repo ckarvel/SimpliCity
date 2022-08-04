@@ -11,10 +11,20 @@ AMyEditorUtilityActor::AMyEditorUtilityActor() {
 void AMyEditorUtilityActor::DrawLine(const FVector& Start,
 	const FVector& End,
 	const FLinearColor& Color,
-	uint8 DepthPriority,
 	float Thickness,
+	float LifeTime, 
+	uint8 DepthPriority) {
+	if (LineBatchComponent) {
+		LineBatchComponent->DrawLine(Start,End,Color,DepthPriority,Thickness,LifeTime);
+	}
+}
+
+void AMyEditorUtilityActor::DrawPoint(const FVector& Position,
+	const FLinearColor& Color,
+	float PointSize,
+	uint8 DepthPriority,
 	float LifeTime) {
 	if (LineBatchComponent) {
-		LineBatchComponent->DrawLine(Start,End,Color,0,Thickness,LifeTime);
+		LineBatchComponent->DrawPoint(Position,Color,PointSize,DepthPriority,LifeTime);
 	}
 }

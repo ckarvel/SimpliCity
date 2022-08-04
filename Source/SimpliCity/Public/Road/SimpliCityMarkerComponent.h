@@ -7,22 +7,33 @@
 #include "SimpliCityMarkerComponent.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SIMPLICITY_API USimpliCityMarkerComponent : public USceneComponent
 {
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
 	USimpliCityMarkerComponent();
 
 protected:
-	// Called when the game starts
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+  //UFUNCTION(BlueprintCallable,Category = "Marker")
+  //void AddAdjacentMarker(USimpliCityMarkerComponent* marker);
 
-		
+  //UFUNCTION(BlueprintCallable,Category = "Marker")
+  //TArray<FVector> GetAdjacentMarkerLocations();
+
+  //UFUNCTION(BlueprintCallable,Category = "Marker")
+  //TArray<USimpliCityMarkerComponent*> GetAdjacentMarkers() { return AdjacentMarkers; }
+
+  //UPROPERTY(EditAnywhere,BlueprintReadWrite)
+  //bool openForConnections;
+
+  //UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+  //TArray<USimpliCityMarkerComponent*> AdjacentMarkers;
+
+  //UFUNCTION(BlueprintCallable,Category = "Marker")
+  //bool IsOpen() const { return openForConnections; }
 };

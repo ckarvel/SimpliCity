@@ -9,6 +9,8 @@
 #include "Builder/SimpliCityBuildObjectBase.h"
 #include "Builder/SimpliCityBuildManager.h"
 
+#include "MarkerManager.h"
+
 #include "Tools/SimpliCityFunctionLibrary.h"
 
 // Sets default values
@@ -22,6 +24,7 @@ ASimpliCityRoadManager::ASimpliCityRoadManager()
 void ASimpliCityRoadManager::BeginPlay()
 {
 	Super::BeginPlay();
+	VehicleMarkerGraph = GetWorld()->SpawnActor<AMarkerManager>(AMarkerManager::StaticClass());
 }
 
 // Called every frame

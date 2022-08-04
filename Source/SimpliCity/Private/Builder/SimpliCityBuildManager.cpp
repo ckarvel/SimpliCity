@@ -56,7 +56,7 @@ void ASimpliCityBuildManager::TrackBuildPath(FVector currentLocation) {
   for (auto roadLoc : removeRoadsArr) {
     if (DoesObjectExistHere(roadLoc) && !TemporaryBuildLocations.Contains(roadLoc)) {
       removeRoads.Remove(roadLoc);
-      TRACE_SCREENMSG_PRINTF("Don't remove: Permanent object exists here!");
+      //TRACE_SCREENMSG_PRINTF("Don't remove: Permanent object exists here!");
     }
   }
   OnBuildRemoval.Broadcast(removeRoads.Array());
@@ -67,7 +67,7 @@ void ASimpliCityBuildManager::TrackBuildPath(FVector currentLocation) {
   for (auto roadLoc : createRoadsArr) {
     if (DoesObjectExistHere(roadLoc) && !TemporaryBuildLocations.Contains(roadLoc)) {
       createRoads.Remove(roadLoc);
-      TRACE_SCREENMSG_PRINTF("Don't create: Permanent object exists here!");
+      //TRACE_SCREENMSG_PRINTF("Don't create: Permanent object exists here!");
     }
   }
   OnBuildCreation.Broadcast(createRoads.Array());
@@ -84,11 +84,11 @@ void ASimpliCityBuildManager::FinishTrackingBuildPath() {
 
 void ASimpliCityBuildManager::AddTemporaryToPermanentList() {
   // todo: remove debug stuff
-  for (auto object : TemporaryBuildObjects) {
-    if (object) {
-      object->SetNewMaterial();
-    }
-  }
+  //for (auto object : TemporaryBuildObjects) {
+  //  if (object) {
+  //    object->SetNewMaterial();
+  //  }
+  //}
   TemporaryBuildObjects.Empty();
   TemporaryBuildLocations.Empty();
 }

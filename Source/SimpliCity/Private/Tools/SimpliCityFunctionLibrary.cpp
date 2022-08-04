@@ -5,6 +5,7 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "GridManager.h"
+#include "MarkerManager.h"
 
 #include "SimpliCityGameInstance.h"
 #include "Builder/SimpliCityBuildManager.h"
@@ -22,6 +23,10 @@ ASimpliCityPlayerController* USimpliCityFunctionLibrary::GetPlayerController(con
 
 ASimpliCityBuildManager* USimpliCityFunctionLibrary::GetBuildManager(const UObject* WorldContextObject) {
   return Cast<ASimpliCityBuildManager>(UGameplayStatics::GetActorOfClass(WorldContextObject,ASimpliCityBuildManager::StaticClass()));
+}
+
+AMarkerManager* USimpliCityFunctionLibrary::GetMarkerManager(const UObject* WorldContextObject) {
+  return Cast<AMarkerManager>(UGameplayStatics::GetActorOfClass(WorldContextObject,AMarkerManager::StaticClass()));
 }
 
 bool USimpliCityFunctionLibrary::AreLocationsEqual(FVector LocationA, FVector LocationB) {

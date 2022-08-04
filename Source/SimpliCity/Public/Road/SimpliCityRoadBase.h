@@ -31,4 +31,10 @@ protected:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = Road)
 	class UMaterialInstance* RoadMaterial;
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = Road)
+	TArray<class UMarkerComponent*> PedestrianMarkers;
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = Road)
+	TArray<class UMarkerComponent*> VehicleMarkers;
 };
