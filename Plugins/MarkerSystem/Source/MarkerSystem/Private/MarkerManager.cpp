@@ -44,7 +44,7 @@ UMarkerComponent* AMarkerManager::GetClosestMarkerTo(FVector Location, TArray<UM
 }
 
 void AMarkerManager::AddMarker(UMarkerComponent* Marker) {
-  MarkerAdjList.Add(Marker, TArray<UMarkerComponent*>());
+  MarkerAdjList.Add(Marker, Marker->GetAdjacentMarkers());
   LocToMarkerMapping.Add(Marker->GetComponentLocation(), Marker);
 }
 

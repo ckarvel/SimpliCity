@@ -29,8 +29,14 @@ public:
 
 	UFUNCTION(BlueprintPure,Category="SimpliLib",meta=(WorldContext="WorldContextObject",UnsafeDuringActorConstruction="true"))
 	static class AMarkerManager* GetMarkerManager(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintPure,Category="SimpliLib",meta=(WorldContext="WorldContextObject",UnsafeDuringActorConstruction="true"))
+	static class ASimpliCityRoadManager* GetRoadManager(const UObject* WorldContextObject);
 	
 	// tools
 	UFUNCTION(BlueprintPure,Category="SimpliLib")
 	static bool AreLocationsEqual(FVector LocationA, FVector LocationB);
+
+	UFUNCTION(BlueprintCallable,Category="SimpliLib")
+	static float GenerateCurveBetweenPoints(const TArray<FVector> Points,int32 NumPoints,TArray<FVector>& OutPoints);
 };
