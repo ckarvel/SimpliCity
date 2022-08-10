@@ -35,7 +35,7 @@ public:
 	
 	// tools
 	UFUNCTION(BlueprintPure,Category="SimpliLib")
-	static bool AreLocationsEqual(FVector LocationA, FVector LocationB);
+	static bool AreLocationsEqual(FVector LocationA, FVector LocationB, float Tolerance=25);
 
 	UFUNCTION(BlueprintCallable,Category="SimpliLib")
 	static float GenerateCurveBetweenPoints(const TArray<FVector> Points,int32 NumPoints,TArray<FVector>& OutPoints);

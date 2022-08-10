@@ -35,10 +35,10 @@ ASimpliCityRoadManager* USimpliCityFunctionLibrary::GetRoadManager(const UObject
   return Cast<ASimpliCityRoadManager>(UGameplayStatics::GetActorOfClass(WorldContextObject,ASimpliCityRoadManager::StaticClass()));
 }
 
-bool USimpliCityFunctionLibrary::AreLocationsEqual(FVector LocationA, FVector LocationB) {
+bool USimpliCityFunctionLibrary::AreLocationsEqual(FVector LocationA, FVector LocationB, float Tolerance) {
   FVector ZAdjustedA = FVector(LocationA.X,LocationA.Y,0.0);
   FVector ZAdjustedB = FVector(LocationB.X,LocationB.Y,0.0);
-  return ZAdjustedA.Equals(ZAdjustedB, 2);
+  return ZAdjustedA.Equals(ZAdjustedB,Tolerance);
 }
 
 float USimpliCityFunctionLibrary::GenerateCurveBetweenPoints(const TArray<FVector> Points, int32 NumPoints, TArray<FVector>& OutPoints) {
