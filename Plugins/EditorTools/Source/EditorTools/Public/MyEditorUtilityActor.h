@@ -61,6 +61,17 @@ public:
 			float LifeTime = 0.0f
 		);
 
+	UFUNCTION(BlueprintCallable)
+	void DrawArrow(
+		const FVector& Start,
+		const FVector& End,
+		float ArrowSize,
+		FColor const& Color,
+		float LifeTime,
+		uint8 DepthPriority,
+		float Thickness
+	);
+
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = Components,meta = (AllowPrivateAccess = "true"))
 		class ULineBatchComponent* LineBatchComponent;
 };

@@ -80,6 +80,7 @@ void ASimpliCityBuildManager::FinishTrackingBuildPath() {
   startLocation = FVector();
   isTrackingActive = false;
   AddTemporaryToPermanentList();
+  OnBuildFinish.Broadcast();
 }
 
 void ASimpliCityBuildManager::AddTemporaryToPermanentList() {
@@ -117,6 +118,12 @@ void ASimpliCityBuildManager::NotifyDespawnedObjectAtLocation(FVector location) 
   ObjectGridComponent->NotifyDespawnedObjectAtLocation(location);
 }
 
+void ASimpliCityBuildManager::NotifyReplaceObject(ASimpliCityBuildObjectBase* OldObj,ASimpliCityBuildObjectBase* NewObj) {
+  ObjectGridComponent->NotifySpawnedObject(NewObj);
+  TemporaryBuildObjects.Add(NewObj);
+  TemporaryBuildObjects.Remove(OldObj);
+}
+
 ASimpliCityBuildObjectBase* ASimpliCityBuildManager::GetObjectAtLocation(FVector location) {
   return ObjectGridComponent->GetObjectAtLocation(location);
 }
@@ -127,10 +134,4 @@ TArray<ASimpliCityBuildObjectBase*> ASimpliCityBuildManager::GetNeighborsOfType(
 
 TArray<ASimpliCityBuildObjectBase*> ASimpliCityBuildManager::GetAllNeighbors_Unsafe(FVector location) {
   return ObjectGridComponent->GetAllNeighbors_Unsafe(location);
-}
-
-void ASimpliCityBuildManager::NotifyReplaceObject(ASimpliCityBuildObjectBase* OldObj, ASimpliCityBuildObjectBase* NewObj) {
-  ObjectGridComponent->NotifySpawnedObject(NewObj);
-  TemporaryBuildObjects.Add(NewObj);
-  TemporaryBuildObjects.Remove(OldObj);
 }

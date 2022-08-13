@@ -24,7 +24,6 @@ ASimpliCityRoadManager::ASimpliCityRoadManager()
 void ASimpliCityRoadManager::BeginPlay()
 {
 	Super::BeginPlay();
-	VehicleMarkerGraph = GetWorld()->SpawnActor<AMarkerManager>(AMarkerManager::StaticClass());
 }
 
 // Called every frame

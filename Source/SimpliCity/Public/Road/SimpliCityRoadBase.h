@@ -22,6 +22,12 @@ public:
 	UFUNCTION(BlueprintCallable,Category="Road Base")
 	void SetNewMaterial() override;
 
+	UFUNCTION(BlueprintCallable,Category="Road Base")
+	FVector GetVehMarkerNormDirectionVector(class UMarkerComponent* VMarker);
+
+	UFUNCTION(BlueprintCallable,Category="Road Base")
+	TArray<UMarkerComponent*> GetClosestMarkerPair(ASimpliCityRoadBase* NeighborRoad, bool IsPedestrian);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

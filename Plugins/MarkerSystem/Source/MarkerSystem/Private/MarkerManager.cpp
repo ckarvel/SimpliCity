@@ -2,7 +2,6 @@
 
 #include "MarkerManager.h"
 #include "MarkerComponent.h"
-#include "..\Public\MarkerManager.h"
 
 AMarkerManager::AMarkerManager() {
   PrimaryActorTick.bCanEverTick = false;
@@ -15,7 +14,7 @@ void AMarkerManager::BeginPlay() {
 TArray<FVector> AMarkerManager::GetNeighbors(FVector Location) const {
   UMarkerComponent* const * marker = LocToMarkerMapping.Find(Location);
   check(marker!= nullptr);
-  const TArray<UMarkerComponent*>* connections = MarkerAdjList.Find(*marker);
+  const TArray<UMarkerComponent*>* connections = MarkerConnList.Find(*marker);
   check(connections != nullptr);
   TArray<FVector> Locations;
   for (auto connection : *connections) {
@@ -44,12 +43,12 @@ UMarkerComponent* AMarkerManager::GetClosestMarkerTo(FVector Location, TArray<UM
 }
 
 void AMarkerManager::AddMarker(UMarkerComponent* Marker) {
-  MarkerAdjList.Add(Marker, Marker->GetAdjacentMarkers());
+  MarkerConnList.Add(Marker, Marker->GetAdjacentMarkers());
   LocToMarkerMapping.Add(Marker->GetComponentLocation(), Marker);
 }
 
 void AMarkerManager::RemoveMarker(UMarkerComponent* Marker) {
-  MarkerAdjList.Remove(Marker);
+  MarkerConnList.Remove(Marker);
   LocToMarkerMapping.Remove(Marker->GetComponentLocation());
 }
 
@@ -71,13 +70,13 @@ void AMarkerManager::AddEdge(UMarkerComponent* Src,UMarkerComponent* Dest, bool 
   check(Src != Dest);
 
   // Find returns a pointer to the value
-  TArray<UMarkerComponent*>* pSrc_Connections = MarkerAdjList.Find(Src);
+  TArray<UMarkerComponent*>* pSrc_Connections = MarkerConnList.Find(Src);
   // if pointer is null key doesn't exist, so add
   if (pSrc_Connections == nullptr)
     AddMarker(Src);
-  MarkerAdjList[Src].Add(Dest);
+  MarkerConnList[Src].Add(Dest);
   if (IsBidirectional) {
-    TArray<UMarkerComponent*> Dest_Connections = MarkerAdjList.FindOrAdd(Dest);
+    TArray<UMarkerComponent*> Dest_Connections = MarkerConnList.FindOrAdd(Dest);
     Dest_Connections.Add(Src);
   }
 }
@@ -86,10 +85,22 @@ void AMarkerManager::RemoveEdge(UMarkerComponent* Src, UMarkerComponent* Dest, b
   check(Src != nullptr);
   check(Dest != nullptr);
   check(Src != Dest);
-  TArray<UMarkerComponent*> Src_Connections = MarkerAdjList.FindOrAdd(Src);
+  TArray<UMarkerComponent*> Src_Connections = MarkerConnList.FindOrAdd(Src);
   Src_Connections.Remove(Dest);
   if (IsBidirectional) {
-    TArray<UMarkerComponent*> Dest_Connections = MarkerAdjList.FindOrAdd(Dest);
+    TArray<UMarkerComponent*> Dest_Connections = MarkerConnList.FindOrAdd(Dest);
     Dest_Connections.Remove(Src);
+  }
+}
+
+void AMarkerManager::ClearGraph() {
+  MarkerConnList.Empty();
+  LocToMarkerMapping.Empty();
+}
+
+void AMarkerManager::GetConnectionsFrom(UMarkerComponent* InMarker,TArray<UMarkerComponent*>& OutConnections) {
+  TArray<UMarkerComponent*>* pSrc_Connections = MarkerConnList.Find(InMarker);
+  if (pSrc_Connections != nullptr) {
+    OutConnections = *pSrc_Connections;
   }
 }

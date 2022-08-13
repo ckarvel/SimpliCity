@@ -39,6 +39,6 @@ public:
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	class USimpliCityRoadFixerComponent* RoadFixerComponent;
 
-	class AMarkerManager* PedestrianMarkerGraph;
-	class AMarkerManager* VehicleMarkerGraph;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	class AMarkerManager* AgentMarkerGraph;
 };

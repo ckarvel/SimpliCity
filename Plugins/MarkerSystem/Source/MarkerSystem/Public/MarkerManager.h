@@ -20,7 +20,7 @@ protected:
 
   // this is the marker graph used in pathing
   // can't be used in blueprint because nested container not supported
-  TMap<class UMarkerComponent*,TArray<UMarkerComponent*>> MarkerAdjList;
+  TMap<class UMarkerComponent*,TArray<UMarkerComponent*>> MarkerConnList;
 
   // for easy finding of markers
   UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = "Marker")
@@ -55,4 +55,11 @@ public:
 
   UFUNCTION(BlueprintCallable,Category = "Marker")
   void RemoveEdge(UMarkerComponent* MarkerA,UMarkerComponent* MarkerB, bool IsBidirectional = true);
+
+  UFUNCTION(BlueprintCallable,Category = "Marker")
+  void GetConnectionsFrom(UMarkerComponent* InMarker,TArray<UMarkerComponent*>& OutConnections);
+
+protected:
+  UFUNCTION(BlueprintCallable,Category = "Marker")
+  void ClearGraph();
 };

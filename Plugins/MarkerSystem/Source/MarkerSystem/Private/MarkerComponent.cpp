@@ -3,7 +3,8 @@
 #include "MarkerComponent.h"
 
 UMarkerComponent::UMarkerComponent()
-  : openForConnections(true)
+  : openForConnections(true),
+    laneDirection(0)
 {
   PrimaryComponentTick.bCanEverTick = false;
 }
@@ -23,4 +24,11 @@ TArray<FVector> UMarkerComponent::GetAdjacentMarkerLocations() {
   for (auto& Marker : AdjacentMarkers)
     Markers.Add(Marker->GetComponentLocation());
   return Markers;
+}
+
+bool UMarkerComponent::IsSourceMarker() {
+  if (AdjacentMarkers.Num() > 0) {
+    return false;
+  }
+  return true;
 }

@@ -9,6 +9,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnBuildCreation,const TArray<FVector>&,AddedLocations);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnBuildRemoval,const TArray<FVector>&,RemovedLocations);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnBuildFinish);
 
 UCLASS()
 class SIMPLICITY_API ASimpliCityBuildManager : public AActor
@@ -28,6 +29,8 @@ public:
 	FOnBuildCreation OnBuildCreation;
 	UPROPERTY(BlueprintAssignable)
 	FOnBuildRemoval OnBuildRemoval;
+	UPROPERTY(BlueprintAssignable)
+	FOnBuildFinish OnBuildFinish;
 
 	UFUNCTION(BlueprintCallable,Category="Build Mode")
 	bool DoesObjectExistHere(FVector Location);

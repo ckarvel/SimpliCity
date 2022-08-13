@@ -27,8 +27,17 @@ public:
   UFUNCTION(BlueprintCallable,Category = "Marker")
   TArray<UMarkerComponent*> GetAdjacentMarkers() { return AdjacentMarkers; }
 
+  UFUNCTION(BlueprintCallable,Category = "Marker")
+  bool IsSourceMarker();
+
   UPROPERTY(EditAnywhere,BlueprintReadWrite)
   bool openForConnections;
+
+  // 1 is Right lane
+  // 0 can be right or left (turns/sidewalks)
+  // -1 is Left lane
+  UPROPERTY(EditAnywhere,BlueprintReadWrite)
+  int laneDirection;
 
   UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
   TArray<UMarkerComponent*> AdjacentMarkers;
