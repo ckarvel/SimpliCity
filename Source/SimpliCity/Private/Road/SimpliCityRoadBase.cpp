@@ -34,6 +34,7 @@ void ASimpliCityRoadBase::SetNewMaterial() {
 }
 
 // only for use with vehicle markers
+// won't work with deadend/straight
 FVector ASimpliCityRoadBase::GetVehMarkerNormDirectionVector(UMarkerComponent* VMarker) {
   check(VMarker != nullptr);
   FVector SrcLocation;

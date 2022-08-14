@@ -43,8 +43,11 @@ UMarkerComponent* AMarkerManager::GetClosestMarkerTo(FVector Location, TArray<UM
 }
 
 void AMarkerManager::AddMarker(UMarkerComponent* Marker) {
+  if (MarkerConnList.Contains(Marker) == true) 
+    return; // already exists
+
   MarkerConnList.Add(Marker, Marker->GetAdjacentMarkers());
-  LocToMarkerMapping.Add(Marker->GetComponentLocation(), Marker);
+  LocToMarkerMapping.Add(Marker->GetComponentLocation(),Marker);
 }
 
 void AMarkerManager::RemoveMarker(UMarkerComponent* Marker) {
@@ -76,8 +79,11 @@ void AMarkerManager::AddEdge(UMarkerComponent* Src,UMarkerComponent* Dest, bool 
     AddMarker(Src);
   MarkerConnList[Src].Add(Dest);
   if (IsBidirectional) {
-    TArray<UMarkerComponent*> Dest_Connections = MarkerConnList.FindOrAdd(Dest);
-    Dest_Connections.Add(Src);
+    TArray<UMarkerComponent*>* Dest_Connections = MarkerConnList.Find(Dest);
+    // if pointer is null key doesn't exist, so add
+    if (Dest_Connections == nullptr)
+      AddMarker(Dest);
+    MarkerConnList[Dest].Add(Src);
   }
 }
 
