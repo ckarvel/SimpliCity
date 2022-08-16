@@ -90,6 +90,9 @@ void ASimpliCityPlayerController::HandleArrowEvent() {
     //if (axisx != 0.000000)
     //  SIMPLI_LOG(TEXT("Yaw: %.2f"),axisx);
   }
+  else if(WasInputKeyJustReleased(EKeys::MiddleMouseButton)) {
+    OnMouseUp.Broadcast();
+  }
 }
 
 void ASimpliCityPlayerController::SetupInputComponent() {
