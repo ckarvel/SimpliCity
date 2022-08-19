@@ -26,10 +26,13 @@ void ASimpliCityRoadManager::BeginPlay()
 	Super::BeginPlay();
 }
 
-// Called every frame
-void ASimpliCityRoadManager::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
+TArray<FVector> ASimpliCityRoadManager::GetNeighbors(FVector Location) const {
+	TArray<FVector> NeighborLocs;
+	TArray<ASimpliCityBuildObjectBase*> RoadTypeNeighbors = USimpliCityFunctionLibrary::GetBuildManager(this)->GetNeighborsOfType(Location,ESimpliCityBuildObjectEnum::BuildObject_Road);
+	for (auto Object : RoadTypeNeighbors) {
+		NeighborLocs.Add(Object->GetActorLocation());
+	}
+	return NeighborLocs;
 }
 
 void ASimpliCityRoadManager::SwapRoads(ASimpliCityBuildObjectBase* OldRoad,ASimpliCityBuildObjectBase* NewRoad) {

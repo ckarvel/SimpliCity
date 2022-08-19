@@ -48,7 +48,7 @@ void ASimpliCityBuildManager::TrackBuildPath(FVector currentLocation) {
 
   // calculate new path between start & given location
   AGridManager* gridMgr = USimpliCityFunctionLibrary::GetGridManager(this);
-  TSet<FVector> newPath = TSet<FVector>(MyAStarPathFinder::AStarSearch(gridMgr,startLocation,currentLocation));
+  TSet<FVector> newPath = TSet<FVector>(USimpliCityFunctionLibrary::GetPathBetween(gridMgr,startLocation,currentLocation));
 
   // broadcast non-permanent roads to remove
   TSet<FVector> removeRoads = oldPath.Difference(newPath);

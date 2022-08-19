@@ -17,6 +17,8 @@ public:
 	// Sets default values for this component's properties
 	USimpliCityBuildObjectGrid();
 	UFUNCTION(BlueprintCallable,Category="Object Grid")
+	void InitializeArray(int NumElements);
+	UFUNCTION(BlueprintCallable,Category="Object Grid")
 	bool DoesObjectExistHere(FVector location);
 	void NotifySpawnedObject(class ASimpliCityBuildObjectBase* SpawnedObject);
 	void NotifyDespawnedObject(class ASimpliCityBuildObjectBase* DespawnedObject);

@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "PathFinderInterface.h"
 #include "SimpliCityRoadManager.generated.h"
 
 UCLASS(Blueprintable)
-class SIMPLICITY_API ASimpliCityRoadManager : public AActor
+class SIMPLICITY_API ASimpliCityRoadManager : public AActor, public IPathFinderInterface
 {
 	GENERATED_BODY()
 	
@@ -22,9 +23,12 @@ protected:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	TArray<class ASimpliCityRoadBase*> RoadList;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+public:
+	UFUNCTION(BlueprintCallable,Category = "Road")
+	virtual TArray<FVector> GetNeighbors(FVector Location) const override;
+
+	UFUNCTION(BlueprintCallable,Category = "Road")
+	virtual float GetCost(FVector Location) const override { return 1.0; } // todo
 
 	void FixRoad(class ASimpliCityBuildObjectBase* Road);
 

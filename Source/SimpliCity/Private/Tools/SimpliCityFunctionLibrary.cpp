@@ -5,18 +5,22 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+
 #include "GridManager.h"
 #include "MarkerManager.h"
+#include "MyAStarPathFinder.h"
 
 #include "SimpliCityGameInstance.h"
-#include "Builder/SimpliCityBuildManager.h"
-#include "Road/SimpliCityRoadManager.h"
 #include "SimpliCityPlayerController.h"
 
+#include "Builder/SimpliCityBuildManager.h"
+#include "Road/SimpliCityRoadManager.h"
+
 AGridManager* USimpliCityFunctionLibrary::GetGridManager(const UObject* WorldContextObject) {
-  USimpliCityGameInstance* gameInst = Cast<USimpliCityGameInstance>(UGameplayStatics::GetGameInstance(WorldContextObject));
-  check(gameInst != nullptr)
-  return gameInst->GetGridManager();
+  //USimpliCityGameInstance* gameInst = Cast<USimpliCityGameInstance>(UGameplayStatics::GetGameInstance(WorldContextObject));
+  //check(gameInst != nullptr)
+  //return gameInst->GetGridManager();
+  return Cast<AGridManager>(UGameplayStatics::GetActorOfClass(WorldContextObject,AGridManager::StaticClass()));
 }
 
 ASimpliCityPlayerController* USimpliCityFunctionLibrary::GetPlayerController(const UObject* WorldContextObject) {
@@ -41,9 +45,8 @@ bool USimpliCityFunctionLibrary::AreLocationsEqual(FVector LocationA, FVector Lo
   return ZAdjustedA.Equals(ZAdjustedB,Tolerance);
 }
 
-float USimpliCityFunctionLibrary::GenerateCurveBetweenPoints(const TArray<FVector> Points, int32 NumPoints, TArray<FVector>& OutPoints) {
-  NumPoints = FMath::Max(NumPoints, 2); // has to be above >=2
-  return FVector::EvaluateBezier(Points.GetData(),NumPoints,OutPoints);
+TArray<FVector> USimpliCityFunctionLibrary::GetPathBetween(UObject* Graph,FVector Start,FVector End) {
+  check(Graph != nullptr);
+  TArray<FVector> newPath = MyAStarPathFinder::AStarSearch(Graph,Start,End);
+  return newPath;
 }
-//static T EvaluateBezier(const TVector<T>* ControlPoints,int32 NumPoints,TArray<TVector<T>>& OutPoints);
-//static TArray<FVector> EvaluateBezier(const FVector* ControlPoints,int32 NumPoints,TArray<FVector>& OutPoints);

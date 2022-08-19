@@ -17,7 +17,11 @@ void USimpliCityBuildObjectGrid::BeginPlay()
 {
 	Super::BeginPlay();
 	AGridManager* gridMgr = USimpliCityFunctionLibrary::GetGridManager(this);
-	BuildObjectRefGrid.Init(nullptr,gridMgr->GetNumRows() * gridMgr->GetNumCols());
+	InitializeArray(gridMgr->GetNumRows() * gridMgr->GetNumCols());
+}
+
+void USimpliCityBuildObjectGrid::InitializeArray(int NumElements) {
+	BuildObjectRefGrid.Init(nullptr,NumElements);
 }
 
 TArray<ASimpliCityBuildObjectBase*> USimpliCityBuildObjectGrid::GetNeighborsOfType(FVector location,TEnumAsByte<ESimpliCityBuildObjectEnum> buildType) {

@@ -36,7 +36,7 @@ public:
 	}
 
 	// assumes start/end are valid!
-	static TArray<FVector> AStarSearch(UObject* Graph, FVector& Start, FVector& End) {
+	static TArray<FVector> AStarSearch(UObject* Graph, FVector Start, FVector End) {
 		check(Graph->Implements<UPathFinderInterface>() == true);
 		TPriorityQueue<FVector> Nodes;
 		TArray<TPriorityQueueNode<FVector>> Neighbors;

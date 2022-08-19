@@ -91,6 +91,10 @@ void ASimpliCityPlayerController::HandleArrowEvent() {
     //  SIMPLI_LOG(TEXT("Yaw: %.2f"),axisx);
   }
   else if(WasInputKeyJustReleased(EKeys::MiddleMouseButton)) {
+    if (BuildModeEnabled) {
+      BuildModeEnabled = false;
+      OnBuildMode.Broadcast(BuildModeEnabled);
+    }
     OnMouseUp.Broadcast();
   }
 }
