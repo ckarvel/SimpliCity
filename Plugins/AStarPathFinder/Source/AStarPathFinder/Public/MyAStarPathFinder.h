@@ -58,6 +58,7 @@ public:
 
 			IPathFinderInterface* PathFinder = Cast<IPathFinderInterface>(Graph);
 			TArray<FVector> NeighborList = PathFinder->GetNeighbors(Current);
+			check(NeighborList.IsEmpty() == false);
 			for (FVector Next : NeighborList) {
 				double new_cost = Cost.FindRef(Current) + PathFinder->GetCost(Next);
 				if (Cost.Contains(Next) == false || new_cost < Cost.FindRef(Next)) {
