@@ -16,9 +16,9 @@ class SIMPLICITY_API USimpliCityBuildObjectGrid : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	USimpliCityBuildObjectGrid();
-	UFUNCTION(BlueprintCallable,Category="Object Grid")
+	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildObjectGrid")
 	void InitializeArray(int NumElements);
-	UFUNCTION(BlueprintCallable,Category="Object Grid")
+	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildObjectGrid")
 	bool DoesObjectExistHere(FVector location);
 	void NotifySpawnedObject(class ASimpliCityBuildObjectBase* SpawnedObject);
 	void NotifyDespawnedObject(class ASimpliCityBuildObjectBase* DespawnedObject);
@@ -31,6 +31,6 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
-	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = BuildObjectGrid)
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = "SimpliCityBuildObjectGrid")
 	TArray<class ASimpliCityBuildObjectBase*> BuildObjectRefGrid;
 };

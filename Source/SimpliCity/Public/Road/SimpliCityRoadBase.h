@@ -16,16 +16,16 @@ public:
 	// Sets default values for this actor's properties
 	ASimpliCityRoadBase();
 
-	UFUNCTION(BlueprintCallable,Category="Road Base")
+	UFUNCTION(BlueprintCallable,Category="SimpliCityRoadBase")
 	FORCEINLINE class UStaticMeshComponent* GetStaticMeshComponent() const { return StaticMeshComponent; }
 
-	UFUNCTION(BlueprintCallable,Category="Road Base")
+	UFUNCTION(BlueprintCallable,Category="SimpliCityRoadBase")
 	void SetNewMaterial() override;
 
-	UFUNCTION(BlueprintCallable,Category="Road Base")
+	UFUNCTION(BlueprintCallable,Category="SimpliCityRoadBase")
 	FVector GetVehMarkerNormDirectionVector(class UMarkerComponent* VMarker);
 
-	UFUNCTION(BlueprintCallable,Category="Road Base")
+	UFUNCTION(BlueprintCallable,Category="SimpliCityRoadBase")
 	TArray<UMarkerComponent*> GetClosestMarkerPair(ASimpliCityRoadBase* NeighborRoad, bool IsPedestrian);
 
 protected:

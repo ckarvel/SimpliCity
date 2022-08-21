@@ -32,37 +32,37 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnBuildFinish OnBuildFinish;
 
-	UFUNCTION(BlueprintCallable,Category="Build Mode")
+	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
 	bool DoesObjectExistHere(FVector Location);
 
-	UFUNCTION(BlueprintCallable,Category="Build Mode")
+	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
 	void NotifySpawnedObject(class ASimpliCityBuildObjectBase* SpawnedObject);
 
-	UFUNCTION(BlueprintCallable,Category="Build Mode")
+	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
 	void NotifyDespawnedObject(ASimpliCityBuildObjectBase* DespawnedObject);
-	UFUNCTION(BlueprintCallable,Category="Build Mode")
+	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
 	void NotifyDespawnedObjectAtLocation(FVector location);
 	void NotifyReplaceObject(ASimpliCityBuildObjectBase* OldObj,ASimpliCityBuildObjectBase* NewObj);
 
-	UFUNCTION(BlueprintCallable,Category="Build Mode")
+	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
 	class ASimpliCityBuildObjectBase* GetObjectAtLocation(FVector location);
-	UFUNCTION(BlueprintCallable,Category="Build Mode")
+	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
 	TArray<ASimpliCityBuildObjectBase*> GetNeighborsOfType(FVector location,TEnumAsByte<ESimpliCityBuildObjectEnum> buildType);
 	TArray<ASimpliCityBuildObjectBase*> GetAllNeighbors_Unsafe(FVector location);
 
 protected:
-	UFUNCTION(BlueprintCallable,Category="Build Mode")
+	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
 	void StartTrackingBuildPath(FVector location);
-	UFUNCTION(BlueprintCallable,Category="Build Mode")
+	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
 	void TrackBuildPath(FVector location);
-	UFUNCTION(BlueprintCallable,Category="Build Mode")
+	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
 	void FinishTrackingBuildPath();
 	void AddTemporaryToPermanentList();
 
 	bool isTrackingActive;
 	FVector startLocation;
 	FVector lastLocation; // keep track of last tile origin
-	UPROPERTY(BlueprintReadOnly,Category="Build Mode")
+	UPROPERTY(BlueprintReadOnly,Category="SimpliCityBuildManager")
 	TSet<FVector> oldPath;
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	TArray<class ASimpliCityBuildObjectBase*> TemporaryBuildObjects;

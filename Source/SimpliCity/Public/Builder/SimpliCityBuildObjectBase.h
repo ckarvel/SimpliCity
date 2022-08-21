@@ -15,7 +15,7 @@ class SIMPLICITY_API ASimpliCityBuildObjectBase : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ASimpliCityBuildObjectBase();
-	UFUNCTION(BlueprintPure,Category="Object Base")
+	UFUNCTION(BlueprintPure,Category="SimpliCityBuildObjectBase")
 	FORCEINLINE TEnumAsByte<ESimpliCityBuildObjectEnum> Type() const { return BuildType; }
 
 protected:
@@ -27,6 +27,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetNewMaterial();
 protected:
-	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "Object Base")
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "SimpliCityBuildObjectBase")
 	TEnumAsByte<ESimpliCityBuildObjectEnum> BuildType;
 };

@@ -24,10 +24,10 @@ public:
 	UFUNCTION()
 	void RotateByUnits(FRotator rotator);
 
-	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = Camera,meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "SimpliCityCharacter")
 	class UCameraComponent* PlayerCameraComponent;
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-		float moveSpeed;
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-		float rotationSpeed;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "SimpliCityCharacter")
+	float moveSpeed;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "SimpliCityCharacter")
+	float rotationSpeed;
 };

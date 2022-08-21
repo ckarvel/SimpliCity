@@ -2,17 +2,11 @@
 
 #include "GridManager.h"
 #include "GridSystem.h"
-#include "GridCell.h"
 
 #include "ProceduralMeshComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Kismet/KismetMaterialLibrary.h"
 
-//#include "MyAStarPathFinder.h"
-//#include "PriorityQueueImpl.h"
-//#include "UtilityLibrary.h"
-
-// Sets default values
 AGridManager::AGridManager()
   : NumRows(10)
   ,NumCols(10)
@@ -20,8 +14,7 @@ AGridManager::AGridManager()
   ,LineThickness(10.0)
   ,LineOpacity(1.0)
   ,SelectionOpacity(0.5) {
-  // Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-  PrimaryActorTick.bCanEverTick = true;
+  PrimaryActorTick.bCanEverTick = false;
   LineMeshComponent = CreateDefaultSubobject<UProceduralMeshComponent>("LineMesh");
   SetRootComponent(LineMeshComponent);
   SelectionMeshComponent = CreateDefaultSubobject<UProceduralMeshComponent>("SelectionMesh");
@@ -29,7 +22,6 @@ AGridManager::AGridManager()
 
 void AGridManager::BeginPlay() {
   Super::BeginPlay();
-  GridCellActors.Init(nullptr,NumRows*NumCols);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////

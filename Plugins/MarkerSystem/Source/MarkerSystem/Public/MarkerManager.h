@@ -23,43 +23,43 @@ protected:
   TMap<class UMarkerComponent*,TArray<UMarkerComponent*>> MarkerConnList;
 
   // for easy finding of markers
-  UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = "Marker")
+  UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = "MarkerManager")
   TMap<FVector,UMarkerComponent*> LocToMarkerMapping;
  
 public:
-  UFUNCTION(BlueprintCallable,Category = "Marker")
+  UFUNCTION(BlueprintCallable,Category = "MarkerManager")
   virtual TArray<FVector> GetNeighbors(FVector Location) const override;
 
-  UFUNCTION(BlueprintCallable,Category = "Marker")
+  UFUNCTION(BlueprintCallable,Category = "MarkerManager")
   virtual float GetCost(FVector Location) const override { return 1.0; } // todo
 
-  UFUNCTION(BlueprintCallable,Category = "Marker")
+  UFUNCTION(BlueprintCallable,Category = "MarkerManager")
   UMarkerComponent* GetClosestMarkerTo(FVector Location, TArray<UMarkerComponent*> Markers);
 
-  UFUNCTION(BlueprintCallable,Category = "Marker")
+  UFUNCTION(BlueprintCallable,Category = "MarkerManager")
   void AddMarker(UMarkerComponent* Marker);
 
-  UFUNCTION(BlueprintCallable,Category = "Marker")
+  UFUNCTION(BlueprintCallable,Category = "MarkerManager")
   void RemoveMarker(UMarkerComponent* Marker);
 
-  UFUNCTION(BlueprintCallable,Category = "Marker")
+  UFUNCTION(BlueprintCallable,Category = "MarkerManager")
   void AddMarkers(TArray<UMarkerComponent*> Markers);
 
-  UFUNCTION(BlueprintCallable,Category = "Marker")
+  UFUNCTION(BlueprintCallable,Category = "MarkerManager")
   void RemoveMarkers(TArray<UMarkerComponent*> Markers);
 
   // source to destination
   // a to b
-  UFUNCTION(BlueprintCallable,Category = "Marker")
+  UFUNCTION(BlueprintCallable,Category = "MarkerManager")
   void AddEdge(UMarkerComponent* Src, UMarkerComponent* Dest, bool IsBidirectional = true);
 
-  UFUNCTION(BlueprintCallable,Category = "Marker")
+  UFUNCTION(BlueprintCallable,Category = "MarkerManager")
   void RemoveEdge(UMarkerComponent* MarkerA,UMarkerComponent* MarkerB, bool IsBidirectional = true);
 
-  UFUNCTION(BlueprintCallable,Category = "Marker")
+  UFUNCTION(BlueprintCallable,Category = "MarkerManager")
   void GetConnectionsFrom(UMarkerComponent* InMarker,TArray<UMarkerComponent*>& OutConnections);
 
 protected:
-  UFUNCTION(BlueprintCallable,Category = "Marker")
+  UFUNCTION(BlueprintCallable,Category = "MarkerManager")
   void ClearGraph();
 };

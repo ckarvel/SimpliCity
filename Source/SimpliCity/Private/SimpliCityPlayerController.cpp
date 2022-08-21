@@ -99,6 +99,11 @@ void ASimpliCityPlayerController::HandleArrowEvent() {
   }
 }
 
+void ASimpliCityPlayerController::EnableZoneMode() {
+  ZoneModeEnabled = !ZoneModeEnabled;
+  OnZoneMode.Broadcast(ZoneModeEnabled);
+}
+
 void ASimpliCityPlayerController::SetupInputComponent() {
   // set up gameplay key bindings
   Super::SetupInputComponent();
@@ -112,7 +117,7 @@ void ASimpliCityPlayerController::SetupInputComponent() {
   BuildModePressed.ActionDelegate.GetDelegateForManualSet().BindLambda([this]() {
     BuildModeEnabled = !BuildModeEnabled;
     OnBuildMode.Broadcast(BuildModeEnabled);
-    TRACE_SCREENMSG_PRINTF("Build Mode Pressed");
+    /*TRACE_SCREENMSG_PRINTF("Build Mode Pressed");*/
     });
   InputComponent->AddActionBinding(BuildModePressed);
 }

@@ -12,7 +12,7 @@ ASimpliCityRoadBase::ASimpliCityRoadBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RoadMesh"));
-	StaticMeshComponent->SetupAttachment(RootComponent);
+  SetRootComponent(StaticMeshComponent);
 	// TEnumAsByte<ESimpliCityBuildObjectEnum> BuildType;
 	// BuildObject_None UMETA(DisplayName = "None"),
 	// BuildObject_Road UMETA(DisplayName = "Road")

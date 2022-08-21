@@ -21,19 +21,19 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	UPROPERTY(EditAnywhere,NoClear,BlueprintReadOnly,Category = "Road Fixer")
+	UPROPERTY(EditAnywhere,NoClear,BlueprintReadOnly,Category = "SimpliCityRoadFixer")
 	TSubclassOf<class ASimpliCityRoadBase> Road4WayClass;
-	UPROPERTY(EditAnywhere,NoClear,BlueprintReadOnly,Category = "Road Fixer")
+	UPROPERTY(EditAnywhere,NoClear,BlueprintReadOnly,Category = "SimpliCityRoadFixer")
 	TSubclassOf<ASimpliCityRoadBase> Road3WayClass;
-	UPROPERTY(EditAnywhere,NoClear,BlueprintReadOnly,Category = "Road Fixer")
+	UPROPERTY(EditAnywhere,NoClear,BlueprintReadOnly,Category = "SimpliCityRoadFixer")
 	TSubclassOf<ASimpliCityRoadBase> RoadStraightClass;
-	UPROPERTY(EditAnywhere,NoClear,BlueprintReadOnly,Category = "Road Fixer")
+	UPROPERTY(EditAnywhere,NoClear,BlueprintReadOnly,Category = "SimpliCityRoadFixer")
 	TSubclassOf<ASimpliCityRoadBase> RoadCornerClass;
-	UPROPERTY(EditAnywhere,NoClear,BlueprintReadOnly,Category = "Road Fixer")
+	UPROPERTY(EditAnywhere,NoClear,BlueprintReadOnly,Category = "SimpliCityRoadFixer")
 	TSubclassOf<ASimpliCityRoadBase> RoadDeadEndClass;
-	UFUNCTION(BlueprintCallable,Category = "Road Fixer")
+	UFUNCTION(BlueprintCallable,Category = "SimpliCityRoadFixer")
 	bool IsRoad(class ASimpliCityBuildObjectBase* obj);
-	UFUNCTION(BlueprintCallable,Category = "Road Fixer")
+	UFUNCTION(BlueprintCallable,Category = "SimpliCityRoadFixer")
 	void GetRoadTypeAndRotationAtLocation(FVector location, TSubclassOf<class ASimpliCityRoadBase>& OutRoadClass, FRotator& OutRotation);
 
 private:

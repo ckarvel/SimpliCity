@@ -18,30 +18,30 @@ protected:
   virtual void BeginPlay() override;
 
 public:
-  UFUNCTION(BlueprintCallable,Category = "Marker")
+  UFUNCTION(BlueprintCallable,Category = "MarkerComponent")
   void AddAdjacentMarker(UMarkerComponent* Marker);
 
-  UFUNCTION(BlueprintCallable,Category = "Marker")
+  UFUNCTION(BlueprintCallable,Category = "MarkerComponent")
   TArray<FVector> GetAdjacentMarkerLocations();
 
-  UFUNCTION(BlueprintCallable,Category = "Marker")
+  UFUNCTION(BlueprintCallable,Category = "MarkerComponent")
   TArray<UMarkerComponent*> GetAdjacentMarkers() { return AdjacentMarkers; }
 
-  UFUNCTION(BlueprintCallable,Category = "Marker")
+  UFUNCTION(BlueprintCallable,Category = "MarkerComponent")
   bool IsSourceMarker();
 
-  UPROPERTY(EditAnywhere,BlueprintReadWrite)
+  UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "MarkerComponent")
   bool openForConnections;
 
   // 1 is Right lane
   // 0 can be right or left (turns/sidewalks)
   // -1 is Left lane
-  UPROPERTY(EditAnywhere,BlueprintReadWrite)
+  UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "MarkerComponent")
   int laneDirection;
 
-  UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+  UPROPERTY(VisibleAnywhere, BlueprintReadWrite,Category = "MarkerComponent")
   TArray<UMarkerComponent*> AdjacentMarkers;
 
-  UFUNCTION(BlueprintCallable,Category = "Marker")
+  UFUNCTION(BlueprintCallable,Category = "MarkerComponent")
   bool IsOpen() const { return openForConnections; }
 };

@@ -20,29 +20,28 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="SimpliCityRoadManager")
 	TArray<class ASimpliCityRoadBase*> RoadList;
 
 public:
-	UFUNCTION(BlueprintCallable,Category = "Road")
-	virtual TArray<FVector> GetNeighbors(FVector Location) const override;
-
-	UFUNCTION(BlueprintCallable,Category = "Road")
-	virtual float GetCost(FVector Location) const override { return 1.0; } // todo
-
 	void FixRoad(class ASimpliCityBuildObjectBase* Road);
-
-	UFUNCTION(BlueprintCallable,Category="Road")
-	void FixNeighborsOfRoad(ASimpliCityBuildObjectBase* Road);
-
 	void SwapRoads(ASimpliCityBuildObjectBase* OldRoad,ASimpliCityBuildObjectBase* NewRoad);
 
-	UFUNCTION(BlueprintCallable,Category="Road")
+	UFUNCTION(BlueprintCallable,Category = "SimpliCityRoadManager")
+	virtual TArray<FVector> GetNeighbors(FVector Location) const override;
+
+	UFUNCTION(BlueprintCallable,Category = "SimpliCityRoadManager")
+	virtual float GetCost(FVector Location) const override { return 1.0; } // todo
+
+	UFUNCTION(BlueprintCallable,Category="SimpliCityRoadManager")
+	void FixNeighborsOfRoad(ASimpliCityBuildObjectBase* Road);
+
+	UFUNCTION(BlueprintCallable,Category="SimpliCityRoadManager")
 	void FixRoadAndNeighbors(ASimpliCityBuildObjectBase* Road);
 
-	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="SimpliCityRoadManager")
 	class USimpliCityRoadFixerComponent* RoadFixerComponent;
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="SimpliCityRoadManager")
 	class AMarkerManager* AgentMarkerGraph;
 };

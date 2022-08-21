@@ -34,89 +34,86 @@ public:
 
   //////////////////////////////////////////////////////////////////////////////////////////////
 
-  UFUNCTION(BlueprintPure,Category = "Grid")
+  UFUNCTION(BlueprintPure,Category = "GridManager")
     void LocationToTile(FVector Location,int& OutRow,int& OutCol) const;
 
-  UFUNCTION(BlueprintPure,Category = "Grid")
+  UFUNCTION(BlueprintPure,Category = "GridManager")
     FVector LocationToCenter(FVector Location) const;
 
-  UFUNCTION(BlueprintPure,Category = "Grid")
+  UFUNCTION(BlueprintPure,Category = "GridManager")
     FVector TileToLocation(int Row,int Col,bool Center=true) const;
 
-  UFUNCTION(BlueprintPure,Category = "Grid")
+  UFUNCTION(BlueprintPure,Category = "GridManager")
     int32 LocationToIndex(FVector Location) const;
 
-  UFUNCTION(BlueprintPure,Category = "Grid")
+  UFUNCTION(BlueprintPure,Category = "GridManager")
     FVector IndexToLocation(int32 Index,bool Center=true) const;
 
-  UFUNCTION(BlueprintPure,Category = "Grid")
+  UFUNCTION(BlueprintPure,Category = "GridManager")
     void IndexToTile(int32 Index,int& OutRow,int& OutCol) const;
 
-  UFUNCTION(BlueprintPure,Category = "Grid")
+  UFUNCTION(BlueprintPure,Category = "GridManager")
     int32 TileToIndex(int Row,int Col) const;
 
   //////////////////////////////////////////////////////////////////////////////////////////////
 
-  UFUNCTION(BlueprintPure,Category = "Grid")
+  UFUNCTION(BlueprintPure,Category = "GridManager")
     bool IsIndexValid(int32 Index) const;
 
-  UFUNCTION(BlueprintPure,Category = "Grid")
+  UFUNCTION(BlueprintPure,Category = "GridManager")
     bool IsLocationValid(FVector Location) const;
 
-  UFUNCTION(BlueprintPure,Category = "Grid")
+  UFUNCTION(BlueprintPure,Category = "GridManager")
     bool IsTileValid(int Row,int Col) const;
 
   //////////////////////////////////////////////////////////////////////////////////////////////
 
-  UFUNCTION(BlueprintCallable,Category = "Grid")
+  UFUNCTION(BlueprintCallable,Category = "GridManager")
     void GetNeighborIndexes(int32 index,TArray<int32>& Indexes) const;
 
   // gets indexes in order: left, right, top, bottom. can return -1
   // idx of -1 means it doesn't exist (on boundary)
   void GetNeighborIndexes_Unsafe(int32 Index,TArray<int32>& Neighbors) const;
 
-  UFUNCTION(BlueprintCallable,Category = "Grid")
+  UFUNCTION(BlueprintCallable,Category = "GridManager")
   virtual TArray<FVector> GetNeighbors(FVector Location) const override;
 
-  UFUNCTION(BlueprintCallable,Category = "Grid")
+  UFUNCTION(BlueprintCallable,Category = "GridManager")
   virtual float GetCost(FVector Location) const override { return 1.0; } // todo
 
   //////////////////////////////////////////////////////////////////////////////////////////////
 
 protected:
-  UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = Grid)
-    TArray<class AGridCell*> GridCellActors;
-  UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = Grid)
-    int NumRows;
-  UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = Grid)
-    int NumCols;
-  UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = GridGeom)
-    float TileSize;
-  UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = GridGeom)
-    float LineThickness;
-  UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = GridGeom)
-    float LineOpacity;
-  UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = GridGeom)
-    float SelectionOpacity;
-  UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = GridGeom)
-    class UMaterialInstance* GridMaterial;
-  UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = GridGeom,meta = (AllowPrivateAccess = "true"))
-    class UProceduralMeshComponent* LineMeshComponent;
-  UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = GridGeom,meta = (AllowPrivateAccess = "true"))
-    class UProceduralMeshComponent* SelectionMeshComponent;
-  UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = GridGeom)
-    FLinearColor LineColor;
-  UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = GridGeom)
-    FLinearColor SelectionColor;
-  UFUNCTION(BlueprintCallable,CallInEditor,Category = GridGeom)
-    void ShowGridLines();
-  UFUNCTION(BlueprintCallable,CallInEditor,Category = GridGeom)
-    void HideGridLines();
-  UFUNCTION(BlueprintCallable,Category = GridGeom)
-    void GenerateGridLayout();
+  UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "GridManager")
+  int NumRows;
+  UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "GridManager")
+  int NumCols;
+  UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "GridManager|Geometry")
+  float TileSize;
+  UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "GridManager|Geometry")
+  float LineThickness;
+  UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "GridManager|Geometry")
+  float LineOpacity;
+  UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "GridManager|Geometry")
+  float SelectionOpacity;
+  UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "GridManager|Geometry")
+  class UMaterialInstance* GridMaterial;
+  UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = "GridManager|Geometry")
+  class UProceduralMeshComponent* LineMeshComponent;
+  UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = "GridManager|Geometry")
+  class UProceduralMeshComponent* SelectionMeshComponent;
+  UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "GridManager|Geometry")
+  FLinearColor LineColor;
+  UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "GridManager|Geometry")
+  FLinearColor SelectionColor;
+  UFUNCTION(BlueprintCallable,CallInEditor,Category = "GridManager|Geometry")
+  void ShowGridLines();
+  UFUNCTION(BlueprintCallable,CallInEditor,Category = "GridManager|Geometry")
+  void HideGridLines();
+  UFUNCTION(BlueprintCallable,Category = "GridManager|Geometry")
+  void GenerateGridLayout();
 
 private:
-  //void SetSelectedTile(FVector location); // called by gridmanager
   UMaterialInstanceDynamic* CreateMaterialInstance(FLinearColor color,float opacity);
   void CreateLinesOnX(TArray<FVector>& vertices,TArray<int>& triangles);
   void CreateLinesOnY(TArray<FVector>& vertices,TArray<int>& triangles);
