@@ -60,6 +60,8 @@ protected:
 
 	UFUNCTION(BlueprintCallable, Category = "SimpliCityPlayerController")
 	void EnableZoneMode();
+	UFUNCTION(BlueprintCallable,Category = "SimpliCityPlayerController")
+	void EnableBuildMode();
 
 	bool BuildModeEnabled;
 	bool ZoneModeEnabled;

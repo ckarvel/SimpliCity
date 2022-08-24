@@ -104,6 +104,11 @@ void ASimpliCityPlayerController::EnableZoneMode() {
   OnZoneMode.Broadcast(ZoneModeEnabled);
 }
 
+void ASimpliCityPlayerController::EnableBuildMode() {
+  BuildModeEnabled = !BuildModeEnabled;
+  OnBuildMode.Broadcast(BuildModeEnabled);
+}
+
 void ASimpliCityPlayerController::SetupInputComponent() {
   // set up gameplay key bindings
   Super::SetupInputComponent();
@@ -112,12 +117,13 @@ void ASimpliCityPlayerController::SetupInputComponent() {
   InputComponent->BindAxis("RotationX");
   InputComponent->BindAxis("RotationY");
 
-  // workaround for using lambda with BindAction:
-  FInputActionBinding BuildModePressed("Build Mode",IE_Pressed);
-  BuildModePressed.ActionDelegate.GetDelegateForManualSet().BindLambda([this]() {
-    BuildModeEnabled = !BuildModeEnabled;
-    OnBuildMode.Broadcast(BuildModeEnabled);
-    /*TRACE_SCREENMSG_PRINTF("Build Mode Pressed");*/
-    });
-  InputComponent->AddActionBinding(BuildModePressed);
+  //// workaround for using lambda with BindAction:
+  //FInputActionBinding BuildModePressed("Build Mode",IE_Pressed);
+  //BuildModePressed.ActionDelegate.GetDelegateForManualSet().BindLambda([this]() {
+  //  BuildModeEnabled = !BuildModeEnabled;
+  //  OnBuildMode.Broadcast(BuildModeEnabled);
+  //  /*TRACE_SCREENMSG_PRINTF("Build Mode Pressed");*/
+  //  });
+  //InputComponent->AddActionBinding(BuildModePressed);
+  InputComponent->BindAction("Build Mode", IE_Pressed, this, &ASimpliCityPlayerController::EnableBuildMode);
 }

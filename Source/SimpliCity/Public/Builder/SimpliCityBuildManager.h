@@ -42,6 +42,8 @@ public:
 	void NotifyDespawnedObject(ASimpliCityBuildObjectBase* DespawnedObject);
 	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
 	void NotifyDespawnedObjectAtLocation(FVector location);
+	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
+	void NotifyDespawnAllTemporary();
 	void NotifyReplaceObject(ASimpliCityBuildObjectBase* OldObj,ASimpliCityBuildObjectBase* NewObj);
 
 	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
@@ -57,7 +59,9 @@ protected:
 	void TrackBuildPath(FVector location);
 	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
 	void FinishTrackingBuildPath();
-	void AddTemporaryToPermanentList();
+	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
+	void CancelTrackingBuildPath();
+	void RemoveAllTemporaryObjects();
 
 	bool isTrackingActive;
 	FVector startLocation;

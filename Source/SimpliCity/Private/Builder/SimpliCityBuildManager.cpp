@@ -79,20 +79,30 @@ void ASimpliCityBuildManager::FinishTrackingBuildPath() {
   oldPath.Empty();
   startLocation = FVector();
   isTrackingActive = false;
-  AddTemporaryToPermanentList();
+  RemoveAllTemporaryObjects();
   OnBuildFinish.Broadcast();
 }
 
-void ASimpliCityBuildManager::AddTemporaryToPermanentList() {
-  // todo: remove debug stuff
-  //for (auto object : TemporaryBuildObjects) {
-  //  if (object) {
-  //    object->SetNewMaterial();
-  //  }
-  //}
+void ASimpliCityBuildManager::CancelTrackingBuildPath() {
+  oldPath.Empty();
+  startLocation = FVector();
+  isTrackingActive = false;
+  NotifyDespawnAllTemporary();
+  RemoveAllTemporaryObjects();
+  OnBuildFinish.Broadcast();
+}
+
+void ASimpliCityBuildManager::RemoveAllTemporaryObjects() {
   TemporaryBuildObjects.Empty();
   TemporaryBuildLocations.Empty();
 }
+
+void ASimpliCityBuildManager::NotifyDespawnAllTemporary() {
+  if (!TemporaryBuildObjects.IsEmpty()) {
+    OnBuildRemoval.Broadcast(TemporaryBuildLocations);
+  }
+}
+
 
 bool ASimpliCityBuildManager::DoesObjectExistHere(FVector Location) {
   return ObjectGridComponent->DoesObjectExistHere(Location);

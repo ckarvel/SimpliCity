@@ -23,8 +23,10 @@ void ASimpliCityZoneCell::BeginPlay() {
 }
 
 void ASimpliCityZoneCell::SetCellType(TEnumAsByte<ESimpliCityZoneTypeEnum> Type) {
-	ZoneType = Type;
-	UpdateActiveMaterial();
+	if (Type != ZoneType) {
+		ZoneType = Type;
+		UpdateActiveMaterial();
+	}
 }
 
 void ASimpliCityZoneCell::UpdateActiveMaterial() {
