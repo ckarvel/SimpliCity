@@ -33,11 +33,21 @@ public:
 	UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary",meta=(WorldContext="WorldContextObject",UnsafeDuringActorConstruction="true"))
 	static class ASimpliCityRoadManager* GetRoadManager(const UObject* WorldContextObject);
 	
-	// tools
 	UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary")
 	static bool AreLocationsEqual(FVector LocationA, FVector LocationB, float Tolerance=25);
 
-	// tools
 	UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary")
 	static TArray<FVector> GetPathBetween(UObject* Graph,FVector Start,FVector End);
+
+	UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary")
+	static FVector VInterpTo(FVector Current,FVector Target,float Delta,float Speed);
+
+	UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary")
+	static FRotator RInterpTo(FRotator Current,FRotator Target,float Delta,float Speed);
+
+	UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary")
+	static float FInterpTo(float Current,float Target,float Delta,float Speed);
+
+	UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary")
+	static bool IsNearlyEqual(float A, float B);
 };

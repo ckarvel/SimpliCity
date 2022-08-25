@@ -50,3 +50,19 @@ TArray<FVector> USimpliCityFunctionLibrary::GetPathBetween(UObject* Graph,FVecto
   TArray<FVector> newPath = MyAStarPathFinder::AStarSearch(Graph,Start,End);
   return newPath;
 }
+
+FVector USimpliCityFunctionLibrary::VInterpTo(FVector Current,FVector Target,float Delta,float Speed) {
+  return FMath::VInterpTo(Current,Target,Delta,Speed);
+}
+
+FRotator USimpliCityFunctionLibrary::RInterpTo(FRotator Current, FRotator Target,float Delta,float Speed) {
+  return FMath::RInterpTo(Current,Target,Delta,Speed);
+}
+
+float USimpliCityFunctionLibrary::FInterpTo(float Current,float Target,float Delta,float Speed) {
+  return FMath::FInterpTo(Current,Target,Delta,Speed);
+}
+
+bool USimpliCityFunctionLibrary::IsNearlyEqual(float A,float B) {
+  return FMath::IsNearlyEqual(A, B, 0.1);
+}

@@ -22,12 +22,32 @@ public:
 	UFUNCTION()
 	void MoveByUnits(FVector translation);
 	UFUNCTION()
+	void ZoomByUnits(float axis);
+	UFUNCTION()
 	void RotateByUnits(FRotator rotator);
+	UFUNCTION()
+	void SetRotationCenter(FVector Location);
+	void OrbitAroundCenter(float angle);
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "SimpliCityCharacter")
 	class UCameraComponent* PlayerCameraComponent;
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "SimpliCityCharacter")
+	class USpringArmComponent* SpringArmComponent;
+
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "SimpliCityCharacter")
 	float moveSpeed;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "SimpliCityCharacter")
 	float rotationSpeed;
+	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "SimpliCityCharacter")
+	float zoomSpeed;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "SimpliCityCharacter")
+	float minZoom;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "SimpliCityCharacter")
+	float maxZoom;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "SimpliCityCharacter")
+	bool orbitMode;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "SimpliCityCharacter")
+	FVector rotationCenter;
 };

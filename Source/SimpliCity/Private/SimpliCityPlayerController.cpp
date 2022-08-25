@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "SimpliCityPlayerController.h"
+#include "SimpliCityCharacter.h"
 #include "Tools/SimpliCityUtils.h"
 
 #include "GameFramework/Pawn.h"
@@ -10,20 +11,40 @@
 #include "Engine/World.h"
 
 ASimpliCityPlayerController::ASimpliCityPlayerController()
-  : BuildModeEnabled(false)
+  : CurrentInteractionMode(ESimpliCityInteractionMode::InteractionMode_None)
 {
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Default;
 }
 
 void ASimpliCityPlayerController::BeginPlay() {
-  //ThePlayer = Cast<ASimpliCityCharacter>(GetPawn());
-  //if (ThePlayer == nullptr)
-  //  return;
+  ThePlayer = Cast<ASimpliCityCharacter>(GetPawn());
+  if (ThePlayer == nullptr)
+    return;
+  // playerstart has a rotation that only affects controller
+  // here we set pawns rotation to controller's
+  ThePlayer->SetActorRotation(GetRootComponent()->GetComponentRotation());
 
-  //OnArrowInput.BindDynamic(ThePlayer,&ASimpliCityCharacter::MoveByUnits);
-  //OnMiddleMouseClick.BindDynamic(ThePlayer,&ASimpliCityCharacter::RotateByUnits);
+  ResetBindings();
+
   Super::BeginPlay();
+}
+
+void ASimpliCityPlayerController::ClearBindings() {
+  OnArrowInput.Clear();
+  OnMouseClick.Clear();
+  OnMouseUp.Clear();
+  OnMouseCancel.Clear();
+  OnMouseHold.Clear();
+  OnMiddleMouseClick.Clear();
+  OnMiddleMouseHold.Clear();
+}
+
+void ASimpliCityPlayerController::ResetBindings() {
+  ClearBindings();
+  OnArrowInput.AddDynamic(ThePlayer,&ASimpliCityCharacter::MoveByUnits);
+  OnMiddleMouseClick.AddDynamic(ThePlayer,&ASimpliCityCharacter::SetRotationCenter);
+  OnMiddleMouseHold.AddDynamic(ThePlayer,&ASimpliCityCharacter::RotateByUnits);
 }
 
 void ASimpliCityPlayerController::PlayerTick(float DeltaTime) {
@@ -33,80 +54,71 @@ void ASimpliCityPlayerController::PlayerTick(float DeltaTime) {
   GetHitResultUnderCursor(ECC_Visibility,false,TraceHitResult);
   bool blocked = TraceHitResult.bBlockingHit;
   FVector location = TraceHitResult.Location;
+  TickHitLocation = location;
 
-  HandleHoverEvent(blocked,location);
-  HandleClickEvent(blocked,location);
-  HandleArrowEvent();
+  HandleInputEvents(blocked,location);
 }
 
-//void ASimpliCityPlayerController::ClearBindings() {
-//  OnMouseClick.RemoveAll();
-//  OnMouseUp.RemoveAll();
-//  OnMouseCancel.RemoveAll();
-//  OnMouseHold.RemoveAll();
-//}
 //
 //void ASimpliCityPlayerController::ClearAllBindings() {
 //  ClearBindings();
 //  OnMouseHover.RemoveAll();
 //}
 
-void ASimpliCityPlayerController::HandleHoverEvent(bool blockingHit,FVector location) {
-  if (blockingHit == false)
-    return;
-  //if (OnMouseHover.IsBound() == false)
-  //  OnMouseHover.BindUObject(gridManager,&AGridManager::SetSelectedTile);
-  OnMouseHover.Broadcast(location);
-}
+void ASimpliCityPlayerController::HandleInputEvents(bool blockingHit,FVector location) {
+  // move camera
+  OnArrowInput.Broadcast(FVector(GetInputAxisValue("MoveForward"),GetInputAxisValue("MoveRight"),0));
 
-void ASimpliCityPlayerController::HandleClickEvent(bool blockingHit,FVector location) {
+  if (blockingHit) {
+     // we prob dont need this... highlighting stuff should be done w/ overlap events
+     OnMouseHover.Broadcast(location); 
+  }
+
   // right-click or esc for cancel
-  if (WasInputKeyJustPressed(EKeys::RightMouseButton) || WasInputKeyJustPressed(EKeys::Escape))
+  if (WasInputKeyJustPressed(EKeys::RightMouseButton) || WasInputKeyJustPressed(EKeys::Escape)) {
     OnMouseCancel.Broadcast();
-  // left-click for placement
+    return;
+  }
+
+  bool rotating = false;
+
+  if (WasInputKeyJustReleased(EKeys::LeftMouseButton)
+    || WasInputKeyJustReleased(EKeys::RightMouseButton)
+    || WasInputKeyJustReleased(EKeys::MiddleMouseButton)) {
+    OnMouseUp.Broadcast();
+    SetInputMode(FInputModeGameAndUI());
+  }
   else if (blockingHit && IsInputKeyDown(EKeys::LeftMouseButton)) {
     if (WasInputKeyJustPressed(EKeys::LeftMouseButton))
       OnMouseClick.Broadcast(location);
     else
       OnMouseHold.Broadcast(location);
-  } else if (WasInputKeyJustReleased(EKeys::LeftMouseButton) || WasInputKeyJustReleased(EKeys::RightMouseButton))
-    OnMouseUp.Broadcast();
-}
-
-void ASimpliCityPlayerController::HandleArrowEvent() {
-  // move camera
-  OnArrowInput.Broadcast(FVector(GetInputAxisValue("MoveForward"),GetInputAxisValue("MoveRight"),0));
-
-  // rotate camera
-  if (IsInputKeyDown(EKeys::MiddleMouseButton)) {
-    // Pitch, Yaw, Roll
-    // Pitch = Y 
-    // Yaw = X
-    float axisy = GetInputAxisValue("RotationY");
-    float axisx = GetInputAxisValue("RotationX");
-    OnMiddleMouseClick.Broadcast(FRotator(axisy,axisx,0));
-    //if (axisy != 0.00000)
-    //  SIMPLI_LOG(TEXT("Pitch: %.2f"),axisy);
-    //if (axisx != 0.000000)
-    //  SIMPLI_LOG(TEXT("Yaw: %.2f"),axisx);
   }
-  else if(WasInputKeyJustReleased(EKeys::MiddleMouseButton)) {
-    if (BuildModeEnabled) {
-      BuildModeEnabled = false;
-      OnBuildMode.Broadcast(BuildModeEnabled);
+  else if (IsInputKeyDown(EKeys::MiddleMouseButton)) {
+    if (WasInputKeyJustPressed(EKeys::MiddleMouseButton)) {
+      OnMiddleMouseClick.Broadcast(location);
     }
-    OnMouseUp.Broadcast();
+    else {
+      FRotator rotation = FRotator(GetInputAxisValue("RotationY"),GetInputAxisValue("RotationX"),0);
+      OnMiddleMouseHold.Broadcast(rotation);
+    }
+    rotating = true;
+    SetInputMode(FInputModeGameOnly()); // allows cursor to go past the screen edges
+  }
+  else if (rotating == false) { // don't zoom while rotating
+    float zoomAxis = GetInputAxisValue("Zoom");
+    ThePlayer->ZoomByUnits(zoomAxis);
   }
 }
 
-void ASimpliCityPlayerController::EnableZoneMode() {
-  ZoneModeEnabled = !ZoneModeEnabled;
-  OnZoneMode.Broadcast(ZoneModeEnabled);
-}
-
-void ASimpliCityPlayerController::EnableBuildMode() {
-  BuildModeEnabled = !BuildModeEnabled;
-  OnBuildMode.Broadcast(BuildModeEnabled);
+void ASimpliCityPlayerController::UpdateInteractionMode(ESimpliCityInteractionMode Mode,bool IsEnabled) {
+  if (IsEnabled) {
+    CurrentInteractionMode = Mode;
+  } else {
+    CurrentInteractionMode = ESimpliCityInteractionMode::InteractionMode_None;
+    ResetBindings();
+  }
+  OnInteractionMode.Broadcast(Mode,IsEnabled);
 }
 
 void ASimpliCityPlayerController::SetupInputComponent() {
@@ -116,14 +128,25 @@ void ASimpliCityPlayerController::SetupInputComponent() {
   InputComponent->BindAxis("MoveRight");
   InputComponent->BindAxis("RotationX");
   InputComponent->BindAxis("RotationY");
+  InputComponent->BindAxis("Zoom");
+  //InputComponent->AddActionBinding(RoadModePressed);
 
   //// workaround for using lambda with BindAction:
-  //FInputActionBinding BuildModePressed("Build Mode",IE_Pressed);
-  //BuildModePressed.ActionDelegate.GetDelegateForManualSet().BindLambda([this]() {
-  //  BuildModeEnabled = !BuildModeEnabled;
-  //  OnBuildMode.Broadcast(BuildModeEnabled);
-  //  /*TRACE_SCREENMSG_PRINTF("Build Mode Pressed");*/
-  //  });
-  //InputComponent->AddActionBinding(BuildModePressed);
-  InputComponent->BindAction("Build Mode", IE_Pressed, this, &ASimpliCityPlayerController::EnableBuildMode);
+  FInputActionBinding RoadModePressed("RoadMode",IE_Pressed);
+  RoadModePressed.ActionDelegate.GetDelegateForManualSet().BindLambda([this]() {
+    // if not in another build mode, enable
+    if (CurrentInteractionMode == ESimpliCityInteractionMode::InteractionMode_None) {
+      UpdateInteractionMode(ESimpliCityInteractionMode::InteractionMode_Road, true);
+    }
+    // if already in road mode, disable
+    else if (CurrentInteractionMode == ESimpliCityInteractionMode::InteractionMode_Road) {
+      UpdateInteractionMode(ESimpliCityInteractionMode::InteractionMode_Road, false);
+    }
+    // if in another build mode, disable that mode, then enable road
+    else {
+      UpdateInteractionMode(CurrentInteractionMode, false);
+      UpdateInteractionMode(ESimpliCityInteractionMode::InteractionMode_Road, true);
+    }
+    /*TRACE_SCREENMSG_PRINTF("RoadMode");*/
+  });
 }
