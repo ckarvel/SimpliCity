@@ -12,6 +12,7 @@
 
 ASimpliCityPlayerController::ASimpliCityPlayerController()
   : CurrentInteractionMode(ESimpliCityInteractionMode::InteractionMode_None)
+  , CancelNextMouseUp(false)
 {
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Default;
@@ -77,21 +78,26 @@ void ASimpliCityPlayerController::HandleInputEvents(bool blockingHit,FVector loc
   // right-click or esc for cancel
   if (WasInputKeyJustPressed(EKeys::RightMouseButton) || WasInputKeyJustPressed(EKeys::Escape)) {
     OnMouseCancel.Broadcast();
+    CancelNextMouseUp = true;
     return;
   }
 
   bool rotating = false;
 
   if (WasInputKeyJustReleased(EKeys::LeftMouseButton)
-    || WasInputKeyJustReleased(EKeys::RightMouseButton)
     || WasInputKeyJustReleased(EKeys::MiddleMouseButton)) {
-    OnMouseUp.Broadcast();
-    SetInputMode(FInputModeGameAndUI());
+    if (CancelNextMouseUp == false) {
+      OnMouseUp.Broadcast();
+      FInputModeGameAndUI inputMode;
+      inputMode.SetHideCursorDuringCapture(false);
+      SetInputMode(inputMode);
+    }
+    CancelNextMouseUp = false;
   }
   else if (blockingHit && IsInputKeyDown(EKeys::LeftMouseButton)) {
     if (WasInputKeyJustPressed(EKeys::LeftMouseButton))
       OnMouseClick.Broadcast(location);
-    else
+    else if (CancelNextMouseUp == false)
       OnMouseHold.Broadcast(location);
   }
   else if (IsInputKeyDown(EKeys::MiddleMouseButton)) {
@@ -112,13 +118,33 @@ void ASimpliCityPlayerController::HandleInputEvents(bool blockingHit,FVector loc
 }
 
 void ASimpliCityPlayerController::UpdateInteractionMode(ESimpliCityInteractionMode Mode,bool IsEnabled) {
-  if (IsEnabled) {
-    CurrentInteractionMode = Mode;
-  } else {
-    CurrentInteractionMode = ESimpliCityInteractionMode::InteractionMode_None;
-    ResetBindings();
+  if (Mode == ESimpliCityInteractionMode::InteractionMode_None)
+    return; // this shouldn't happen?
+
+  // Check if other build modes are active
+  if (CurrentInteractionMode != ESimpliCityInteractionMode::InteractionMode_None) {
+     // TOGGLE OFF
+    if (CurrentInteractionMode == Mode) {
+      OnInteractionMode.Broadcast(Mode,false);
+      ResetBindings();
+      CurrentInteractionMode = ESimpliCityInteractionMode::InteractionMode_None;
+    }
+    // 1. DISABLE OLD MODE
+    // 2. ENABLE NEW MODE
+    else {
+      OnInteractionMode.Broadcast(CurrentInteractionMode,false);
+      ResetBindings();
+      // hardcoding true because it shouldn't be false... we shouldn't be able to cancel a mode we're not even in
+      OnInteractionMode.Broadcast(Mode,true);
+      CurrentInteractionMode = Mode;
+    }
   }
-  OnInteractionMode.Broadcast(Mode,IsEnabled);
+  // no other build mode active so enable!
+  else {
+    // hardcoding true because <see 2 comments above>
+    OnInteractionMode.Broadcast(Mode,true);
+    CurrentInteractionMode = Mode;
+  }
 }
 
 void ASimpliCityPlayerController::SetupInputComponent() {
@@ -134,19 +160,7 @@ void ASimpliCityPlayerController::SetupInputComponent() {
   //// workaround for using lambda with BindAction:
   FInputActionBinding RoadModePressed("RoadMode",IE_Pressed);
   RoadModePressed.ActionDelegate.GetDelegateForManualSet().BindLambda([this]() {
-    // if not in another build mode, enable
-    if (CurrentInteractionMode == ESimpliCityInteractionMode::InteractionMode_None) {
-      UpdateInteractionMode(ESimpliCityInteractionMode::InteractionMode_Road, true);
-    }
-    // if already in road mode, disable
-    else if (CurrentInteractionMode == ESimpliCityInteractionMode::InteractionMode_Road) {
-      UpdateInteractionMode(ESimpliCityInteractionMode::InteractionMode_Road, false);
-    }
-    // if in another build mode, disable that mode, then enable road
-    else {
-      UpdateInteractionMode(CurrentInteractionMode, false);
-      UpdateInteractionMode(ESimpliCityInteractionMode::InteractionMode_Road, true);
-    }
-    /*TRACE_SCREENMSG_PRINTF("RoadMode");*/
+    // set to true because if toggling off the function will handle it
+    UpdateInteractionMode(ESimpliCityInteractionMode::InteractionMode_Road, true);
   });
 }

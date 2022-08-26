@@ -103,7 +103,6 @@ void ASimpliCityBuildManager::NotifyDespawnAllTemporary() {
   }
 }
 
-
 bool ASimpliCityBuildManager::DoesObjectExistHere(FVector Location) {
   return ObjectGridComponent->DoesObjectExistHere(Location);
 }
@@ -144,4 +143,8 @@ TArray<ASimpliCityBuildObjectBase*> ASimpliCityBuildManager::GetNeighborsOfType(
 
 TArray<ASimpliCityBuildObjectBase*> ASimpliCityBuildManager::GetAllNeighbors_Unsafe(FVector location) {
   return ObjectGridComponent->GetAllNeighbors_Unsafe(location);
+}
+
+void ASimpliCityBuildManager::NotifyPermanentObject(ASimpliCityBuildObjectBase* PermObject) {
+  ObjectGridComponent->NotifySpawnedObject(PermObject);
 }

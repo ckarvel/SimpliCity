@@ -32,6 +32,9 @@ public:
 
 	UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary",meta=(WorldContext="WorldContextObject",UnsafeDuringActorConstruction="true"))
 	static class ASimpliCityRoadManager* GetRoadManager(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary",meta=(WorldContext="WorldContextObject",UnsafeDuringActorConstruction="true"))
+	static class ASimpliCityZoneManager* GetZoneManager(const UObject* WorldContextObject);
 	
 	UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary")
 	static bool AreLocationsEqual(FVector LocationA, FVector LocationB, float Tolerance=25);
@@ -50,4 +53,13 @@ public:
 
 	UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary")
 	static bool IsNearlyEqual(float A, float B);
+
+	UFUNCTION(BlueprintCallable,Category="SimpliCityFunctionLibrary")
+	static void CalculateSelectionRectangle(FVector Start, FVector End,FVector& OutExtents, TArray<FVector>& OutVertices, TArray<int>& OutTriangles);
+
+	UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary")
+	static FVector GetMidpointBetween(FVector A, FVector B);
+
+	UFUNCTION(BlueprintCallable,Category="SimpliCityFunctionLibrary")
+	static TArray<AActor*> GetDifferenceInArrays(TArray<AActor*> A,TArray<AActor*> B);
 };

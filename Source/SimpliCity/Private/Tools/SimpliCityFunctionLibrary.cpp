@@ -15,6 +15,7 @@
 
 #include "Builder/SimpliCityBuildManager.h"
 #include "Road/SimpliCityRoadManager.h"
+#include "Zone/SimpliCityZoneManager.h"
 
 AGridManager* USimpliCityFunctionLibrary::GetGridManager(const UObject* WorldContextObject) {
   //USimpliCityGameInstance* gameInst = Cast<USimpliCityGameInstance>(UGameplayStatics::GetGameInstance(WorldContextObject));
@@ -37,6 +38,10 @@ AMarkerManager* USimpliCityFunctionLibrary::GetMarkerManager(const UObject* Worl
 
 ASimpliCityRoadManager* USimpliCityFunctionLibrary::GetRoadManager(const UObject* WorldContextObject) {
   return Cast<ASimpliCityRoadManager>(UGameplayStatics::GetActorOfClass(WorldContextObject,ASimpliCityRoadManager::StaticClass()));
+}
+
+ASimpliCityZoneManager* USimpliCityFunctionLibrary::GetZoneManager(const UObject* WorldContextObject) {
+  return Cast<ASimpliCityZoneManager>(UGameplayStatics::GetActorOfClass(WorldContextObject,ASimpliCityZoneManager::StaticClass()));
 }
 
 bool USimpliCityFunctionLibrary::AreLocationsEqual(FVector LocationA, FVector LocationB, float Tolerance) {
@@ -65,4 +70,41 @@ float USimpliCityFunctionLibrary::FInterpTo(float Current,float Target,float Del
 
 bool USimpliCityFunctionLibrary::IsNearlyEqual(float A,float B) {
   return FMath::IsNearlyEqual(A, B, 0.1);
+}
+
+void USimpliCityFunctionLibrary::CalculateSelectionRectangle(FVector Start,FVector End,FVector& OutExtents,TArray<FVector>& OutVertices,TArray<int>& OutTriangles) {
+  float minX = FMath::Min(Start.X,End.X);
+  float minY = FMath::Min(Start.Y,End.Y);
+  float maxX = FMath::Max(Start.X,End.X);
+  float maxY = FMath::Max(Start.Y,End.Y);
+
+  TArray<FVector> Vertices = {
+    FVector(minX, minY, 50),
+    FVector(minX, maxY, 50),
+    FVector(maxX, minY, 50),
+    FVector(maxX, maxY, 50)
+  };
+  OutVertices = Vertices;
+
+  OutExtents.X = FVector::Distance(Vertices[0],Vertices[2]) / 2.0;
+  OutExtents.Y = FVector::Distance(Vertices[0],Vertices[3]) / 2.0;
+  OutExtents.Z = 50.0; //arbitrary
+
+  // order of vertices we made in the list above
+  // counter-clockwise of a triangle starting at top
+  TArray<int> Triangles = {0, 1, 3, 3, 2, 0};
+  OutTriangles = Triangles;
+}
+
+FVector USimpliCityFunctionLibrary::GetMidpointBetween(FVector A,FVector B) {
+  float x = (A.X + B.X) / 2.0;
+  float y = (A.Y + B.Y) / 2.0;
+  return FVector(x,y,50.0);
+}
+
+TArray<AActor*> USimpliCityFunctionLibrary::GetDifferenceInArrays(TArray<AActor*> A,TArray<AActor*> B) {
+  TSet<AActor*> ASet = TSet<AActor*>(A);
+  TSet<AActor*> BSet = TSet<AActor*>(B);
+  TSet<AActor*> diff = ASet.Difference(BSet);
+  return diff.Array();
 }

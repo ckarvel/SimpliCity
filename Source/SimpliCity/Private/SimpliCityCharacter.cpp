@@ -86,7 +86,7 @@ void ASimpliCityCharacter::RotateByUnits(FRotator rotator) {
   //rotator *= rotationSpeed;
   //SIMPLI_LOG(TEXT("After Speed: Y: %.2f"),rotator.Yaw);
   FRotator current = GetActorRotation();
-  float newPitch = FMath::Clamp(current.Pitch + rotator.Pitch * rotationSpeed,-85.0f, -50.0f);
+  float newPitch = FMath::Clamp(current.Pitch + rotator.Pitch * rotationSpeed,-85.0f, 0.0f);
   float newYaw = FMath::Clamp(current.Yaw + rotator.Yaw * rotationSpeed,-359.0f,359.0f);
   FRotator result = FRotator(newPitch,newYaw, 0.0);
 

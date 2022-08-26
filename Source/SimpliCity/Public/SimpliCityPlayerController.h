@@ -52,7 +52,9 @@ public:
 	void UpdateInteractionMode(ESimpliCityInteractionMode Mode, bool IsEnabled);
 
 	UFUNCTION(BlueprintCallable,Category = "SimpliCityPlayerController")
-	FVector GetHitLocation() { return TickHitLocation; }
+	FVector GetHitLocation() const { return TickHitLocation; }
+	UFUNCTION(BlueprintPure,Category = "SimpliCityPlayerController")
+	TEnumAsByte<ESimpliCityInteractionMode> GetInteractionMode() const { return CurrentInteractionMode; }
 
 protected:
 	void BeginPlay() override;
@@ -63,7 +65,11 @@ protected:
 
 	void HandleInputEvents(bool blockingHit,FVector location);
 
-	ESimpliCityInteractionMode CurrentInteractionMode;
+	UPROPERTY(VisibleAnywhere,Category = "SimpliCityPlayerController")
+	TEnumAsByte<ESimpliCityInteractionMode> CurrentInteractionMode;
 	class ASimpliCityCharacter* ThePlayer;
 	FVector TickHitLocation;
+
+	// if left-holding while right-cancel, then left-release, it doesnt count as "mouse up"
+	bool CancelNextMouseUp;
 };

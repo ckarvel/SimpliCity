@@ -9,6 +9,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnBuildCreation,const TArray<FVector>&,AddedLocations);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnBuildRemoval,const TArray<FVector>&,RemovedLocations);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSelection,const TArray<AActor*>&,SelectedActors);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnBuildFinish);
 
 UCLASS()
@@ -25,12 +26,14 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	UPROPERTY(BlueprintAssignable)
+	UPROPERTY(BlueprintAssignable,Category="SimpliCityBuildManager")
 	FOnBuildCreation OnBuildCreation;
-	UPROPERTY(BlueprintAssignable)
+	UPROPERTY(BlueprintAssignable,Category="SimpliCityBuildManager")
 	FOnBuildRemoval OnBuildRemoval;
-	UPROPERTY(BlueprintAssignable)
+	UPROPERTY(BlueprintAssignable,Category="SimpliCityBuildManager")
 	FOnBuildFinish OnBuildFinish;
+	UPROPERTY(BlueprintAssignable,BlueprintCallable,Category="SimpliCityBuildManager")
+	FOnSelection OnActorSelection;
 
 	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
 	bool DoesObjectExistHere(FVector Location);
@@ -51,6 +54,9 @@ public:
 	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
 	TArray<ASimpliCityBuildObjectBase*> GetNeighborsOfType(FVector location,TEnumAsByte<ESimpliCityBuildObjectEnum> buildType);
 	TArray<ASimpliCityBuildObjectBase*> GetAllNeighbors_Unsafe(FVector location);
+	// to be called for zone manager's buildings
+	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
+	void NotifyPermanentObject(ASimpliCityBuildObjectBase* PermObject);
 
 protected:
 	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")

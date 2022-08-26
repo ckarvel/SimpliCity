@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "SimpliCityZoneTypeEnum.h"
 #include "SimpliCityZoneManager.generated.h"
 
 UCLASS()
@@ -24,9 +25,33 @@ public:
 	UFUNCTION(BlueprintCallable,Category="SimpliCityZoneManager")
 	void InitializeCellZones();
 
+	UFUNCTION(BlueprintCallable,Category="SimpliCityZoneManager")
+	bool IsCellSelected(class ASimpliCityZoneCell* Cell);
+
+	UFUNCTION(BlueprintCallable,Category="SimpliCityZoneManager")
+	bool BackupCellDataIfNotExists(ASimpliCityZoneCell* Cell);
+
+	UFUNCTION(BlueprintCallable,Category="SimpliCityZoneManager")
+	void RestoreCellData(ASimpliCityZoneCell* Cell);
+
+	UFUNCTION(BlueprintCallable,Category="SimpliCityZoneManager")
+	void RestoreAllCellData();
+
+	UFUNCTION(BlueprintCallable,Category="SimpliCityZoneManager")
+	void ClearBackupData();
+
+	UFUNCTION(BlueprintCallable,Category="SimpliCityZoneManager")
+	TArray<class ASimpliCityZoneCell*> GetUnfilledZonedCells();
+
 	UPROPERTY(EditAnywhere,NoClear,BlueprintReadOnly,Category = "SimpliCityZoneManager")
-	TSubclassOf<class ASimpliCityZoneCell> ZoneCellClass;
+	TSubclassOf<ASimpliCityZoneCell> ZoneCellClass;
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = "SimpliCityZoneManager")
-	TArray<class ASimpliCityZoneCell*> ZonedGridCells;
+	TArray<ASimpliCityZoneCell*> ZonesWithBuildings;
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = "SimpliCityZoneManager")
+	TArray<ASimpliCityZoneCell*> ZonedGridCells;
+	
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = "SimpliCityZoneManager")
+	TMap<ASimpliCityZoneCell*, TEnumAsByte<ESimpliCityZoneTypeEnum>> TemporaryCellStates;
 };
