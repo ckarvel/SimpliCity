@@ -7,25 +7,19 @@
 #include "MarkerManager.h"
 #include "Tools/SimpliCityFunctionLibrary.h"
 
-// Sets default values
 ASimpliCityRoadBase::ASimpliCityRoadBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RoadMesh"));
   SetRootComponent(StaticMeshComponent);
-	// TEnumAsByte<ESimpliCityBuildObjectEnum> BuildType;
-	// BuildObject_None UMETA(DisplayName = "None"),
-	// BuildObject_Road UMETA(DisplayName = "Road")
 	BuildType = ESimpliCityBuildObjectEnum::BuildObject_Road;
 }
 
-// Called when the game starts or when spawned
 void ASimpliCityRoadBase::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
-// Called when the game starts or when spawned
 void ASimpliCityRoadBase::SetNewMaterial() {
 	check(StaticMeshComponent != nullptr);
 	if (RoadMaterial != nullptr) {

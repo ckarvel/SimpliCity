@@ -41,13 +41,16 @@ public:
 	void ClearBackupData();
 
 	UFUNCTION(BlueprintCallable,Category="SimpliCityZoneManager")
+	TEnumAsByte<ESimpliCityZoneTypeEnum> GetZoneTypeAtLocation(FVector Location);
+
+	UFUNCTION(BlueprintCallable,Category="SimpliCityZoneManager")
 	TArray<class ASimpliCityZoneCell*> GetUnfilledZonedCells();
 
 	UPROPERTY(EditAnywhere,NoClear,BlueprintReadOnly,Category = "SimpliCityZoneManager")
 	TSubclassOf<ASimpliCityZoneCell> ZoneCellClass;
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = "SimpliCityZoneManager")
-	TArray<ASimpliCityZoneCell*> ZonesWithBuildings;
+	TArray<ASimpliCityZoneCell*> EmptyZones;
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = "SimpliCityZoneManager")
 	TArray<ASimpliCityZoneCell*> ZonedGridCells;

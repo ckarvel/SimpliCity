@@ -32,15 +32,15 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = Road)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="SimpliCityRoadBase")
 	class UStaticMeshComponent* StaticMeshComponent;
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = Road)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="SimpliCityRoadBase")
 	class UMaterialInstance* RoadMaterial;
 
-	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = Road)
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="SimpliCityRoadBase")
 	TArray<class UMarkerComponent*> PedestrianMarkers;
 
-	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = Road)
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="SimpliCityRoadBase")
 	TArray<class UMarkerComponent*> VehicleMarkers;
 };

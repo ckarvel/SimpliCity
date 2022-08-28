@@ -15,6 +15,7 @@ ASimpliCityPlayerController::ASimpliCityPlayerController()
   , CancelNextMouseUp(false)
 {
 	bShowMouseCursor = true;
+  bEnableClickEvents = true;
 	DefaultMouseCursor = EMouseCursor::Default;
 }
 

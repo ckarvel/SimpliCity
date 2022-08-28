@@ -3,9 +3,7 @@
 
 #include "Zone/SimpliCityZoneManager.h"
 #include "Zone/SimpliCityZoneCell.h"
-
 #include "Builder/SimpliCityBuildManager.h"
-
 #include "Tools/SimpliCityFunctionLibrary.h"
 #include "GridManager.h"
 
@@ -68,18 +66,18 @@ void ASimpliCityZoneManager::ClearBackupData() {
 }
 
 TArray<ASimpliCityZoneCell*> ASimpliCityZoneManager::GetUnfilledZonedCells() {
-	TArray<ASimpliCityZoneCell*> ZonesToFill;
-	for (auto Cell : ZonedGridCells) {
-		if (Cell->ZoneType == ESimpliCityZoneTypeEnum::ZoneType_None)
-			continue;
-		if (ZonesWithBuildings.Find(Cell) == false) {
-			ZonesToFill.Add(Cell);
-		}
-	}
-	return ZonesToFill;
+	return EmptyZones;
 }
 
 void ASimpliCityZoneManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+TEnumAsByte<ESimpliCityZoneTypeEnum> ASimpliCityZoneManager::GetZoneTypeAtLocation(FVector Location) {
+	int32 index = USimpliCityFunctionLibrary::GetGridManager(this)->LocationToIndex(Location);
+	check(index >= 0);
+	check(index < ZonedGridCells.Num());
+	check(ZonedGridCells[index] != nullptr);
+	return ZonedGridCells[index]->ZoneType;
 }

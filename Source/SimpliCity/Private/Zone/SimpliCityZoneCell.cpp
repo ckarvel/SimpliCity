@@ -3,6 +3,9 @@
 
 #include "Zone/SimpliCityZoneCell.h"
 #include "Components/StaticMeshComponent.h"
+#include "Zone/SimpliCityZoneManager.h"
+#include "Builder/SimpliCityBuildManager.h"
+#include "Tools/SimpliCityFunctionLibrary.h"
 
 // Sets default values
 ASimpliCityZoneCell::ASimpliCityZoneCell()

@@ -8,5 +8,6 @@
 UENUM(BlueprintType)
 enum ESimpliCityBuildObjectEnum {
   BuildObject_None UMETA(DisplayName = "None"),
-  BuildObject_Road UMETA(DisplayName = "Road")
+  BuildObject_Road UMETA(DisplayName = "Road"),
+  BuildObject_Building UMETA(DisplayName = "Building")
 };
