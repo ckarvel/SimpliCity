@@ -2,12 +2,11 @@
 
 #include "SimpliCityPlayerController.h"
 #include "SimpliCityCharacter.h"
+#include "SimpliCityMainUI.h"
 #include "Tools/SimpliCityUtils.h"
 
 #include "GameFramework/Pawn.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
-#include "NiagaraSystem.h"
-#include "NiagaraFunctionLibrary.h"
 #include "Engine/World.h"
 
 ASimpliCityPlayerController::ASimpliCityPlayerController()
@@ -26,9 +25,7 @@ void ASimpliCityPlayerController::BeginPlay() {
   // playerstart has a rotation that only affects controller
   // here we set pawns rotation to controller's
   ThePlayer->SetActorRotation(GetRootComponent()->GetComponentRotation());
-
   ResetBindings();
-
   Super::BeginPlay();
 }
 

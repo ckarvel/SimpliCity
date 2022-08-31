@@ -56,6 +56,11 @@ public:
 	UFUNCTION(BlueprintPure,Category = "SimpliCityPlayerController")
 	TEnumAsByte<ESimpliCityInteractionMode> GetInteractionMode() const { return CurrentInteractionMode; }
 
+
+	// Build User Interface
+	UPROPERTY(VisibleAnywhere,Category = "SimpliCityPlayerController")
+	class USimpliCityMainUI* TheMainUI;
+
 protected:
 	void BeginPlay() override;
 	virtual void PlayerTick(float DeltaTime) override;

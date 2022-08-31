@@ -12,6 +12,7 @@
 
 #include "SimpliCityGameInstance.h"
 #include "SimpliCityPlayerController.h"
+#include "SimpliCityMainUI.h"
 
 #include "Builder/SimpliCityBuildManager.h"
 #include "Road/SimpliCityRoadManager.h"
@@ -26,6 +27,11 @@ AGridManager* USimpliCityFunctionLibrary::GetGridManager(const UObject* WorldCon
 
 ASimpliCityPlayerController* USimpliCityFunctionLibrary::GetPlayerController(const UObject* WorldContextObject) {
   return Cast<ASimpliCityPlayerController>(UGameplayStatics::GetPlayerController(WorldContextObject, 0));
+}
+
+USimpliCityMainUI* USimpliCityFunctionLibrary::GetMainUI(const UObject* WorldContextObject) {
+  ASimpliCityPlayerController* controller = GetPlayerController(WorldContextObject);
+  return controller->TheMainUI;
 }
 
 ASimpliCityBuildManager* USimpliCityFunctionLibrary::GetBuildManager(const UObject* WorldContextObject) {
