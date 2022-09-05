@@ -39,6 +39,9 @@ public:
 	UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary",meta=(WorldContext="WorldContextObject",UnsafeDuringActorConstruction="true"))
 	static class ASimpliCityZoneManager* GetZoneManager(const UObject* WorldContextObject);
 
+	UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary",meta=(WorldContext="WorldContextObject",UnsafeDuringActorConstruction="true"))
+	static class ASimpliCityBuildingManager* GetBuildingManager(const UObject* WorldContextObject);
+
 	template <class ManagerClass>
 	static ManagerClass* GetManager(const UObject* WorldContextObject,TSubclassOf<ManagerClass> Class);
 	

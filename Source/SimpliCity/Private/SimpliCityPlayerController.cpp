@@ -10,8 +10,7 @@
 #include "Engine/World.h"
 
 ASimpliCityPlayerController::ASimpliCityPlayerController()
-  : CurrentInteractionMode(ESimpliCityInteractionMode::InteractionMode_None)
-  , CancelNextMouseUp(false)
+  : CancelNextMouseUp(false)
 {
 	bShowMouseCursor = true;
   bEnableClickEvents = true;
@@ -95,7 +94,8 @@ void ASimpliCityPlayerController::HandleInputEvents(bool blockingHit,FVector loc
   else if (blockingHit && IsInputKeyDown(EKeys::LeftMouseButton)) {
     if (WasInputKeyJustPressed(EKeys::LeftMouseButton))
       OnMouseClick.Broadcast(location);
-    else if (CancelNextMouseUp == false)
+    //else if (CancelNextMouseUp == false) why did i do this again??
+    else
       OnMouseHold.Broadcast(location);
   }
   else if (IsInputKeyDown(EKeys::MiddleMouseButton)) {
@@ -115,36 +115,6 @@ void ASimpliCityPlayerController::HandleInputEvents(bool blockingHit,FVector loc
   }
 }
 
-void ASimpliCityPlayerController::UpdateInteractionMode(ESimpliCityInteractionMode Mode,bool IsEnabled) {
-  if (Mode == ESimpliCityInteractionMode::InteractionMode_None)
-    return; // this shouldn't happen?
-
-  // Check if other build modes are active
-  if (CurrentInteractionMode != ESimpliCityInteractionMode::InteractionMode_None) {
-     // TOGGLE OFF
-    if (CurrentInteractionMode == Mode) {
-      OnInteractionMode.Broadcast(Mode,false);
-      ResetBindings();
-      CurrentInteractionMode = ESimpliCityInteractionMode::InteractionMode_None;
-    }
-    // 1. DISABLE OLD MODE
-    // 2. ENABLE NEW MODE
-    else {
-      OnInteractionMode.Broadcast(CurrentInteractionMode,false);
-      ResetBindings();
-      // hardcoding true because it shouldn't be false... we shouldn't be able to cancel a mode we're not even in
-      OnInteractionMode.Broadcast(Mode,true);
-      CurrentInteractionMode = Mode;
-    }
-  }
-  // no other build mode active so enable!
-  else {
-    // hardcoding true because <see 2 comments above>
-    OnInteractionMode.Broadcast(Mode,true);
-    CurrentInteractionMode = Mode;
-  }
-}
-
 void ASimpliCityPlayerController::SetupInputComponent() {
   // set up gameplay key bindings
   Super::SetupInputComponent();
@@ -153,12 +123,4 @@ void ASimpliCityPlayerController::SetupInputComponent() {
   InputComponent->BindAxis("RotationX");
   InputComponent->BindAxis("RotationY");
   InputComponent->BindAxis("Zoom");
-  //InputComponent->AddActionBinding(RoadModePressed);
-
-  //// workaround for using lambda with BindAction:
-  FInputActionBinding RoadModePressed("RoadMode",IE_Pressed);
-  RoadModePressed.ActionDelegate.GetDelegateForManualSet().BindLambda([this]() {
-    // set to true because if toggling off the function will handle it
-    UpdateInteractionMode(ESimpliCityInteractionMode::InteractionMode_Road, true);
-  });
 }

@@ -65,7 +65,7 @@ public:
 	AMarkerManager* AgentMarkerGraph;
 
 protected:
-	UPROPERTY(VisibleAnywhere,Category="SimpliCityRoadManager")
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="SimpliCityRoadManager")
 	bool BuildModeEnabled;
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="SimpliCityRoadManager")

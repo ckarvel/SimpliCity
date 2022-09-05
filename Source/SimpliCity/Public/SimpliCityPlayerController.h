@@ -16,7 +16,6 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMouseHold,FVector,HitLocation);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnArrowInput,FVector,HitLocation);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMiddleMouseClick,FVector,HitLocation);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMiddleMouseHold,FRotator,Delta);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInteractionMode,ESimpliCityInteractionMode, Mode, bool, IsEnabled);
 
 UCLASS(Blueprintable)
 class ASimpliCityPlayerController : public APlayerController
@@ -44,18 +43,12 @@ public:
 	FOnMiddleMouseClick OnMiddleMouseClick;
 	UPROPERTY(BlueprintAssignable,Category = "SimpliCityPlayerController")
 	FOnMiddleMouseHold OnMiddleMouseHold;
-	UPROPERTY(BlueprintAssignable,Category = "SimpliCityPlayerController")
-	FInteractionMode OnInteractionMode;
-
-	// ui will call this
-	UFUNCTION(BlueprintCallable, Category = "SimpliCityPlayerController")
-	void UpdateInteractionMode(ESimpliCityInteractionMode Mode, bool IsEnabled);
 
 	UFUNCTION(BlueprintCallable,Category = "SimpliCityPlayerController")
 	FVector GetHitLocation() const { return TickHitLocation; }
-	UFUNCTION(BlueprintPure,Category = "SimpliCityPlayerController")
-	TEnumAsByte<ESimpliCityInteractionMode> GetInteractionMode() const { return CurrentInteractionMode; }
 
+	UFUNCTION(BlueprintCallable,Category = "SimpliCityPlayerController")
+	void ResetBindings();
 
 	// Build User Interface
 	UPROPERTY(VisibleAnywhere,Category = "SimpliCityPlayerController")
@@ -65,13 +58,11 @@ protected:
 	void BeginPlay() override;
 	virtual void PlayerTick(float DeltaTime) override;
 	virtual void SetupInputComponent() override;
-	void ResetBindings();
+
 	void ClearBindings();
 
 	void HandleInputEvents(bool blockingHit,FVector location);
 
-	UPROPERTY(VisibleAnywhere,Category = "SimpliCityPlayerController")
-	TEnumAsByte<ESimpliCityInteractionMode> CurrentInteractionMode;
 	class ASimpliCityCharacter* ThePlayer;
 	FVector TickHitLocation;
 

@@ -18,6 +18,9 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="SimpliCityZoneManager")
+	bool BuildModeEnabled;
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

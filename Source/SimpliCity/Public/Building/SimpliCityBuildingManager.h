@@ -20,6 +20,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="SimpliCityBuildingManager")
+	bool BuildModeEnabled;
+
 public:
 	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildingManager")
 	class ASimpliCityBuildingBase* GetAnyBuildingWithSupply(ESimpliCityBuildingEnum Type);
