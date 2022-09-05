@@ -2,6 +2,7 @@
 
 #include "MarkerManager.h"
 #include "MarkerComponent.h"
+#include "MarkerPathInterface.h"
 
 AMarkerManager::AMarkerManager() {
   PrimaryActorTick.bCanEverTick = false;
@@ -108,5 +109,53 @@ void AMarkerManager::GetConnectionsFrom(UMarkerComponent* InMarker,TArray<UMarke
   TArray<UMarkerComponent*>* pSrc_Connections = MarkerConnList.Find(InMarker);
   if (pSrc_Connections != nullptr) {
     OutConnections = *pSrc_Connections;
+  }
+}
+
+void AMarkerManager::UpdateGraph(const TArray<UObject*>& PathObjects) {
+  AddMarkersToGraph(PathObjects);
+  for (UObject* Object : PathObjects) {
+    IMarkerPathInterface* MarkerPathObject = Cast<IMarkerPathInterface>(Object);
+    TArray<UObject*> Neighbors = MarkerPathObject->GetNeighborsOfSameType();
+    for (UObject* Neighbor : Neighbors) {
+      AddNeighborConnections(Object, Neighbor, true);
+      AddNeighborConnections(Object,Neighbor, false);
+    }
+  }
+}
+
+void AMarkerManager::AddMarkersToGraph(const TArray<UObject*>& PathObjects) {
+  ClearGraph();
+  for (UObject* Object : PathObjects) {
+    check(Object->Implements<UMarkerPathInterface>() == true);
+    IMarkerPathInterface* MarkerPathObject = Cast<IMarkerPathInterface>(Object);
+    AddMarkers(MarkerPathObject->GetPedestrianMarkers());
+    AddMarkers(MarkerPathObject->GetVehicleMarkers());
+  }
+}
+
+void AMarkerManager::AddNeighborConnections(UObject* ObjectA, UObject* ObjectB, bool isPedestrian) {
+  TArray<UMarkerComponent*> AMarkers;
+  TArray<UMarkerComponent*> BMarkers;
+  // get closest markers for each road object
+  IMarkerPathInterface* MarkerPathObjectA = Cast<IMarkerPathInterface>(ObjectA);
+  AMarkers = MarkerPathObjectA->GetClosestMarkerPair(ObjectB,isPedestrian);
+  IMarkerPathInterface* MarkerPathObjectB = Cast<IMarkerPathInterface>(ObjectB);
+  BMarkers = MarkerPathObjectB->GetClosestMarkerPair(ObjectA,isPedestrian);
+  
+  for (auto MarkerA : AMarkers) {
+    UMarkerComponent* MarkerB = GetClosestMarkerTo(MarkerA->GetComponentLocation(), BMarkers);
+    // verify lane dirs are equal
+    if (MarkerA->laneDirection != MarkerB->laneDirection) {
+      FVector AVect = MarkerPathObjectA->GetVehMarkerNormDirectionVector(MarkerA);
+      FVector BVect = MarkerPathObjectB->GetVehMarkerNormDirectionVector(MarkerB);
+      check(FMath::IsNearlyEqual(AVect.X,BVect.X,25) && FMath::IsNearlyEqual(AVect.Y,BVect.Y,25));
+    }
+    if (MarkerA->IsSourceMarker()) {
+      AddEdge(MarkerA, MarkerB, isPedestrian);
+    }
+    else {
+      AddEdge(MarkerB,MarkerA,isPedestrian);
+    }
   }
 }

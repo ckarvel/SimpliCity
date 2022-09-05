@@ -4,12 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Builder/SimpliCityBuildObjectBase.h"
+#include "SimpliCityObjectBase.h"
 #include "Building/SimpliCityBuildingEnum.h"
 #include "SimpliCityBuildingBase.generated.h"
 
 UCLASS(Blueprintable)
-class SIMPLICITY_API ASimpliCityBuildingBase : public ASimpliCityBuildObjectBase
+class SIMPLICITY_API ASimpliCityBuildingBase : public ASimpliCityObjectBase
 {
 	GENERATED_BODY()
 	

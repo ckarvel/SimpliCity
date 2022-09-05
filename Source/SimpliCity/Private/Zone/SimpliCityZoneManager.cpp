@@ -3,8 +3,7 @@
 
 #include "Zone/SimpliCityZoneManager.h"
 #include "Zone/SimpliCityZoneCell.h"
-#include "Builder/SimpliCityBuildManager.h"
-#include "Tools/SimpliCityFunctionLibrary.h"
+#include "SimpliCityFunctionLibrary.h"
 #include "GridManager.h"
 
 ASimpliCityZoneManager::ASimpliCityZoneManager()

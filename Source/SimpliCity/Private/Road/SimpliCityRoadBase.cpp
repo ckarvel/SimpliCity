@@ -5,14 +5,15 @@
 #include "Components/StaticMeshComponent.h"
 #include "MarkerComponent.h"
 #include "MarkerManager.h"
-#include "Tools/SimpliCityFunctionLibrary.h"
+#include "SimpliCityObjectManager.h"
+#include "SimpliCityFunctionLibrary.h"
 
 ASimpliCityRoadBase::ASimpliCityRoadBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RoadMesh"));
   SetRootComponent(StaticMeshComponent);
-	BuildType = ESimpliCityBuildObjectEnum::BuildObject_Road;
+	ObjectType = ESimpliCityObjectType::Road;
 }
 
 void ASimpliCityRoadBase::BeginPlay()
@@ -29,7 +30,7 @@ void ASimpliCityRoadBase::SetNewMaterial() {
 
 // only for use with vehicle markers
 // won't work with deadend/straight
-FVector ASimpliCityRoadBase::GetVehMarkerNormDirectionVector(UMarkerComponent* VMarker) {
+FVector ASimpliCityRoadBase::GetVehMarkerNormDirectionVector(UMarkerComponent* VMarker) const {
   check(VMarker != nullptr);
   FVector SrcLocation;
   FVector DestLocation;
@@ -60,7 +61,7 @@ FVector ASimpliCityRoadBase::GetVehMarkerNormDirectionVector(UMarkerComponent* V
   return NormDirectionVector;
 }
 
-TArray<UMarkerComponent*> ASimpliCityRoadBase::GetClosestMarkerPair(ASimpliCityRoadBase* NeighborRoad, bool IsPedestrian) {
+TArray<UMarkerComponent*> ASimpliCityRoadBase::GetClosestMarkerPair(UObject* NeighborRoad, bool IsPedestrian) const {
   TArray<UMarkerComponent*> ClosestMarkers;
   TArray<UMarkerComponent*> CandidateMarkers;
   AMarkerManager* MarkerMgr = USimpliCityFunctionLibrary::GetMarkerManager(this);
@@ -72,12 +73,28 @@ TArray<UMarkerComponent*> ASimpliCityRoadBase::GetClosestMarkerPair(ASimpliCityR
     CandidateMarkers = VehicleMarkers;
   }
 
-  UMarkerComponent* first = MarkerMgr->GetClosestMarkerTo(NeighborRoad->GetActorLocation(),CandidateMarkers);
-
-  CandidateMarkers.Remove(first);
-  UMarkerComponent* second = MarkerMgr->GetClosestMarkerTo(NeighborRoad->GetActorLocation(),CandidateMarkers);
-
-  ClosestMarkers.Add(first);
-  ClosestMarkers.Add(second);
+  if (ASimpliCityRoadBase* Road = Cast<ASimpliCityRoadBase>(NeighborRoad)) {
+    UMarkerComponent* first = MarkerMgr->GetClosestMarkerTo(Road->GetActorLocation(),CandidateMarkers);
+    CandidateMarkers.Remove(first);
+    UMarkerComponent* second = MarkerMgr->GetClosestMarkerTo(Road->GetActorLocation(),CandidateMarkers);
+    ClosestMarkers.Add(first);
+    ClosestMarkers.Add(second);
+  }
+  check(ClosestMarkers.Num() > 0);
   return ClosestMarkers;
+}
+
+TArray<UMarkerComponent*> ASimpliCityRoadBase::GetPedestrianMarkers() const {
+  return PedestrianMarkers;
+}
+
+TArray<UMarkerComponent*> ASimpliCityRoadBase::GetVehicleMarkers() const {
+  return VehicleMarkers;
+}
+
+TArray<UObject*> ASimpliCityRoadBase::GetNeighborsOfSameType() const {
+  TArray<UObject*> OutNeighbors;
+  TArray<ASimpliCityObjectBase*> Neighbors = USimpliCityFunctionLibrary::GetObjectManager(this)->GetNeighborsOfType(GetActorLocation(), ObjectType);
+  OutNeighbors.Append(Neighbors);
+  return OutNeighbors;
 }

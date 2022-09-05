@@ -27,6 +27,8 @@ protected:
   TMap<FVector,UMarkerComponent*> LocToMarkerMapping;
  
 public:
+  void UpdateGraph(const TArray<UObject*>& PathObjects);
+
   UFUNCTION(BlueprintCallable,Category = "MarkerManager")
   virtual TArray<FVector> GetNeighbors(FVector Location) const override;
 
@@ -62,4 +64,10 @@ public:
 protected:
   UFUNCTION(BlueprintCallable,Category = "MarkerManager")
   void ClearGraph();
+
+  UFUNCTION(BlueprintCallable,Category = "MarkerManager")
+  void AddMarkersToGraph(const TArray<UObject*>& PathObjects);
+
+  UFUNCTION(BlueprintCallable,Category = "MarkerManager")
+  void AddNeighborConnections(UObject* ObjectA,UObject* ObjectB,bool isPedestrian);
 };

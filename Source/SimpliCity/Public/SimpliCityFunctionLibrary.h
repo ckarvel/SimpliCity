@@ -28,7 +28,7 @@ public:
 	static class USimpliCityMainUI* GetMainUI(const UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary",meta=(WorldContext="WorldContextObject",UnsafeDuringActorConstruction="true"))
-	static class ASimpliCityBuildManager* GetBuildManager(const UObject* WorldContextObject);
+	static class ASimpliCityObjectManager* GetObjectManager(const UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary",meta=(WorldContext="WorldContextObject",UnsafeDuringActorConstruction="true"))
 	static class AMarkerManager* GetMarkerManager(const UObject* WorldContextObject);
@@ -38,6 +38,9 @@ public:
 
 	UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary",meta=(WorldContext="WorldContextObject",UnsafeDuringActorConstruction="true"))
 	static class ASimpliCityZoneManager* GetZoneManager(const UObject* WorldContextObject);
+
+	template <class ManagerClass>
+	static ManagerClass* GetManager(const UObject* WorldContextObject,TSubclassOf<ManagerClass> Class);
 	
 	UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary")
 	static bool AreLocationsEqual(FVector LocationA, FVector LocationB, float Tolerance=25);

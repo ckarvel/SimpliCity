@@ -6,7 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "SimpliCityRoadFixerComponent.generated.h"
 
-
+class ASimpliCityRoadBase;
 UCLASS( Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SIMPLICITY_API USimpliCityRoadFixerComponent : public UActorComponent
 {
@@ -21,8 +21,9 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	TSubclassOf<ASimpliCityRoadBase> GetDefaultRoadClass() { return RoadDeadEndClass; }
 	UPROPERTY(EditAnywhere,NoClear,BlueprintReadOnly,Category = "SimpliCityRoadFixer")
-	TSubclassOf<class ASimpliCityRoadBase> Road4WayClass;
+	TSubclassOf<ASimpliCityRoadBase> Road4WayClass;
 	UPROPERTY(EditAnywhere,NoClear,BlueprintReadOnly,Category = "SimpliCityRoadFixer")
 	TSubclassOf<ASimpliCityRoadBase> Road3WayClass;
 	UPROPERTY(EditAnywhere,NoClear,BlueprintReadOnly,Category = "SimpliCityRoadFixer")
@@ -32,14 +33,14 @@ public:
 	UPROPERTY(EditAnywhere,NoClear,BlueprintReadOnly,Category = "SimpliCityRoadFixer")
 	TSubclassOf<ASimpliCityRoadBase> RoadDeadEndClass;
 	UFUNCTION(BlueprintCallable,Category = "SimpliCityRoadFixer")
-	bool IsRoad(class ASimpliCityBuildObjectBase* obj);
+	bool IsRoad(class ASimpliCityObjectBase* obj);
 	UFUNCTION(BlueprintCallable,Category = "SimpliCityRoadFixer")
 	void GetRoadTypeAndRotationAtLocation(FVector location, TSubclassOf<class ASimpliCityRoadBase>& OutRoadClass, FRotator& OutRotation);
 
 private:
-	void Set4WayRoadInfo(FVector location,TArray<ASimpliCityBuildObjectBase*> neighbors,TSubclassOf<ASimpliCityRoadBase>& OutRoadClass,FRotator& OutRotation);
-	void Set3WayRoadInfo(FVector location,TArray<ASimpliCityBuildObjectBase*> neighbors,TSubclassOf<ASimpliCityRoadBase>& OutRoadClass,FRotator& OutRotation);
-	bool SetStraightRoadInfo(FVector location,TArray<ASimpliCityBuildObjectBase*> neighbors,TSubclassOf<ASimpliCityRoadBase>& OutRoadClass,FRotator& OutRotation);
-	void SetCornerWayRoadInfo(FVector location,TArray<ASimpliCityBuildObjectBase*> neighbors,TSubclassOf<ASimpliCityRoadBase>& OutRoadClass,FRotator& OutRotation);
-	void SetDeadEndRoadInfo(FVector location,TArray<ASimpliCityBuildObjectBase*> neighbors,TSubclassOf<ASimpliCityRoadBase>& OutRoadClass,FRotator& OutRotation);
+	void Set4WayRoadInfo(FVector location,TArray<ASimpliCityObjectBase*> neighbors,TSubclassOf<ASimpliCityRoadBase>& OutRoadClass,FRotator& OutRotation);
+	void Set3WayRoadInfo(FVector location,TArray<ASimpliCityObjectBase*> neighbors,TSubclassOf<ASimpliCityRoadBase>& OutRoadClass,FRotator& OutRotation);
+	bool SetStraightRoadInfo(FVector location,TArray<ASimpliCityObjectBase*> neighbors,TSubclassOf<ASimpliCityRoadBase>& OutRoadClass,FRotator& OutRotation);
+	void SetCornerWayRoadInfo(FVector location,TArray<ASimpliCityObjectBase*> neighbors,TSubclassOf<ASimpliCityRoadBase>& OutRoadClass,FRotator& OutRotation);
+	void SetDeadEndRoadInfo(FVector location,TArray<ASimpliCityObjectBase*> neighbors,TSubclassOf<ASimpliCityRoadBase>& OutRoadClass,FRotator& OutRotation);
 };

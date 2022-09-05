@@ -3,7 +3,7 @@
 #include "SimpliCityPlayerController.h"
 #include "SimpliCityCharacter.h"
 #include "SimpliCityMainUI.h"
-#include "Tools/SimpliCityUtils.h"
+#include "Utils/SimpliCityUtils.h"
 
 #include "GameFramework/Pawn.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"

@@ -30,7 +30,7 @@ void AGridManager::LocationToTile(FVector Location,int& OutRow,int& OutCol) cons
   FVector Origin = GetActorLocation();
   float X = (Location.X - Origin.X) / GetGridHeight();
   OutRow = FMath::Clamp(NumRows * X,0,(NumRows-1));
-  float Y =  (Location.Y - Origin.Y) / GetGridWidth();
+  float Y = (Location.Y - Origin.Y) / GetGridWidth();
   OutCol = FMath::Clamp(NumCols * Y,0,(NumCols-1));
 }
 
@@ -89,7 +89,7 @@ bool AGridManager::IsTileValid(int Row,int Col) const {
 }
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-void AGridManager::GetNeighborIndexes(int32 Index,TArray<int32>& Neighbors) const {
+void AGridManager::GetValidNeighborIndexes(int32 Index,TArray<int32>& Neighbors) const {
   Neighbors.Empty();
   if (IsIndexValid(Index) == false) {
     //UtilityLibrary::Warning("Location invalid" + FString(__FUNCTION__));
@@ -115,7 +115,7 @@ void AGridManager::GetNeighborIndexes(int32 Index,TArray<int32>& Neighbors) cons
   return;
 }
 
-void AGridManager::GetNeighborIndexes_Unsafe(int32 Index,TArray<int32>& Neighbors) const {
+void AGridManager::GetAllNeighborIndexes(int32 Index,TArray<int32>& Neighbors) const {
   if (IsIndexValid(Index) == false) {
     //UtilityLibrary::Warning("Location invalid" + FString(__FUNCTION__));
     return;
@@ -152,7 +152,7 @@ TArray<FVector> AGridManager::GetNeighbors(FVector Location) const {
     return NeighborLocs;
   }
   int32 idx = LocationToIndex(Location);
-  GetNeighborIndexes(idx,NeighborIdxs);
+  GetValidNeighborIndexes(idx,NeighborIdxs);
   
   // convert indexes to locations
   for (auto nIdx : NeighborIdxs)     {

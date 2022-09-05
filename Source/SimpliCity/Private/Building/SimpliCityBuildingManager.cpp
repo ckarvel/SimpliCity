@@ -3,8 +3,8 @@
 
 #include "Building/SimpliCityBuildingManager.h"
 #include "Building/SimpliCityBuildingBase.h"
-#include "Tools/SimpliCityFunctionLibrary.h"
-#include "Tools/SimpliCityUtils.h"
+#include "SimpliCityFunctionLibrary.h"
+#include "Utils/SimpliCityUtils.h"
 
 
 // Sets default values

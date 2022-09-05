@@ -7,6 +7,11 @@
 #include "PathFinderInterface.h"
 #include "SimpliCityRoadManager.generated.h"
 
+class AMarkerManager;
+class ASimpliCityObjectBase;
+class ASimpliCityRoadBase;
+class USimpliCityRoadFixerComponent;
+
 UCLASS(Blueprintable)
 class SIMPLICITY_API ASimpliCityRoadManager : public AActor, public IPathFinderInterface
 {
@@ -20,12 +25,26 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="SimpliCityRoadManager")
-	TArray<class ASimpliCityRoadBase*> RoadList;
+	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
+  void StartPlacingRoad(FVector Location);
+	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
+	void UpdatePath(FVector Location);
+	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
+	void FinishBuildingPath();
+	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
+	void CancelBuildingPath();
+
+	void CreateTemporaryRoadsAtLocations(const TArray<FVector>& Locations);
+	void DestroyTemporaryRoadsAtLocations(const TArray<FVector> Locations);
+	void DestroyAllTemporaryRoads();
+	void ConvertAllTemporaryToPermanent();
 
 public:
-	void FixRoad(class ASimpliCityBuildObjectBase* Road);
-	void SwapRoads(ASimpliCityBuildObjectBase* OldRoad,ASimpliCityBuildObjectBase* NewRoad);
+	UFUNCTION(BlueprintCallable,Category = "SimpliCityRoadManager")
+	void UpdateBuildMode(bool IsEnabled);
+
+	void FixRoad(ASimpliCityObjectBase* Road);
+	void SwapRoads(ASimpliCityObjectBase* OldRoad,ASimpliCityObjectBase* NewRoad);
 
 	UFUNCTION(BlueprintCallable,Category = "SimpliCityRoadManager")
 	virtual TArray<FVector> GetNeighbors(FVector Location) const override;
@@ -34,14 +53,29 @@ public:
 	virtual float GetCost(FVector Location) const override { return 1.0; } // todo
 
 	UFUNCTION(BlueprintCallable,Category="SimpliCityRoadManager")
-	void FixNeighborsOfRoad(ASimpliCityBuildObjectBase* Road);
+	void FixNeighborsAtLocation(FVector Location);
 
 	UFUNCTION(BlueprintCallable,Category="SimpliCityRoadManager")
-	void FixRoadAndNeighbors(ASimpliCityBuildObjectBase* Road);
+	void FixRoadAndNeighbors(ASimpliCityObjectBase* Road);
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="SimpliCityRoadManager")
-	class USimpliCityRoadFixerComponent* RoadFixerComponent;
+	USimpliCityRoadFixerComponent* RoadFixerComponent;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="SimpliCityRoadManager")
-	class AMarkerManager* AgentMarkerGraph;
+	AMarkerManager* AgentMarkerGraph;
+
+protected:
+	UPROPERTY(VisibleAnywhere,Category="SimpliCityRoadManager")
+	bool BuildModeEnabled;
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="SimpliCityRoadManager")
+	TMap<FVector,ASimpliCityRoadBase*> TemporaryRoadLocMap;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="SimpliCityRoadManager")
+	TArray<ASimpliCityRoadBase*> PermanentRoadList;
+
+private:
+	FVector startLocation;
+	FVector lastLocation; // keep track of last tile origin
+	TSet<FVector> oldPath;
 };

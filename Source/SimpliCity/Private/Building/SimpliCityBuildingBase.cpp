@@ -9,14 +9,14 @@
 #include "MarkerComponent.h"
 #include "MarkerManager.h"
 
-#include "Tools/SimpliCityFunctionLibrary.h"
+#include "SimpliCityFunctionLibrary.h"
 
 ASimpliCityBuildingBase::ASimpliCityBuildingBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BuildingMesh"));
 	SetRootComponent(StaticMeshComponent);
-	BuildType = ESimpliCityBuildObjectEnum::BuildObject_Building;
+	ObjectType = ESimpliCityObjectType::Building;
 
 }
 

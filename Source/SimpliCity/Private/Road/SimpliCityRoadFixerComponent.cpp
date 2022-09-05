@@ -2,15 +2,12 @@
 
 
 #include "Road/SimpliCityRoadFixerComponent.h"
-
-#include "Builder/SimpliCityBuildManager.h"
-#include "Builder/SimpliCityBuildObjectBase.h"
-#include "Builder/SimpliCityBuildObjectEnum.h"
-
-#include "Tools/SimpliCityFunctionLibrary.h"
-#include "Tools/SimpliCityUtils.h"
-
+#include "SimpliCityObjectBase.h"
+#include "SimpliCityObjectManager.h"
+#include "SimpliCityFunctionLibrary.h"
 #include "GridManager.h"
+
+#include "Utils/SimpliCityUtils.h"
 
 // Sets default values for this component's properties
 USimpliCityRoadFixerComponent::USimpliCityRoadFixerComponent()
@@ -25,11 +22,11 @@ void USimpliCityRoadFixerComponent::BeginPlay()
 }
 
 void USimpliCityRoadFixerComponent::GetRoadTypeAndRotationAtLocation(FVector location, TSubclassOf<ASimpliCityRoadBase>& OutRoadClass,FRotator& OutRotation) {
-	TArray<ASimpliCityBuildObjectBase*> neighborRoads = USimpliCityFunctionLibrary::GetBuildManager(this)->GetAllNeighbors_Unsafe(location);
+	TArray<ASimpliCityObjectBase*> neighborRoads = USimpliCityFunctionLibrary::GetObjectManager(this)->GetAllNeighbors(location);
 	OutRotation = FRotator(0,0,0); // zero it out just in case
 	int roadCount = 0;
 	for (auto road : neighborRoads) {
-		if (road != nullptr && road->Type() == ESimpliCityBuildObjectEnum::BuildObject_Road) {
+		if (road != nullptr && road->Type() == ESimpliCityObjectType::Road) {
 				roadCount +=1;
 		}
 	}
@@ -45,15 +42,15 @@ void USimpliCityRoadFixerComponent::GetRoadTypeAndRotationAtLocation(FVector loc
 		SetDeadEndRoadInfo(location,neighborRoads,OutRoadClass,OutRotation);
 }
 
-void USimpliCityRoadFixerComponent::Set4WayRoadInfo(FVector location, TArray<ASimpliCityBuildObjectBase*> neighbors, TSubclassOf<ASimpliCityRoadBase>& OutRoadClass,FRotator& OutRotation) {
+void USimpliCityRoadFixerComponent::Set4WayRoadInfo(FVector location, TArray<ASimpliCityObjectBase*> neighbors, TSubclassOf<ASimpliCityRoadBase>& OutRoadClass,FRotator& OutRotation) {
 	//TRACE_SCREENMSG_PRINTF("Set4WayRoadInfo");
 	OutRoadClass = Road4WayClass;
 	OutRotation.Yaw = 0.0;
 }
 
-bool USimpliCityRoadFixerComponent::IsRoad(ASimpliCityBuildObjectBase* obj) {
+bool USimpliCityRoadFixerComponent::IsRoad(ASimpliCityObjectBase* obj) {
 	bool isRoad = false;
-	if (obj != nullptr && obj->Type() == ESimpliCityBuildObjectEnum::BuildObject_Road)
+	if (obj != nullptr && obj->Type() == ESimpliCityObjectType::Road)
 		isRoad = true;
 	return isRoad;
 }
@@ -62,7 +59,7 @@ bool USimpliCityRoadFixerComponent::IsRoad(ASimpliCityBuildObjectBase* obj) {
 // 90 - left, top, bottom (0, 2, 3)
 // 180 - left, right, top (0, 1, 2)
 // 270 - right, top, bottom (1, 2, 3)
-void USimpliCityRoadFixerComponent::Set3WayRoadInfo(FVector location,TArray<ASimpliCityBuildObjectBase*> neighbors,TSubclassOf<ASimpliCityRoadBase>& OutRoadClass,FRotator& OutRotation) {
+void USimpliCityRoadFixerComponent::Set3WayRoadInfo(FVector location,TArray<ASimpliCityObjectBase*> neighbors,TSubclassOf<ASimpliCityRoadBase>& OutRoadClass,FRotator& OutRotation) {
 	//TRACE_SCREENMSG_PRINTF("Set3WayRoadInfo");
 	OutRoadClass = Road3WayClass;
 
@@ -78,7 +75,7 @@ void USimpliCityRoadFixerComponent::Set3WayRoadInfo(FVector location,TArray<ASim
 
 // 0 - top, bottom (2, 3)
 // 90 - left, right (0, 1)
-bool USimpliCityRoadFixerComponent::SetStraightRoadInfo(FVector location,TArray<ASimpliCityBuildObjectBase*> neighbors,TSubclassOf<ASimpliCityRoadBase>& OutRoadClass,FRotator& OutRotation) {
+bool USimpliCityRoadFixerComponent::SetStraightRoadInfo(FVector location,TArray<ASimpliCityObjectBase*> neighbors,TSubclassOf<ASimpliCityRoadBase>& OutRoadClass,FRotator& OutRotation) {
 	//TRACE_SCREENMSG_PRINTF("SetStraightRoadInfo");
 	bool IsStraightRoad = false;
 
@@ -101,7 +98,7 @@ bool USimpliCityRoadFixerComponent::SetStraightRoadInfo(FVector location,TArray<
 // 90 - right, bottom (1, 3)
 // 180 - left, bottom (0, 3)
 // 270 - left, top (0, 2)
-void USimpliCityRoadFixerComponent::SetCornerWayRoadInfo(FVector location,TArray<ASimpliCityBuildObjectBase*> neighbors,TSubclassOf<ASimpliCityRoadBase>& OutRoadClass,FRotator& OutRotation) {
+void USimpliCityRoadFixerComponent::SetCornerWayRoadInfo(FVector location,TArray<ASimpliCityObjectBase*> neighbors,TSubclassOf<ASimpliCityRoadBase>& OutRoadClass,FRotator& OutRotation) {
 	//TRACE_SCREENMSG_PRINTF("SetCornerWayRoadInfo");
 	OutRoadClass = RoadCornerClass;
 
@@ -119,7 +116,7 @@ void USimpliCityRoadFixerComponent::SetCornerWayRoadInfo(FVector location,TArray
 // 90 - left (0)
 // 180 - top (2)
 // 270 - right (1)
-void USimpliCityRoadFixerComponent::SetDeadEndRoadInfo(FVector location,TArray<ASimpliCityBuildObjectBase*> neighbors,TSubclassOf<ASimpliCityRoadBase>& OutRoadClass,FRotator& OutRotation) {
+void USimpliCityRoadFixerComponent::SetDeadEndRoadInfo(FVector location,TArray<ASimpliCityObjectBase*> neighbors,TSubclassOf<ASimpliCityRoadBase>& OutRoadClass,FRotator& OutRotation) {
 	//TRACE_SCREENMSG_PRINTF("SetDeadEndRoadInfo");
 	OutRoadClass = RoadDeadEndClass;
 	if (IsRoad(neighbors[3]))

@@ -1,8 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "SimpliCityCharacter.h"
-#include "Tools/SimpliCityUtils.h"
-#include "Tools/SimpliCityFunctionLibrary.h"
+#include "Utils/SimpliCityUtils.h"
+#include "SimpliCityFunctionLibrary.h"
 
 #include "UObject/ConstructorHelpers.h"
 #include "Camera/CameraComponent.h"

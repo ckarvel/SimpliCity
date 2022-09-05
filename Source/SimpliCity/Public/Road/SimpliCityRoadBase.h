@@ -4,11 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Builder/SimpliCityBuildObjectBase.h"
+#include "SimpliCityObjectBase.h"
+#include "MarkerPathInterface.h"
 #include "SimpliCityRoadBase.generated.h"
 
+class UMarkerComponent;
+class UStaticMeshComponent;
+
 UCLASS(Blueprintable)
-class SIMPLICITY_API ASimpliCityRoadBase : public ASimpliCityBuildObjectBase
+class SIMPLICITY_API ASimpliCityRoadBase : public ASimpliCityObjectBase, public IMarkerPathInterface
 {
 	GENERATED_BODY()
 	
@@ -17,16 +21,27 @@ public:
 	ASimpliCityRoadBase();
 
 	UFUNCTION(BlueprintCallable,Category="SimpliCityRoadBase")
-	FORCEINLINE class UStaticMeshComponent* GetStaticMeshComponent() const { return StaticMeshComponent; }
+	FORCEINLINE UStaticMeshComponent* GetStaticMeshComponent() const { return StaticMeshComponent; }
 
 	UFUNCTION(BlueprintCallable,Category="SimpliCityRoadBase")
 	void SetNewMaterial() override;
 
+	///////////////////////////////////// UMarkerPathInterface /////////////////////////////////////
 	UFUNCTION(BlueprintCallable,Category="SimpliCityRoadBase")
-	FVector GetVehMarkerNormDirectionVector(class UMarkerComponent* VMarker);
+	TArray<UMarkerComponent*> GetClosestMarkerPair(UObject* NeighborRoad, bool IsPedestrian) const override;
 
 	UFUNCTION(BlueprintCallable,Category="SimpliCityRoadBase")
-	TArray<UMarkerComponent*> GetClosestMarkerPair(ASimpliCityRoadBase* NeighborRoad, bool IsPedestrian);
+	TArray<UMarkerComponent*> GetPedestrianMarkers() const override;
+
+	UFUNCTION(BlueprintCallable,Category="SimpliCityRoadBase")
+	TArray<UMarkerComponent*> GetVehicleMarkers() const override;
+
+	UFUNCTION(BlueprintCallable,Category="SimpliCityRoadBase")
+	TArray<UObject*> GetNeighborsOfSameType() const override;
+
+	UFUNCTION(BlueprintCallable,Category="SimpliCityRoadBase")
+	FVector GetVehMarkerNormDirectionVector(UMarkerComponent* VMarker) const override;
+	///////////////////////////////////// UMarkerPathInterface /////////////////////////////////////
 
 protected:
 	// Called when the game starts or when spawned

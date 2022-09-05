@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Tools/SimpliCityFunctionLibrary.h"
+#include "SimpliCityFunctionLibrary.h"
 
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -11,10 +11,10 @@
 #include "MyAStarPathFinder.h"
 
 #include "SimpliCityGameInstance.h"
+#include "SimpliCityObjectManager.h"
 #include "SimpliCityPlayerController.h"
 #include "SimpliCityMainUI.h"
 
-#include "Builder/SimpliCityBuildManager.h"
 #include "Road/SimpliCityRoadManager.h"
 #include "Zone/SimpliCityZoneManager.h"
 
@@ -22,32 +22,62 @@ AGridManager* USimpliCityFunctionLibrary::GetGridManager(const UObject* WorldCon
   //USimpliCityGameInstance* gameInst = Cast<USimpliCityGameInstance>(UGameplayStatics::GetGameInstance(WorldContextObject));
   //check(gameInst != nullptr)
   //return gameInst->GetGridManager();
-  return Cast<AGridManager>(UGameplayStatics::GetActorOfClass(WorldContextObject,AGridManager::StaticClass()));
+  auto mgr = Cast<AGridManager>(UGameplayStatics::GetActorOfClass(WorldContextObject,AGridManager::StaticClass()));
+  check(mgr != nullptr);
+  return mgr;
 }
 
 ASimpliCityPlayerController* USimpliCityFunctionLibrary::GetPlayerController(const UObject* WorldContextObject) {
-  return Cast<ASimpliCityPlayerController>(UGameplayStatics::GetPlayerController(WorldContextObject, 0));
+  auto mgr = Cast<ASimpliCityPlayerController>(UGameplayStatics::GetPlayerController(WorldContextObject, 0));
+  check(mgr != nullptr);
+  return mgr;
 }
 
 USimpliCityMainUI* USimpliCityFunctionLibrary::GetMainUI(const UObject* WorldContextObject) {
   ASimpliCityPlayerController* controller = GetPlayerController(WorldContextObject);
-  return controller->TheMainUI;
+  auto mui = controller->TheMainUI;
+  check(mui != nullptr);
+  return mui;
 }
 
-ASimpliCityBuildManager* USimpliCityFunctionLibrary::GetBuildManager(const UObject* WorldContextObject) {
-  return Cast<ASimpliCityBuildManager>(UGameplayStatics::GetActorOfClass(WorldContextObject,ASimpliCityBuildManager::StaticClass()));
+ASimpliCityObjectManager* USimpliCityFunctionLibrary::GetObjectManager(const UObject* WorldContextObject) {
+  auto mgr = Cast<ASimpliCityObjectManager>(UGameplayStatics::GetActorOfClass(WorldContextObject,ASimpliCityObjectManager::StaticClass()));
+  check(mgr != nullptr);
+  return mgr;
 }
 
 AMarkerManager* USimpliCityFunctionLibrary::GetMarkerManager(const UObject* WorldContextObject) {
-  return Cast<AMarkerManager>(UGameplayStatics::GetActorOfClass(WorldContextObject,AMarkerManager::StaticClass()));
+  auto mgr = Cast<AMarkerManager>(UGameplayStatics::GetActorOfClass(WorldContextObject,AMarkerManager::StaticClass()));
+  check(mgr != nullptr);
+  return mgr;
 }
+
+//ASimpliCityRoadManager* USimpliCityFunctionLibrary::GetRoadManager(const UObject* WorldContextObject) {
+//  auto mgr = Cast<ASimpliCityRoadManager>(UGameplayStatics::GetActorOfClass(WorldContextObject,ASimpliCityRoadManager::StaticClass()));
+//  check(mgr != nullptr);
+//  return mgr;
+//}
 
 ASimpliCityRoadManager* USimpliCityFunctionLibrary::GetRoadManager(const UObject* WorldContextObject) {
-  return Cast<ASimpliCityRoadManager>(UGameplayStatics::GetActorOfClass(WorldContextObject,ASimpliCityRoadManager::StaticClass()));
+  return GetManager<ASimpliCityRoadManager>(WorldContextObject,ASimpliCityRoadManager::StaticClass());
 }
 
+
+//ASimpliCityZoneManager* USimpliCityFunctionLibrary::GetZoneManager(const UObject* WorldContextObject) {
+//  auto mgr = Cast<ASimpliCityZoneManager>(UGameplayStatics::GetActorOfClass(WorldContextObject,ASimpliCityZoneManager::StaticClass()));
+//  check(mgr != nullptr);
+//  return mgr;
+//}
+
 ASimpliCityZoneManager* USimpliCityFunctionLibrary::GetZoneManager(const UObject* WorldContextObject) {
-  return Cast<ASimpliCityZoneManager>(UGameplayStatics::GetActorOfClass(WorldContextObject,ASimpliCityZoneManager::StaticClass()));
+  return GetManager<ASimpliCityZoneManager>(WorldContextObject,ASimpliCityZoneManager::StaticClass());
+}
+
+template <class ManagerClass>
+ManagerClass* USimpliCityFunctionLibrary::GetManager(const UObject* WorldContextObject, TSubclassOf<ManagerClass> Class) {
+  ManagerClass* mgr = Cast<ManagerClass>(UGameplayStatics::GetActorOfClass(WorldContextObject,Class));
+  check(mgr != nullptr);
+  return mgr;
 }
 
 bool USimpliCityFunctionLibrary::AreLocationsEqual(FVector LocationA, FVector LocationB, float Tolerance) {
