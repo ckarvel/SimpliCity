@@ -115,10 +115,10 @@ void USimpliCityFunctionLibrary::CalculateSelectionRectangle(FVector Start,FVect
   float maxY = FMath::Max(Start.Y,End.Y);
 
   TArray<FVector> Vertices = {
-    FVector(minX, minY, 50),
-    FVector(minX, maxY, 50),
-    FVector(maxX, minY, 50),
-    FVector(maxX, maxY, 50)
+    FVector(minX, minY, 100),
+    FVector(minX, maxY, 100),
+    FVector(maxX, minY, 100),
+    FVector(maxX, maxY, 100)
   };
   OutVertices = Vertices;
 
