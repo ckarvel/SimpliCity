@@ -15,9 +15,9 @@ public:
 	ASimpliCityGameMode();
 	virtual void StartPlay() override;
 
-	UPROPERTY(EditAnywhere,NoClear,BlueprintReadOnly,Category = "SimpliCityGameMode")
-	TSubclassOf<class AGridManager> GridManagerClass;
+	//UPROPERTY(EditAnywhere,NoClear,BlueprintReadOnly,Category = "SimpliCityGameMode")
+	//TSubclassOf<class AGridManager> GridManagerClass;
 
-	UPROPERTY(EditAnywhere,NoClear,BlueprintReadOnly,Category = "SimpliCityGameMode")
-	TSubclassOf<class USimpliCityMainUI> BuildUIClass;
+	/*UPROPERTY(EditAnywhere,NoClear,BlueprintReadOnly,Category = "SimpliCityGameMode")
+	TSubclassOf<class USimpliCityMainUI> BuildUIClass;*/
 };

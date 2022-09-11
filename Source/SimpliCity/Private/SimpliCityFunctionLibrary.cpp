@@ -5,6 +5,7 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 
 #include "GridManager.h"
 #include "MarkerManager.h"
@@ -25,11 +26,11 @@ ASimpliCityPlayerController* USimpliCityFunctionLibrary::GetPlayerController(con
   return mgr;
 }
 
-USimpliCityMainUI* USimpliCityFunctionLibrary::GetMainUI(const UObject* WorldContextObject) {
-  ASimpliCityPlayerController* controller = GetPlayerController(WorldContextObject);
-  auto mui = controller->TheMainUI;
-  check(mui != nullptr);
-  return mui;
+USimpliCityMainUI* USimpliCityFunctionLibrary::GetMainUI(UObject* WorldContextObject) {
+  TArray<UUserWidget*> FoundWidgets;
+  UWidgetBlueprintLibrary::GetAllWidgetsOfClass(WorldContextObject, FoundWidgets, USimpliCityMainUI::StaticClass());
+  check(FoundWidgets.Num() > 0);
+  return Cast<USimpliCityMainUI>(FoundWidgets[0]);
 }
 
 AGridManager* USimpliCityFunctionLibrary::GetGridManager(const UObject* WorldContextObject) {

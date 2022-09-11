@@ -25,7 +25,7 @@ public:
 	static class ASimpliCityPlayerController* GetPlayerController(const UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary",meta=(WorldContext="WorldContextObject",UnsafeDuringActorConstruction="true"))
-	static class USimpliCityMainUI* GetMainUI(const UObject* WorldContextObject);
+	static class USimpliCityMainUI* GetMainUI(UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary",meta=(WorldContext="WorldContextObject",UnsafeDuringActorConstruction="true"))
 	static class ASimpliCityObjectManager* GetObjectManager(const UObject* WorldContextObject);

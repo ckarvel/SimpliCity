@@ -3,5 +3,4 @@
 
 #include "SimpliCityGameInstance.h"
 #include "SimpliCityGameMode.h"
-#include "GridManager.h"
 #include "Kismet/GameplayStatics.h"

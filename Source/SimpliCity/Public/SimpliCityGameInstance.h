@@ -17,9 +17,9 @@ class SIMPLICITY_API USimpliCityGameInstance : public UGameInstance
 
 public:
 
-	AGridManager* GetGridManager() const { return GridManager; }
-protected:
-	AGridManager* GridManager;
-
-	friend class ASimpliCityGameMode;
+//	AGridManager* GetGridManager() const { return GridManager; }
+//protected:
+//	AGridManager* GridManager;
+//
+//	friend class ASimpliCityGameMode;
 };

@@ -51,8 +51,8 @@ public:
 	void ResetBindings();
 
 	// Build User Interface
-	UPROPERTY(VisibleAnywhere,Category = "SimpliCityPlayerController")
-	class USimpliCityMainUI* TheMainUI;
+	//UPROPERTY(VisibleAnywhere,Category = "SimpliCityPlayerController")
+	//class USimpliCityMainUI* TheMainUI;
 
 protected:
 	void BeginPlay() override;
