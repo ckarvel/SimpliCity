@@ -25,7 +25,7 @@ ASimpliCityCharacter::ASimpliCityCharacter()
   PlayerCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
   SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
   FAttachmentTransformRules AttachmentRules(EAttachmentRule::KeepRelative,true);
-  PlayerCameraComponent->AttachToComponent(SpringArmComponent,AttachmentRules);
+  PlayerCameraComponent->SetupAttachment(SpringArmComponent);
   SetRootComponent(SpringArmComponent);
 }
 

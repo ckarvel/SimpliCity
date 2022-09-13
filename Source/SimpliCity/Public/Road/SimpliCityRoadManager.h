@@ -34,9 +34,11 @@ protected:
 	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
 	void CancelBuildingPath();
 
+	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
 	void CreateTemporaryRoadsAtLocations(const TArray<FVector>& Locations);
 	void DestroyTemporaryRoadsAtLocations(const TArray<FVector> Locations);
 	void DestroyAllTemporaryRoads();
+	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
 	void ConvertAllTemporaryToPermanent();
 
 public:

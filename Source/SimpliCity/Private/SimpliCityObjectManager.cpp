@@ -7,6 +7,7 @@
 #include "GridManager.h"
 
 ASimpliCityObjectManager::ASimpliCityObjectManager()
+	: bInitialized(false)
 { 
 	PrimaryActorTick.bCanEverTick = false;
 }
@@ -19,7 +20,10 @@ void ASimpliCityObjectManager::BeginPlay()
 }
 
 void ASimpliCityObjectManager::InitializeArray(int NumElements) {
-	ObjectGrid.Init(nullptr,NumElements);
+	if (bInitialized == false) {
+		ObjectGrid.Init(nullptr,NumElements);
+		bInitialized = true;
+	}
 }
 
 bool ASimpliCityObjectManager::DoesObjectExistHere(FVector Location) {

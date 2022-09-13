@@ -44,10 +44,16 @@ public:
 	UFUNCTION(BlueprintCallable,Category="SimpliCityObjectManager")
 	TArray<ASimpliCityObjectBase*> GetAllNeighbors(FVector Location);
 
+	UFUNCTION(BlueprintCallable,Category="SimpliCityObjectManager")
+	bool IsInitialized() { return bInitialized; }
+
 protected:
 	virtual void BeginPlay() override;
 
 public:
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = "SimpliCityObjectManager")
 	TArray<ASimpliCityObjectBase*> ObjectGrid;
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "SimpliCityObjectManager")
+	bool bInitialized;
 };

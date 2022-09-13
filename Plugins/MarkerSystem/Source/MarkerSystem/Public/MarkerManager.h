@@ -27,6 +27,7 @@ protected:
   TMap<FVector,UMarkerComponent*> LocToMarkerMapping;
  
 public:
+  UFUNCTION(BlueprintCallable,Category = "MarkerManager")
   void UpdateGraph(const TArray<UObject*>& PathObjects);
 
   UFUNCTION(BlueprintCallable,Category = "MarkerManager")
