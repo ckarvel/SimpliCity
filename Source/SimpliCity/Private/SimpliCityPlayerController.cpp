@@ -10,7 +10,6 @@
 #include "Engine/World.h"
 
 ASimpliCityPlayerController::ASimpliCityPlayerController()
-  : CancelNextMouseUp(false)
 {
 	bShowMouseCursor = true;
   bEnableClickEvents = true;
@@ -75,7 +74,6 @@ void ASimpliCityPlayerController::HandleInputEvents(bool blockingHit,FVector loc
   // right-click or esc for cancel
   if (WasInputKeyJustPressed(EKeys::RightMouseButton) || WasInputKeyJustPressed(EKeys::Escape)) {
     OnMouseCancel.Broadcast();
-    CancelNextMouseUp = true;
     return;
   }
 
@@ -83,18 +81,14 @@ void ASimpliCityPlayerController::HandleInputEvents(bool blockingHit,FVector loc
 
   if (WasInputKeyJustReleased(EKeys::LeftMouseButton)
     || WasInputKeyJustReleased(EKeys::MiddleMouseButton)) {
-    if (CancelNextMouseUp == false) {
-      OnMouseUp.Broadcast();
-      FInputModeGameAndUI inputMode;
-      inputMode.SetHideCursorDuringCapture(false);
-      SetInputMode(inputMode);
-    }
-    CancelNextMouseUp = false;
+    OnMouseUp.Broadcast();
+    FInputModeGameAndUI inputMode;
+    inputMode.SetHideCursorDuringCapture(false);
+    SetInputMode(inputMode);
   }
   else if (blockingHit && IsInputKeyDown(EKeys::LeftMouseButton)) {
     if (WasInputKeyJustPressed(EKeys::LeftMouseButton))
       OnMouseClick.Broadcast(location);
-    //else if (CancelNextMouseUp == false) why did i do this again??
     else
       OnMouseHold.Broadcast(location);
   }

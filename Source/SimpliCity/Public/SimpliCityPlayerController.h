@@ -65,7 +65,4 @@ protected:
 
 	class ASimpliCityCharacter* ThePlayer;
 	FVector TickHitLocation;
-
-	// if left-holding while right-cancel, then left-release, it doesnt count as "mouse up"
-	bool CancelNextMouseUp;
 };

@@ -109,7 +109,7 @@ void USimpliCityFunctionLibrary::CalculateSelectionRectangle(FVector Start,FVect
   OutVertices = Vertices;
 
   OutExtents.X = FVector::Distance(Vertices[0],Vertices[2]) / 2.0;
-  OutExtents.Y = FVector::Distance(Vertices[0],Vertices[3]) / 2.0;
+  OutExtents.Y = FVector::Distance(Vertices[0],Vertices[1]) / 2.0;
   OutExtents.Z = 50.0; //arbitrary
 
   // order of vertices we made in the list above
