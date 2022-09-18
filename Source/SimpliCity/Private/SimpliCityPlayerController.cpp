@@ -73,6 +73,7 @@ void ASimpliCityPlayerController::HandleInputEvents(bool blockingHit,FVector loc
 
   // right-click or esc for cancel
   if (WasInputKeyJustPressed(EKeys::RightMouseButton) || WasInputKeyJustPressed(EKeys::Escape)) {
+    OnMouseHold.Clear(); // because someone can be holding while cancelling
     OnMouseCancel.Broadcast();
     return;
   }
