@@ -14,7 +14,14 @@ void AMarkerManager::BeginPlay() {
 
 TArray<FVector> AMarkerManager::GetNeighbors(FVector Location) const {
   UMarkerComponent* const * marker = LocToMarkerMapping.Find(Location);
-  check(marker!= nullptr);
+
+  // ------------------------
+  // handle error gracefully
+  if (marker == nullptr) {
+    return TArray<FVector>();
+  }
+  // ------------------------
+
   const TArray<UMarkerComponent*>* connections = MarkerConnList.Find(*marker);
   check(connections != nullptr);
   TArray<FVector> Locations;
