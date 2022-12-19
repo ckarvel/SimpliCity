@@ -33,7 +33,8 @@ protected:
 	void FinishBuildingPath();
 	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
 	void CancelBuildingPath();
-
+	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
+	bool PlacePermanentRoad(const FVector Location,const FRotator Rotation);
 	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
 	void CreateTemporaryRoadsAtLocations(const TArray<FVector>& Locations);
 	void DestroyTemporaryRoadsAtLocations(const TArray<FVector> Locations);

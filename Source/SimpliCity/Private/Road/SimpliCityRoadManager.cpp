@@ -104,6 +104,17 @@ void ASimpliCityRoadManager::CancelBuildingPath() {
 	DestroyAllTemporaryRoads();
 }
 
+bool ASimpliCityRoadManager::PlacePermanentRoad(const FVector Location, const FRotator Rotation) {
+	if (USimpliCityFunctionLibrary::GetObjectManager(this)->DoesObjectExistHere(Location)) {
+		return false;
+	}
+	ASimpliCityRoadBase* Road = GetWorld()->SpawnActor<ASimpliCityRoadBase>(RoadFixerComponent->GetDefaultRoadClass(),Location, Rotation);
+	USimpliCityFunctionLibrary::GetObjectManager(this)->AddObjectToGrid(Road);
+	PermanentRoadList.Add(Road);
+	FixRoadAndNeighbors(Road);
+	return true;
+}
+
 void ASimpliCityRoadManager::CreateTemporaryRoadsAtLocations(const TArray<FVector>& Locations) {
 	for (auto Location : Locations) {
 		ASimpliCityRoadBase* TempRoad = GetWorld()->SpawnActor<ASimpliCityRoadBase>(RoadFixerComponent->GetDefaultRoadClass(), Location, FRotator());
