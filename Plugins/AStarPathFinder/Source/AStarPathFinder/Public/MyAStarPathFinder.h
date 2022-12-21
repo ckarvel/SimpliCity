@@ -45,12 +45,9 @@ public:
 
 		Cost.Add(Start,0);
 		Nodes.Push(Start,0);
-		FVector Current = Start;
 
 		while (Nodes.IsEmpty() == false) {
-			FVector Last = Current;
-			Current = Nodes.Pop();
-			PathMap.Add(Current, Last);
+			FVector Current = Nodes.Pop();
 			
 			if (Current.Equals(End, 1)) {
 				break;
@@ -72,6 +69,7 @@ public:
 					Cost.Add(Next,new_cost);
 					double priority = new_cost + heuristic(Next,End);
 					Nodes.Push(Next,priority);
+					PathMap.Add(Next, Current);
 				}
 			}
 		}
