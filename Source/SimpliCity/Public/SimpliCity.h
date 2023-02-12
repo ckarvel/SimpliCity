@@ -3,5 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Utils/SimpliCityUtils.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogSimpliCity, Log, All);

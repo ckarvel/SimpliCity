@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "SimpliCity.h"
 #include "GameFramework/Actor.h"
 #include "SimpliCityObjectType.h"
 #include "SimpliCityObjectManager.generated.h"
@@ -34,6 +34,9 @@ public:
 
 	UFUNCTION(BlueprintCallable,Category="SimpliCityObjectManager")
 	void RemoveObjectAtLocation(FVector Location);
+
+	UFUNCTION(BlueprintCallable,Category="SimpliCityObjectManager")
+	void User_RemoveObjectFromGrid(ASimpliCityObjectBase* RemovedObject);
 
 	UFUNCTION(BlueprintCallable,Category="SimpliCityObjectManager")
 	ASimpliCityObjectBase* GetObjectAtLocation(FVector Location);

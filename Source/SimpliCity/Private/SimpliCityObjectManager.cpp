@@ -29,24 +29,39 @@ void ASimpliCityObjectManager::InitializeArray(int NumElements) {
 bool ASimpliCityObjectManager::DoesObjectExistHere(FVector Location) {
 	AGridManager* gridMgr = USimpliCityFunctionLibrary::GetGridManager(this);
 	int32 index = gridMgr->LocationToIndex(Location);
-	check(gridMgr->IsIndexValid(index));
-	ASimpliCityObjectBase* BuildObject = ObjectGrid[index];
-	if(BuildObject != nullptr)
-		return true;
+	if(gridMgr->IsIndexValid(index))
+	{
+		ASimpliCityObjectBase* BuildObject = ObjectGrid[index];
+		if(BuildObject != nullptr)
+			return true;
+	}
+	else {
+
+	}
 	return false;
 }
 
 void ASimpliCityObjectManager::AddObjectToGrid(ASimpliCityObjectBase* AddedObject) {
-	check(AddedObject != nullptr);
+	if(AddedObject == nullptr)
+	{
+		TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!! AddedObject == nullptr");
+		return;
+	}
 	FVector location = AddedObject->GetActorLocation();
 	AGridManager* gridMgr = USimpliCityFunctionLibrary::GetGridManager(this);
 	int32 index = gridMgr->LocationToIndex(location);
-	check(gridMgr->IsIndexValid(index));
+	if (!gridMgr->IsIndexValid(index)) {
+		TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!! !gridMgr->IsIndexValid(%d)",index);
+		return;
+	}
 	ObjectGrid[index] = AddedObject;
 }
 
 void ASimpliCityObjectManager::ReplaceObjectInGrid(ASimpliCityObjectBase* OldObject, ASimpliCityObjectBase* NewObject) {
-	check(OldObject != nullptr);
+	if (OldObject == nullptr) {
+		TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!! OldObject == nullptr");
+		return;
+	}
 	if (DoesObjectExistHere(OldObject->GetActorLocation()) == false) {
 		return; // object doesn't exist here so just ignore
 	}
@@ -55,7 +70,10 @@ void ASimpliCityObjectManager::ReplaceObjectInGrid(ASimpliCityObjectBase* OldObj
 }
 
 void ASimpliCityObjectManager::RemoveObjectFromGrid(ASimpliCityObjectBase* RemovedObject) {
-	check(RemovedObject != nullptr);
+	if (RemovedObject == nullptr) {
+		TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!! RemovedObject == nullptr");
+		return;
+	}
 	FVector location = RemovedObject->GetActorLocation();
 	RemoveObjectAtLocation(location);
 }
@@ -63,7 +81,10 @@ void ASimpliCityObjectManager::RemoveObjectFromGrid(ASimpliCityObjectBase* Remov
 void ASimpliCityObjectManager::RemoveObjectAtLocation(FVector Location) {
 	AGridManager* gridMgr = USimpliCityFunctionLibrary::GetGridManager(this);
 	int32 index = gridMgr->LocationToIndex(Location);
-	check(gridMgr->IsIndexValid(index));
+	if (!gridMgr->IsIndexValid(index)) {
+		TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!! !gridMgr->IsIndexValid(%d)",index);
+		return;
+	}
 	if (ObjectGrid[index] != nullptr) {
 		ObjectGrid[index]->Destroy();
 	}
@@ -106,4 +127,13 @@ TArray<ASimpliCityObjectBase*> ASimpliCityObjectManager::GetAllNeighbors(FVector
 			allNeighbors.Add(ObjectGrid[idx]);
 	}
 	return allNeighbors;
+}
+
+void ASimpliCityObjectManager::User_RemoveObjectFromGrid(ASimpliCityObjectBase* RemovedObject) {
+	if (RemovedObject == nullptr) {
+		TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!! RemovedObject == nullptr");
+		return;
+	}
+	FVector location = RemovedObject->GetActorLocation();
+	RemoveObjectAtLocation(location);
 }
