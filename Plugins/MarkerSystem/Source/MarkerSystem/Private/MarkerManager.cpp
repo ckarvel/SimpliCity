@@ -23,24 +23,39 @@ TArray<FVector> AMarkerManager::GetNeighbors(FVector Location) const {
   // ------------------------
 
   const TArray<UMarkerComponent*>* connections = MarkerConnList.Find(*marker);
-  check(connections != nullptr);
+  if (connections == nullptr) {
+    TRACE_ERROR_PRINTF(LogMarkerSystem,"ERROR!! connections == nullptr");
+    return TArray<FVector>();
+  }
   TArray<FVector> Locations;
   for (auto connection : *connections) {
-    check(connection != nullptr);
+    if (connections == nullptr) {
+      TRACE_ERROR_PRINTF(LogMarkerSystem,"ERROR!! connections == nullptr");
+      return TArray<FVector>();
+    }
     Locations.Add(connection->GetComponentLocation());
   }
   return Locations;
 }
 
 UMarkerComponent* AMarkerManager::GetClosestMarkerTo(FVector Location, TArray<UMarkerComponent*> Markers) {
-  check(Markers.Num() > 0);
-  check(Markers[0] != nullptr);
+  if (Markers.Num() <= 0) {
+    TRACE_ERROR_PRINTF(LogMarkerSystem,"ERROR!! Markers.Num() <= 0");
+    return nullptr;
+  }
+  if (Markers[0] == nullptr) {
+    TRACE_ERROR_PRINTF(LogMarkerSystem,"ERROR!! Markers[0] == nullptr");
+    return nullptr;
+  }
 
   UMarkerComponent* closestMarker = Markers[0];
   float minDistance = FVector::Distance(Location,closestMarker->GetComponentLocation());
 
   for (int i = 1; i < Markers.Num(); i++) {
-    check(Markers[i] != nullptr);
+    if (Markers[i] == nullptr) {
+      TRACE_ERROR_PRINTF(LogMarkerSystem,"ERROR!! Markers[%d] == nullptr", i);
+      return nullptr;
+    }
     float distance = FVector::Distance(Location,Markers[i]->GetComponentLocation());
     if (distance < minDistance) {
       closestMarker = Markers[i];
@@ -76,9 +91,18 @@ void AMarkerManager::RemoveMarkers(TArray<UMarkerComponent*> Markers) {
 }
 
 void AMarkerManager::AddEdge(UMarkerComponent* Src,UMarkerComponent* Dest, bool IsBidirectional) {
-  check(Src != nullptr);
-  check(Dest != nullptr);
-  check(Src != Dest);
+  if (Src == nullptr) {
+    TRACE_ERROR_PRINTF(LogMarkerSystem,"ERROR!! Src == nullptr");
+    return;
+  }
+  if (Dest == nullptr) {
+    TRACE_ERROR_PRINTF(LogMarkerSystem,"ERROR!! Dest == nullptr");
+    return;
+  }
+  if (Src == Dest) {
+    TRACE_ERROR_PRINTF(LogMarkerSystem,"ERROR!! Src == Dest");
+    return;
+  }
 
   // Find returns a pointer to the value
   TArray<UMarkerComponent*>* pSrc_Connections = MarkerConnList.Find(Src);
@@ -96,9 +120,18 @@ void AMarkerManager::AddEdge(UMarkerComponent* Src,UMarkerComponent* Dest, bool 
 }
 
 void AMarkerManager::RemoveEdge(UMarkerComponent* Src, UMarkerComponent* Dest, bool IsBidirectional) {
-  check(Src != nullptr);
-  check(Dest != nullptr);
-  check(Src != Dest);
+  if (Src == nullptr) {
+    TRACE_ERROR_PRINTF(LogMarkerSystem,"ERROR!! Src == nullptr");
+    return;
+  }
+  if (Dest == nullptr) {
+    TRACE_ERROR_PRINTF(LogMarkerSystem,"ERROR!! Dest == nullptr");
+    return;
+  }
+  if (Src == Dest) {
+    TRACE_ERROR_PRINTF(LogMarkerSystem,"ERROR!! Src == Dest");
+    return;
+  }
   TArray<UMarkerComponent*> Src_Connections = MarkerConnList.FindOrAdd(Src);
   Src_Connections.Remove(Dest);
   if (IsBidirectional) {
@@ -134,7 +167,10 @@ void AMarkerManager::UpdateGraph(const TArray<UObject*>& PathObjects) {
 void AMarkerManager::AddMarkersToGraph(const TArray<UObject*>& PathObjects) {
   ClearGraph();
   for (UObject* Object : PathObjects) {
-    check(Object->Implements<UMarkerPathInterface>() == true);
+    if (Object->Implements<UMarkerPathInterface>() == false) {
+      TRACE_ERROR_PRINTF(LogMarkerSystem,"ERROR!! Object->Implements<UMarkerPathInterface>() == false");
+      return;
+    }
     IMarkerPathInterface* MarkerPathObject = Cast<IMarkerPathInterface>(Object);
     AddMarkers(MarkerPathObject->GetPedestrianMarkers());
     AddMarkers(MarkerPathObject->GetVehicleMarkers());
@@ -156,7 +192,10 @@ void AMarkerManager::AddNeighborConnections(UObject* ObjectA, UObject* ObjectB, 
     if (MarkerA->laneDirection != MarkerB->laneDirection) {
       FVector AVect = MarkerPathObjectA->GetVehMarkerNormDirectionVector(MarkerA);
       FVector BVect = MarkerPathObjectB->GetVehMarkerNormDirectionVector(MarkerB);
-      check(FMath::IsNearlyEqual(AVect.X,BVect.X,25) && FMath::IsNearlyEqual(AVect.Y,BVect.Y,25));
+      if (!FMath::IsNearlyEqual(AVect.X,BVect.X,25) || !FMath::IsNearlyEqual(AVect.Y,BVect.Y,25)) {
+        TRACE_ERROR_PRINTF(LogMarkerSystem,"ERROR!! NOT (FMath::IsNearlyEqual(AVect.X,BVect.X,25) OR NOT FMath::IsNearlyEqual(AVect.Y,BVect.Y,25))");
+        return;
+      }
     }
     if (MarkerA->IsSourceMarker()) {
       AddEdge(MarkerA, MarkerB, isPedestrian);

@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "MarkerSystem.h"
 #include "GameFramework/Actor.h"
 #include "PathFinderInterface.h"
 #include "MarkerManager.generated.h"
