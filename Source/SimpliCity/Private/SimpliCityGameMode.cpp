@@ -16,7 +16,6 @@ ASimpliCityGameMode::ASimpliCityGameMode()
 
 void ASimpliCityGameMode::StartPlay() {
   //USimpliCityGameInstance* gameInst = Cast<USimpliCityGameInstance>(UGameplayStatics::GetGameInstance(this));
-  //check(gameInst != nullptr)
   //gameInst->GridManager = GetWorld()->SpawnActor<AGridManager>(GridManagerClass);
 
   

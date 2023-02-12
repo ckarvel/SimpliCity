@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "SimpliCity.h"
 #include "GameFramework/Actor.h"
 #include "Zone/SimpliCityZoneTypeEnum.h"
 #include "SimpliCityZoneCell.generated.h"

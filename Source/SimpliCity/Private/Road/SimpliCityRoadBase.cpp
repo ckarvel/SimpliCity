@@ -22,7 +22,10 @@ void ASimpliCityRoadBase::BeginPlay()
 }
 
 void ASimpliCityRoadBase::SetNewMaterial() {
-	check(StaticMeshComponent != nullptr);
+  if (StaticMeshComponent == nullptr) {
+    TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!!! StaticMeshComponent == nullptr");
+    return;
+  }
 	if (RoadMaterial != nullptr) {
 		StaticMeshComponent->SetMaterial(0, RoadMaterial);
 	}
@@ -31,7 +34,10 @@ void ASimpliCityRoadBase::SetNewMaterial() {
 // only for use with vehicle markers
 // won't work with deadend/straight
 FVector ASimpliCityRoadBase::GetVehMarkerNormDirectionVector(UMarkerComponent* VMarker) const {
-  check(VMarker != nullptr);
+  if (VMarker == nullptr) {
+    TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!!! VMarker == nullptr");
+    return FVector(0,0,0);
+  }
   FVector SrcLocation;
   FVector DestLocation;
   FVector NormDirectionVector;
@@ -41,7 +47,12 @@ FVector ASimpliCityRoadBase::GetVehMarkerNormDirectionVector(UMarkerComponent* V
   AdjacentMarkers = VMarker->GetAdjacentMarkers();
   if (AdjacentMarkers.Num() > 0) {
     SrcLocation = VMarker->GetComponentLocation();
-    check(AdjacentMarkers[0] != nullptr);
+
+    if (AdjacentMarkers[0] == nullptr) {
+      TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!!! AdjacentMarkers[0] == nullptr");
+      return FVector(0,0,0);
+    }
+
     DestLocation = AdjacentMarkers[0]->GetComponentLocation();
   }
   // else, look for this marker as adjacent to another
@@ -80,7 +91,11 @@ TArray<UMarkerComponent*> ASimpliCityRoadBase::GetClosestMarkerPair(UObject* Nei
     ClosestMarkers.Add(first);
     ClosestMarkers.Add(second);
   }
-  check(ClosestMarkers.Num() > 0);
+
+  if (ClosestMarkers.Num() <= 0) {
+    TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!!! ClosestMarkers.Num() <= 0");
+    return TArray<UMarkerComponent*>();
+  }
   return ClosestMarkers;
 }
 

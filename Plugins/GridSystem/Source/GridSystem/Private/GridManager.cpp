@@ -230,7 +230,9 @@ void AGridManager::CreateSelectionProceduralMesh(UProceduralMeshComponent* mesh,
 }
 
 UMaterialInstanceDynamic* AGridManager::CreateMaterialInstance(FLinearColor color,float opacity) {
-  check(GridMaterial != nullptr)
+  if (GridMaterial == nullptr) {
+    return nullptr;
+  }
   UMaterialInstanceDynamic* newMaterial = UKismetMaterialLibrary::CreateDynamicMaterialInstance(this,GridMaterial);
   newMaterial->SetVectorParameterValue("Color",color);
   newMaterial->SetScalarParameterValue("Opacity",opacity);

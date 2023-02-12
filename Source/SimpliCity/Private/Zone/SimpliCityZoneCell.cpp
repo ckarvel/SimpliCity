@@ -17,11 +17,22 @@ ASimpliCityZoneCell::ASimpliCityZoneCell()
 // Called when the game starts or when spawned
 void ASimpliCityZoneCell::BeginPlay() {
 	Super::BeginPlay();
-	// temp
-	check(DefaultMaterial != nullptr);
-	check(ResidentialMaterial != nullptr);
-	check(CommercialMaterial != nullptr);
-	check(IndustrialMaterial != nullptr);
+	if (DefaultMaterial == nullptr) {
+		TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!!! DefaultMaterial == nullptr");
+		return;
+	}
+	if (ResidentialMaterial == nullptr) {
+		TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!!! ResidentialMaterial == nullptr");
+		return;
+	}
+	if (CommercialMaterial == nullptr) {
+		TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!!! CommercialMaterial == nullptr");
+		return;
+	}
+	if (IndustrialMaterial == nullptr) {
+		TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!!! IndustrialMaterial == nullptr");
+		return;
+	}
 }
 
 void ASimpliCityZoneCell::SetCellType(TEnumAsByte<ESimpliCityZoneTypeEnum> Type) {
