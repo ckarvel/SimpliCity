@@ -14,8 +14,17 @@ class MARKERSYSTEM_API UMarkerComponent : public USceneComponent {
 public:
   UMarkerComponent();
 
+#if WITH_EDITORONLY_DATA
+  UPROPERTY(EditAnywhere,Category = "MarkerComponent")
+    bool visualizeComponent;
+#endif
+
 protected:
   virtual void BeginPlay() override;
+
+#if WITH_EDITOR
+  virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+#endif
 
 public:
   UFUNCTION(BlueprintCallable,Category = "MarkerComponent")

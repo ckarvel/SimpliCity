@@ -9,6 +9,17 @@ UMarkerComponent::UMarkerComponent()
   PrimaryComponentTick.bCanEverTick = false;
 }
 
+#if WITH_EDITOR
+void UMarkerComponent::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) {
+
+  FName PropertyName = (PropertyChangedEvent.Property != nullptr) ? PropertyChangedEvent.Property->GetFName() : NAME_None;
+  if (PropertyName == GET_MEMBER_NAME_CHECKED(UMarkerComponent,visualizeComponent)) {
+    bVisualizeComponent = visualizeComponent;
+  }
+  Super::PostEditChangeProperty(PropertyChangedEvent);
+}
+#endif
+
 void UMarkerComponent::BeginPlay() {
   Super::BeginPlay();
 }
