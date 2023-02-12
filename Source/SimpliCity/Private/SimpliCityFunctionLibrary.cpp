@@ -22,14 +22,19 @@
 
 ASimpliCityPlayerController* USimpliCityFunctionLibrary::GetPlayerController(const UObject* WorldContextObject) {
   auto mgr = Cast<ASimpliCityPlayerController>(UGameplayStatics::GetPlayerController(WorldContextObject, 0));
-  check(mgr != nullptr);
+  if (mgr == nullptr) {
+    TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!! mgr == nullptr");
+  }
   return mgr;
 }
 
 USimpliCityMainUI* USimpliCityFunctionLibrary::GetMainUI(UObject* WorldContextObject) {
   TArray<UUserWidget*> FoundWidgets;
   UWidgetBlueprintLibrary::GetAllWidgetsOfClass(WorldContextObject, FoundWidgets, USimpliCityMainUI::StaticClass());
-  check(FoundWidgets.Num() > 0);
+  if (FoundWidgets.Num() <= 0) {
+    TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!! FoundWidgets.Num() <= 0");
+    return nullptr;
+  }
   return Cast<USimpliCityMainUI>(FoundWidgets[0]);
 }
 
@@ -62,7 +67,9 @@ ASimpliCityBuildingManager* USimpliCityFunctionLibrary::GetBuildingManager(const
 template <class ManagerClass>
 ManagerClass* USimpliCityFunctionLibrary::GetManager(const UObject* WorldContextObject, TSubclassOf<ManagerClass> Class) {
   ManagerClass* mgr = Cast<ManagerClass>(UGameplayStatics::GetActorOfClass(WorldContextObject,Class));
-  check(mgr != nullptr);
+  if (mgr == nullptr) {
+    TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!! mgr == nullptr");
+  }
   return mgr;
 }
 
@@ -73,7 +80,10 @@ bool USimpliCityFunctionLibrary::AreLocationsEqual(FVector LocationA, FVector Lo
 }
 
 TArray<FVector> USimpliCityFunctionLibrary::GetPathBetween(UObject* Graph,FVector Start,FVector End) {
-  check(Graph != nullptr);
+  if (Graph == nullptr) {
+    TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!! Graph == nullptr");
+    return TArray<FVector>();
+  }
   TArray<FVector> newPath = MyAStarPathFinder::AStarSearch(Graph,Start,End);
   return newPath;
 }

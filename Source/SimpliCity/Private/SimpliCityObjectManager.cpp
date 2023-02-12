@@ -94,7 +94,10 @@ void ASimpliCityObjectManager::RemoveObjectAtLocation(FVector Location) {
 ASimpliCityObjectBase* ASimpliCityObjectManager::GetObjectAtLocation(FVector Location) {
 	AGridManager* gridMgr = USimpliCityFunctionLibrary::GetGridManager(this);
 	int32 index = gridMgr->LocationToIndex(Location);
-	check(gridMgr->IsIndexValid(index));
+	if (!gridMgr->IsIndexValid(index)) {
+		TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!! !gridMgr->IsIndexValid(%d)",index);
+		return nullptr;
+	}
 	return ObjectGrid[index];
 }
 

@@ -132,11 +132,11 @@ void ASimpliCityRoadManager::ConvertAllTemporaryToPermanent() {
 }
 
 void ASimpliCityRoadManager::DestroyTemporaryRoadsAtLocations(const TArray<FVector> Locations) {
-		for (auto Location : Locations) {
-			ASimpliCityRoadBase* RoadToDestroy = TemporaryRoadLocMap.FindAndRemoveChecked(Location);
-			USimpliCityFunctionLibrary::GetObjectManager(this)->RemoveObjectFromGrid(RoadToDestroy);
-			FixNeighborsAtLocation(Location);
-		}
+	for (auto Location : Locations) {
+		ASimpliCityRoadBase* RoadToDestroy = TemporaryRoadLocMap.FindAndRemoveChecked(Location);
+		USimpliCityFunctionLibrary::GetObjectManager(this)->RemoveObjectFromGrid(RoadToDestroy);
+		FixNeighborsAtLocation(Location);
+	}
 }
 
 void ASimpliCityRoadManager::DestroyAllTemporaryRoads() {
@@ -170,7 +170,10 @@ void ASimpliCityRoadManager::SwapRoads(ASimpliCityObjectBase* OldRoad,ASimpliCit
 }
 
 void ASimpliCityRoadManager::FixRoad(ASimpliCityObjectBase* Road) {
-	check(RoadFixerComponent != nullptr);
+	if (RoadFixerComponent == nullptr) {
+		TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!! RoadFixerComponent == nullptr");
+		return;
+	}
 	TSubclassOf<ASimpliCityRoadBase> SpawnRoadClass;
 	FRotator SpawnRotation;
 	RoadFixerComponent->GetRoadTypeAndRotationAtLocation(Road->GetActorLocation(),SpawnRoadClass,SpawnRotation);

@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "SimpliCity.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "SimpliCityFunctionLibrary.generated.h"
 

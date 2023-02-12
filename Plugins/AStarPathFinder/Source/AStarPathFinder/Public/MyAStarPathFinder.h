@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "AStarPathFinder.h"
 #include "PriorityQueueImpl.h"
 #include "PathFinderInterface.h"
 #include "Algo/Reverse.h"
@@ -11,8 +11,7 @@ class MyAStarPathFinder
 {
 public:
 	// Sets default values for this actor's properties
-	MyAStarPathFinder();
-public:
+	MyAStarPathFinder() {};
 
 	// distance between two points
 	template <typename Element>
@@ -37,7 +36,10 @@ public:
 
 	// assumes start/end are valid!
 	static TArray<FVector> AStarSearch(UObject* Graph, FVector Start, FVector End) {
-		check(Graph->Implements<UPathFinderInterface>() == true);
+		if (Graph->Implements<UPathFinderInterface>() == false) {
+			//TRACE_ERROR_PRINTF(FAStarPathFinderModule::LogAStarPathFinder,"ERROR!! Graph->Implements<UPathFinderInterface>() == false");
+			return TArray<FVector>();
+		}
 		TPriorityQueue<FVector> Nodes;
 		TArray<TPriorityQueueNode<FVector>> Neighbors;
 		TMap<FVector,FVector> PathMap;
