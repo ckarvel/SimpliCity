@@ -27,23 +27,35 @@ public:
 	}
 
 	// creates a list of locations given a from-to node list (like a ghetto linked list)
-	static TArray<FVector> reconstructPath(FVector Start, FVector End, TMap<FVector,FVector> Path) {
+	static MyAStarData reconstructPath(FVector Start, FVector End, TMap<FVector,FVector> Path) {
 		TArray<FVector> NewPath;
 		FVector Current = End;
+		MyAStarData ReturnData;
+		int loops = 0;
 		while (Current.Equals(Start, 1) == false) {  // note: this will fail if no path found
+			// keep track of loop count
+			// avoid infinite loop
+			ReturnData.loops = loops;
+
+			if (loops >= 100) {
+				ReturnData.message = "ERROR: (reconstructPath) Loop count >= 100!";
+				ReturnData.error = true;
+				return ReturnData;
+			}
 			NewPath.Add(Current);
 			if (Path.Contains(Current)) {
 				Current = Path.FindRef(Current);
 			}
+			loops+=1;
 		}
 		NewPath.Add(Start); // optional
 		Algo::Reverse(NewPath);
-		return NewPath;
+		ReturnData.path = NewPath;
+		return ReturnData;
 	}
 
 	// assumes start/end are valid!
 	static MyAStarData AStarSearch(UObject* Graph, FVector Start, FVector End) {
-		TArray<FVector> Path;
 		MyAStarData ReturnData;
 		if (Graph->Implements<UPathFinderInterface>() == false) {
 			ReturnData.message = "ERROR!! Graph->Implements<UPathFinderInterface>() == false";
@@ -101,8 +113,12 @@ public:
 		}
 
 		// sort nodes into a list of locations
-		Path = reconstructPath(Start, End, PathMap);
-		ReturnData.path = Path;
+		
+		MyAStarData reconData = reconstructPath(Start, End, PathMap);
+		ReturnData.path = reconData.path;
+		if (reconData.error) {
+			ReturnData = reconData;
+		}
 		return ReturnData;
 	}
 };
