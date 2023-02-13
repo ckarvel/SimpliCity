@@ -71,6 +71,7 @@ public:
 		Nodes.Push(Start,0);
 
 		int loops = 0;
+		FVector Current;
 		while (Nodes.IsEmpty() == false) {
 			// keep track of loop count
 			// avoid infinite loop
@@ -82,7 +83,7 @@ public:
 				return ReturnData;
 			}
 
-			FVector Current = Nodes.Pop();
+			Current = Nodes.Pop();
 			
 			if (Current.Equals(End, 1)) {
 				break;
@@ -112,8 +113,13 @@ public:
 			loops += 1;
 		}
 
+		if (!Current.Equals(End,1)) {
+			ReturnData.message = "Warning: Couldn't find path";
+			ReturnData.error = true;
+			return ReturnData;
+		}
+
 		// sort nodes into a list of locations
-		
 		MyAStarData reconData = reconstructPath(Start, End, PathMap);
 		ReturnData.path = reconData.path;
 		if (reconData.error) {
