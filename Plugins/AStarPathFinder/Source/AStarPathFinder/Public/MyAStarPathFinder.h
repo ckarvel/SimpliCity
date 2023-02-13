@@ -7,6 +7,13 @@
 #include "PathFinderInterface.h"
 #include "Algo/Reverse.h"
 
+struct MyAStarData {
+	int loops = -1;
+	TArray<FVector> path;
+	bool error = false;
+	FString message = "";
+};
+
 class MyAStarPathFinder
 {
 public:
@@ -35,10 +42,13 @@ public:
 	}
 
 	// assumes start/end are valid!
-	static TArray<FVector> AStarSearch(UObject* Graph, FVector Start, FVector End) {
+	static MyAStarData AStarSearch(UObject* Graph, FVector Start, FVector End) {
+		TArray<FVector> Path;
+		MyAStarData ReturnData;
 		if (Graph->Implements<UPathFinderInterface>() == false) {
-			//TRACE_ERROR_PRINTF(FAStarPathFinderModule::LogAStarPathFinder,"ERROR!! Graph->Implements<UPathFinderInterface>() == false");
-			return TArray<FVector>();
+			ReturnData.message = "ERROR!! Graph->Implements<UPathFinderInterface>() == false";
+			ReturnData.error = true;
+			return ReturnData;
 		}
 		TPriorityQueue<FVector> Nodes;
 		TArray<TPriorityQueueNode<FVector>> Neighbors;
@@ -48,7 +58,18 @@ public:
 		Cost.Add(Start,0);
 		Nodes.Push(Start,0);
 
+		int loops = 0;
 		while (Nodes.IsEmpty() == false) {
+			// keep track of loop count
+			// avoid infinite loop
+			ReturnData.loops = loops;
+
+			if (loops >= 100) {
+				ReturnData.message = "ERROR: Loop count >= 100!";
+				ReturnData.error = true;
+				return ReturnData;
+			}
+
 			FVector Current = Nodes.Pop();
 			
 			if (Current.Equals(End, 1)) {
@@ -61,7 +82,9 @@ public:
 			// ------------------------
 			// handle error gracefully
 			if (NeighborList.IsEmpty()) {
-				return TArray<FVector>();
+				ReturnData.message = "WARNING: NeighborList is empty";
+				ReturnData.error = true;
+				return ReturnData;
 			}
 			// ------------------------
 
@@ -74,10 +97,12 @@ public:
 					PathMap.Add(Next, Current);
 				}
 			}
+			loops += 1;
 		}
 
 		// sort nodes into a list of locations
-		TArray<FVector> Path = reconstructPath(Start, End, PathMap);
-		return Path;
+		Path = reconstructPath(Start, End, PathMap);
+		ReturnData.path = Path;
+		return ReturnData;
 	}
 };

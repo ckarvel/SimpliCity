@@ -84,8 +84,11 @@ TArray<FVector> USimpliCityFunctionLibrary::GetPathBetween(UObject* Graph,FVecto
     TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!! Graph == nullptr");
     return TArray<FVector>();
   }
-  TArray<FVector> newPath = MyAStarPathFinder::AStarSearch(Graph,Start,End);
-  return newPath;
+  MyAStarData Data = MyAStarPathFinder::AStarSearch(Graph,Start,End);
+  if (Data.error == true) {
+    TRACE_ERROR_PRINTF(LogSimpliCity,"%s", *Data.message);
+  }
+  return Data.path;
 }
 
 FVector USimpliCityFunctionLibrary::VInterpTo(FVector Current,FVector Target,float Delta,float Speed) {
