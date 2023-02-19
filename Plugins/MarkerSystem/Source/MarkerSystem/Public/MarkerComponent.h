@@ -53,4 +53,7 @@ public:
 
   UFUNCTION(BlueprintCallable,Category = "MarkerComponent")
   bool IsOpen() const { return openForConnections; }
+
+  UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "MarkerComponent")
+  bool canCurve; // can curve from this marker or is part of curved turn
 };

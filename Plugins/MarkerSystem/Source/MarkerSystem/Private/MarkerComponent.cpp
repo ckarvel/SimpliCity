@@ -4,7 +4,8 @@
 
 UMarkerComponent::UMarkerComponent()
   : openForConnections(true),
-    laneDirection(0)
+    laneDirection(0),
+    canCurve(false)
 {
   PrimaryComponentTick.bCanEverTick = false;
 }

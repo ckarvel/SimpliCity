@@ -17,7 +17,9 @@ class SIMPLICITY_API USimpliCityFunctionLibrary : public UBlueprintFunctionLibra
 public:
 	USimpliCityFunctionLibrary() {};
 
-	// getters
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Getters
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary", meta=(WorldContext="WorldContextObject", UnsafeDuringActorConstruction="true"))
 	static class AGridManager* GetGridManager(const UObject* WorldContextObject);
 
@@ -45,11 +47,17 @@ public:
 	template <class ManagerClass>
 	static ManagerClass* GetManager(const UObject* WorldContextObject,TSubclassOf<ManagerClass> Class);
 	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Common Math Functions
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary")
-	static bool AreLocationsEqual(FVector LocationA, FVector LocationB, float Tolerance=25);
+	static bool IsNearlyEqual(float A,float B);
 
 	UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary")
-	static TArray<FVector> GetPathBetween(UObject* Graph,FVector Start,FVector End);
+	static bool AreLocationsEqual(FVector LocationA,FVector LocationB,float Tolerance=25);
+
+	UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary")
+	static FVector GetMidpointBetween(FVector A,FVector B);
 
 	UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary")
 	static FVector VInterpTo(FVector Current,FVector Target,float Delta,float Speed);
@@ -59,16 +67,31 @@ public:
 
 	UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary")
 	static float FInterpTo(float Current,float Target,float Delta,float Speed);
-
+	
 	UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary")
-	static bool IsNearlyEqual(float A, float B);
+	static bool ArePointsCollinear(FVector A,FVector B,FVector C);
 
-	UFUNCTION(BlueprintCallable,Category="SimpliCityFunctionLibrary")
-	static void CalculateSelectionRectangle(FVector Start, FVector End,FVector& OutExtents, TArray<FVector>& OutVertices, TArray<int>& OutTriangles);
-
-	UFUNCTION(BlueprintPure,Category="SimpliCityFunctionLibrary")
-	static FVector GetMidpointBetween(FVector A, FVector B);
-
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Math Algorithms
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	UFUNCTION(BlueprintCallable,Category="SimpliCityFunctionLibrary")
 	static TArray<AActor*> GetDifferenceInArrays(TArray<AActor*> A,TArray<AActor*> B);
+
+	UFUNCTION(BlueprintCallable,Category="SimpliCityFunctionLibrary")
+	static void CalculateSelectionRectangle(FVector Start,FVector End,FVector& OutExtents,TArray<FVector>& OutVertices,TArray<int>& OutTriangles);
+
+	UFUNCTION(BlueprintCallable,Category="SimpliCityFunctionLibrary")
+	static TArray<FVector> GetPathBetween(UObject* Graph,FVector Start,FVector End);
+
+	UFUNCTION(BlueprintCallable,Category="SimpliCityFunctionLibrary")
+	static TArray<FVector> GetSimplifiedPath(TArray<FVector> Path);
+
+	UFUNCTION(BlueprintCallable,Category="SimpliCityFunctionLibrary")
+	static float AngleBetween2Vectors(FVector A,FVector B);
+
+	UFUNCTION(BlueprintCallable,Category="SimpliCityFunctionLibrary")
+	static TArray<FVector> SmoothCurvedSegments(TArray<FVector> Path);
+
+	UFUNCTION(BlueprintCallable,Category="SimpliCityFunctionLibrary")
+	static TArray<FVector> QuadraticBezierCurve(FVector P0,FVector P1,FVector P2);
 };
