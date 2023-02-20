@@ -22,13 +22,15 @@ public:
 	ASimpliCityRoadManager();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
-  void StartPlacingRoad(FVector Location);
+	//////////////////////////////////////////////////////////////////////////
+	// build/destroy functions
+	//////////////////////////////////////////////////////////////////////////
 	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
 	void UpdatePath(FVector Location);
+	//////////////////////////////////////////////////////////////////////////
+	// build functions
+	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
+  void StartPlacingRoad(FVector Location);
 	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
 	void FinishBuildingPath();
 	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
@@ -41,6 +43,10 @@ protected:
 	void DestroyAllTemporaryRoads();
 	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
 	void ConvertAllTemporaryToPermanent();
+	//////////////////////////////////////////////////////////////////////////
+	// destroy functions
+	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
+	void DestroyPermanentRoad(ASimpliCityObjectBase* Road);
 
 public:
 	UFUNCTION(BlueprintCallable,Category = "SimpliCityRoadManager")
