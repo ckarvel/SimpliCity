@@ -172,6 +172,11 @@ void ASimpliCityRoadManager::FixRoad(ASimpliCityObjectBase* Road) {
 	FRotator SpawnRotation;
 	RoadFixerComponent->GetRoadTypeAndRotationAtLocation(Road->GetActorLocation(),SpawnRoadClass,SpawnRotation);
 	ASimpliCityRoadBase* FixedRoad = GetWorld()->SpawnActor<ASimpliCityRoadBase>(SpawnRoadClass,Road->GetActorLocation(),SpawnRotation);
+
+#if WITH_EDITOR
+	FixedRoad->SetFolderPath("Roads");
+#endif
+
 	SwapRoads(Road,FixedRoad);
 }
 //////////////////////////////////////////////////////////////////////////
