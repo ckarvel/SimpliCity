@@ -73,15 +73,15 @@ void ASimpliCityZoneManager::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-TEnumAsByte<ESimpliCityZoneTypeEnum> ASimpliCityZoneManager::GetZoneTypeAtLocation(FVector Location) {
+TEnumAsByte<ESimpliCityZoneType> ASimpliCityZoneManager::GetZoneTypeAtLocation(FVector Location) {
 	int32 index = USimpliCityFunctionLibrary::GetGridManager(this)->LocationToIndex(Location);
 	if (index <= 0 || index >= ZonedGridCells.Num()) {
 		TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!! NOT IN RANGE!! (0 <= index(%d) < ZonedGridCells.Num()(%d)", index, ZonedGridCells.Num());
-		return ESimpliCityZoneTypeEnum::ZoneType_None;
+		return ESimpliCityZoneType::ZoneType_None;
 	}
 	if (ZonedGridCells[index] == nullptr) {
 		TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!!! ZonedGridCells[index] == nullptr");
-		return ESimpliCityZoneTypeEnum::ZoneType_None;
+		return ESimpliCityZoneType::ZoneType_None;
 	}
 	return ZonedGridCells[index]->ZoneType;
 }

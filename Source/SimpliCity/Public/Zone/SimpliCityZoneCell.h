@@ -4,7 +4,7 @@
 
 #include "SimpliCity.h"
 #include "GameFramework/Actor.h"
-#include "Zone/SimpliCityZoneTypeEnum.h"
+#include "Zone/SimpliCityZoneType.h"
 #include "SimpliCityZoneCell.generated.h"
 
 UCLASS(Blueprintable)
@@ -19,13 +19,13 @@ protected:
 
 public:
 	UFUNCTION(BlueprintCallable,Category = "SimpliCityZoneCell")
-	void SetCellType(TEnumAsByte<ESimpliCityZoneTypeEnum> Type);
+	void SetCellType(TEnumAsByte<ESimpliCityZoneType> Type);
 
 	UFUNCTION(BlueprintCallable,Category = "SimpliCityZoneCell")
 	void UpdateActiveMaterial();
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "SimpliCityZoneCell")
-	TEnumAsByte<ESimpliCityZoneTypeEnum> ZoneType;
+	TEnumAsByte<ESimpliCityZoneType> ZoneType;
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = "SimpliCityZoneCell")
 	class UStaticMeshComponent* StaticMeshComponent;

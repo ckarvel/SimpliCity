@@ -3,10 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "SimpliCityZoneTypeEnum.generated.h"
+#include "SimpliCityZoneType.generated.h"
 
 UENUM(BlueprintType)
-enum ESimpliCityZoneTypeEnum {
+enum ESimpliCityZoneType {
   ZoneType_None UMETA(DisplayName = "None"),
   ZoneType_Residential UMETA(DisplayName = "Residential"),
   ZoneType_Commercial UMETA(DisplayName = "Commercial"),

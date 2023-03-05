@@ -8,7 +8,7 @@
 
 // Sets default values
 ASimpliCityZoneCell::ASimpliCityZoneCell()
-	: ZoneType(ESimpliCityZoneTypeEnum::ZoneType_None) {
+	: ZoneType(ESimpliCityZoneType::ZoneType_None) {
 	PrimaryActorTick.bCanEverTick = false;
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
 	SetRootComponent(StaticMeshComponent);
@@ -35,7 +35,7 @@ void ASimpliCityZoneCell::BeginPlay() {
 	}
 }
 
-void ASimpliCityZoneCell::SetCellType(TEnumAsByte<ESimpliCityZoneTypeEnum> Type) {
+void ASimpliCityZoneCell::SetCellType(TEnumAsByte<ESimpliCityZoneType> Type) {
 	if (Type != ZoneType) {
 		ZoneType = Type;
 		UpdateActiveMaterial();
@@ -44,13 +44,13 @@ void ASimpliCityZoneCell::SetCellType(TEnumAsByte<ESimpliCityZoneTypeEnum> Type)
 
 void ASimpliCityZoneCell::UpdateActiveMaterial() {
 	switch (ZoneType) {
-		case ESimpliCityZoneTypeEnum::ZoneType_Residential:
+		case ESimpliCityZoneType::ZoneType_Residential:
 			StaticMeshComponent->SetMaterial(0,ResidentialMaterial);
 			break;
-		case ESimpliCityZoneTypeEnum::ZoneType_Commercial:
+		case ESimpliCityZoneType::ZoneType_Commercial:
 			StaticMeshComponent->SetMaterial(0,CommercialMaterial);
 			break;
-		case ESimpliCityZoneTypeEnum::ZoneType_Industrial:
+		case ESimpliCityZoneType::ZoneType_Industrial:
 			StaticMeshComponent->SetMaterial(0,IndustrialMaterial);
 			break;
 		default: // none

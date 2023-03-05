@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "SimpliCityObjectBase.h"
-#include "Building/SimpliCityBuildingType.h"
+#include "SimpliCityBuildingType.h"
 #include "SimpliCityBuildingBase.generated.h"
 
 UCLASS(Blueprintable)

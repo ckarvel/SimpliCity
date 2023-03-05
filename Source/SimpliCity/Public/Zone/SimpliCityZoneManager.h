@@ -4,7 +4,8 @@
 
 #include "SimpliCity.h"
 #include "GameFramework/Actor.h"
-#include "SimpliCityZoneTypeEnum.h"
+#include "SimpliCityZoneType.h"
+#include "SimpliCityZoneBase.h"
 #include "SimpliCityZoneManager.generated.h"
 
 UCLASS()
@@ -44,7 +45,7 @@ public:
 	void ClearBackupData();
 
 	UFUNCTION(BlueprintCallable,Category="SimpliCityZoneManager")
-	TEnumAsByte<ESimpliCityZoneTypeEnum> GetZoneTypeAtLocation(FVector Location);
+	TEnumAsByte<ESimpliCityZoneType> GetZoneTypeAtLocation(FVector Location);
 
 	UFUNCTION(BlueprintCallable,Category="SimpliCityZoneManager")
 	TArray<class ASimpliCityZoneCell*> GetUnfilledZonedCells();
@@ -59,5 +60,7 @@ public:
 	TArray<ASimpliCityZoneCell*> ZonedGridCells;
 	
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = "SimpliCityZoneManager")
-	TMap<ASimpliCityZoneCell*, TEnumAsByte<ESimpliCityZoneTypeEnum>> TemporaryCellStates;
+	TMap<ASimpliCityZoneCell*, TEnumAsByte<ESimpliCityZoneType>> TemporaryCellStates;
+
+	TMap<ESimpliCityZoneType, TArray<ASimpliCityZoneBase*>> ZoneBasesPerType;
 };
