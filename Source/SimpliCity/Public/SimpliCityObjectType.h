@@ -9,5 +9,6 @@ UENUM(BlueprintType)
 enum ESimpliCityObjectType {
   None,
   Road,
-  Building
+  Building,
+  Zone
 };

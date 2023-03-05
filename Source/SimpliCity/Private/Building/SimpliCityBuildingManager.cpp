@@ -20,7 +20,7 @@ void ASimpliCityBuildingManager::BeginPlay()
 	Super::BeginPlay();
 }
 
-ASimpliCityBuildingBase* ASimpliCityBuildingManager::GetAnyBuildingWithSupply(ESimpliCityBuildingEnum Type) {
+ASimpliCityBuildingBase* ASimpliCityBuildingManager::GetAnyBuildingWithSupply(ESimpliCityBuildingType Type) {
 	TArray<ASimpliCityBuildingBase*> BuildingsOfType = BuildingListPerType.FindOrAdd(Type);
 	for (auto Building : BuildingsOfType) {
 		//if(Building->)
@@ -28,6 +28,6 @@ ASimpliCityBuildingBase* ASimpliCityBuildingManager::GetAnyBuildingWithSupply(ES
 	return nullptr;
 }
 
-void ASimpliCityBuildingManager::AddBuildingToList(ESimpliCityBuildingEnum Type,ASimpliCityBuildingBase* Building) {}
+void ASimpliCityBuildingManager::AddBuildingToList(ESimpliCityBuildingType Type,ASimpliCityBuildingBase* Building) {}
 
-void ASimpliCityBuildingManager::RemoveBuildingFromList(ESimpliCityBuildingEnum Type,ASimpliCityBuildingBase* Building) {}
+void ASimpliCityBuildingManager::RemoveBuildingFromList(ESimpliCityBuildingType Type,ASimpliCityBuildingBase* Building) {}

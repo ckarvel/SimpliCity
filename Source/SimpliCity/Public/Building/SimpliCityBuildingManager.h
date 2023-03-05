@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Building/SimpliCityBuildingEnum.h"
+#include "Building/SimpliCityBuildingType.h"
 #include "SimpliCityBuildingManager.generated.h"
 
 UCLASS()
@@ -25,11 +25,11 @@ protected:
 
 public:
 	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildingManager")
-	class ASimpliCityBuildingBase* GetAnyBuildingWithSupply(ESimpliCityBuildingEnum Type);
+	class ASimpliCityBuildingBase* GetAnyBuildingWithSupply(ESimpliCityBuildingType Type);
 	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildingManager")
-	void AddBuildingToList(ESimpliCityBuildingEnum Type, ASimpliCityBuildingBase* Building);
+	void AddBuildingToList(ESimpliCityBuildingType Type, ASimpliCityBuildingBase* Building);
 	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildingManager")
-	void RemoveBuildingFromList(ESimpliCityBuildingEnum Type, ASimpliCityBuildingBase* Building);
+	void RemoveBuildingFromList(ESimpliCityBuildingType Type, ASimpliCityBuildingBase* Building);
 
-	TMap<ESimpliCityBuildingEnum,TArray<ASimpliCityBuildingBase*>> BuildingListPerType;
+	TMap<ESimpliCityBuildingType,TArray<ASimpliCityBuildingBase*>> BuildingListPerType;
 };

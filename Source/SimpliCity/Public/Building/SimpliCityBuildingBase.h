@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "SimpliCityObjectBase.h"
-#include "Building/SimpliCityBuildingEnum.h"
+#include "Building/SimpliCityBuildingType.h"
 #include "SimpliCityBuildingBase.generated.h"
 
 UCLASS(Blueprintable)
@@ -35,5 +35,5 @@ public:
 	ASimpliCityRoadBase* RoadConnection;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="SimpliCityBuildingBase",Meta = (ExposeOnSpawn=true))
-	TEnumAsByte<ESimpliCityBuildingEnum> BuildingType;
+	TEnumAsByte<ESimpliCityBuildingType> BuildingType;
 };
