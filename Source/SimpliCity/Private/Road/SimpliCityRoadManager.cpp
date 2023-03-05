@@ -19,22 +19,18 @@ using SCFL = USimpliCityFunctionLibrary;
 ASimpliCityRoadManager::ASimpliCityRoadManager() {
 	PrimaryActorTick.bCanEverTick = false;
 }
-//////////////////////////////////////////////////////////////////////////
-void ASimpliCityRoadManager::UpdateBuildMode(bool IsEnabled) {
-	if (BuildModeEnabled == IsEnabled)
-		return;
-}
+
 //////////////////////////////////////////////////////////////////////////
 // BUILD
 //////////////////////////////////////////////////////////////////////////
 void ASimpliCityRoadManager::StartPlacingRoad(FVector Location) {
 	oldPath.Empty();
 	startLocation = SCFL::GetGridManager(this)->LocationToCenter(Location);
-	BuildModeEnabled = true;
+	IsCurrentlyBuilding = true;
 }
 //////////////////////////////////////////////////////////////////////////
 void ASimpliCityRoadManager::UpdatePath(FVector Location) {
-	if (BuildModeEnabled == false) {
+	if (IsCurrentlyBuilding == false) {
 		return;
 	}
 	AGridManager* gridMgr = SCFL::GetGridManager(this);
@@ -71,7 +67,7 @@ void ASimpliCityRoadManager::UpdatePath(FVector Location) {
 void ASimpliCityRoadManager::FinishBuildingPath() {
 	oldPath.Empty();
 	startLocation = FVector();
-	BuildModeEnabled = false;
+	IsCurrentlyBuilding = false;
 	ConvertAllTemporaryToPermanent();
 	TArray<UObject*> NewRoads;
 	NewRoads.Append(PermanentRoadList);
@@ -81,7 +77,7 @@ void ASimpliCityRoadManager::FinishBuildingPath() {
 void ASimpliCityRoadManager::CancelBuildingPath() {
 	oldPath.Empty();
 	startLocation = FVector();
-	BuildModeEnabled = false;
+	IsCurrentlyBuilding = false;
 	DestroyAllTemporaryRoads();
 }
 //////////////////////////////////////////////////////////////////////////

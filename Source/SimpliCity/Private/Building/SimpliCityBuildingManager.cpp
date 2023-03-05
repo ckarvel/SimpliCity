@@ -20,14 +20,30 @@ void ASimpliCityBuildingManager::BeginPlay()
 	Super::BeginPlay();
 }
 
-ASimpliCityBuildingBase* ASimpliCityBuildingManager::GetAnyBuildingWithSupply(ESimpliCityBuildingType Type) {
+TArray<ASimpliCityBuildingBase*> ASimpliCityBuildingManager::GetAllBuildingsOfType(ESimpliCityBuildingType Type) {
 	TArray<ASimpliCityBuildingBase*> BuildingsOfType = BuildingListPerType.FindOrAdd(Type);
-	for (auto Building : BuildingsOfType) {
-		//if(Building->)
-	}
-	return nullptr;
+	return BuildingsOfType;
 }
 
-void ASimpliCityBuildingManager::AddBuildingToList(ESimpliCityBuildingType Type,ASimpliCityBuildingBase* Building) {}
+void ASimpliCityBuildingManager::AddBuildingToList(ESimpliCityBuildingType Type,ASimpliCityBuildingBase* Building) {
+	if (BuildingListPerType.Contains(Type)) {
+		TArray<ASimpliCityBuildingBase*> BuildingList = BuildingListPerType[Type];
+		if (BuildingList.Contains(Building) == false) {
+			BuildingList.Add(Building);
+			BuildingListPerType[Type] = BuildingList;
+		}
+	}
+}
 
-void ASimpliCityBuildingManager::RemoveBuildingFromList(ESimpliCityBuildingType Type,ASimpliCityBuildingBase* Building) {}
+void ASimpliCityBuildingManager::RemoveBuildingFromList(ASimpliCityBuildingBase* Building) {
+	if (Building == nullptr)
+		return;
+	ESimpliCityBuildingType Type = Building->BuildingType;
+	if (BuildingListPerType.Contains(Type)) {
+		TArray<ASimpliCityBuildingBase*> BuildingList = BuildingListPerType[Type];
+		if (BuildingList.Contains(Building)) {
+			BuildingList.Remove(Building);
+			BuildingListPerType[Type] = BuildingList;
+		}
+	}
+}

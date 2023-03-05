@@ -20,7 +20,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="SimpliCityZoneManager")
-	bool BuildModeEnabled;
+	bool IsCurrentlyBuilding;
 
 public:
 	// Called every frame

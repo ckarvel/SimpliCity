@@ -21,15 +21,15 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="SimpliCityBuildingManager")
-	bool BuildModeEnabled;
+	bool IsCurrentlyBuilding;
 
 public:
 	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildingManager")
-	class ASimpliCityBuildingBase* GetAnyBuildingWithSupply(ESimpliCityBuildingType Type);
+	TArray<class ASimpliCityBuildingBase*> GetAllBuildingsOfType(ESimpliCityBuildingType Type);
 	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildingManager")
 	void AddBuildingToList(ESimpliCityBuildingType Type, ASimpliCityBuildingBase* Building);
 	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildingManager")
-	void RemoveBuildingFromList(ESimpliCityBuildingType Type, ASimpliCityBuildingBase* Building);
+	void RemoveBuildingFromList(ASimpliCityBuildingBase* Building);
 
 	TMap<ESimpliCityBuildingType,TArray<ASimpliCityBuildingBase*>> BuildingListPerType;
 };

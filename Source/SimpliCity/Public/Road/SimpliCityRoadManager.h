@@ -30,7 +30,7 @@ protected:
 	//////////////////////////////////////////////////////////////////////////
 	// build functions
 	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
-  void StartPlacingRoad(FVector Location);
+	void StartPlacingRoad(FVector Location);
 	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
 	void FinishBuildingPath();
 	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
@@ -49,9 +49,6 @@ protected:
 	void DestroyPermanentRoad(ASimpliCityObjectBase* Road);
 
 public:
-	UFUNCTION(BlueprintCallable,Category = "SimpliCityRoadManager")
-	void UpdateBuildMode(bool IsEnabled);
-
 	void FixRoad(ASimpliCityObjectBase* Road);
 	void SwapRoads(ASimpliCityObjectBase* OldRoad,ASimpliCityObjectBase* NewRoad);
 
@@ -75,7 +72,7 @@ public:
 
 protected:
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="SimpliCityRoadManager")
-	bool BuildModeEnabled;
+	bool IsCurrentlyBuilding;
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="SimpliCityRoadManager")
 	TMap<FVector,ASimpliCityRoadBase*> TemporaryRoadLocMap;
