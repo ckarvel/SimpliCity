@@ -35,9 +35,6 @@ bool ASimpliCityObjectManager::DoesObjectExistHere(FVector Location) {
 		if(BuildObject != nullptr)
 			return true;
 	}
-	else {
-
-	}
 	return false;
 }
 
@@ -130,13 +127,4 @@ TArray<ASimpliCityObjectBase*> ASimpliCityObjectManager::GetAllNeighbors(FVector
 			allNeighbors.Add(ObjectGrid[idx]);
 	}
 	return allNeighbors;
-}
-
-void ASimpliCityObjectManager::User_RemoveObjectFromGrid(ASimpliCityObjectBase* RemovedObject) {
-	if (RemovedObject == nullptr) {
-		TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!! RemovedObject == nullptr");
-		return;
-	}
-	FVector location = RemovedObject->GetActorLocation();
-	RemoveObjectAtLocation(location);
 }

@@ -50,6 +50,17 @@ public:
 	UFUNCTION(BlueprintCallable,Category="SimpliCityZoneManager")
 	TArray<class ASimpliCityZoneCell*> GetUnfilledZonedCells();
 
+	UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneManager")
+	bool PlacePermanentZoneBase(ASimpliCityZoneBase* ZoneBase);
+
+	UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneManager")
+	void DestroyObjects(TArray<ASimpliCityObjectBase*> ObjectList);
+
+	UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneManager")
+	TArray<ASimpliCityZoneBase*> GetAllZoneBasesOfType(ESimpliCityZoneType Type);
+	void AddZoneBaseToList(ESimpliCityZoneType Type, ASimpliCityZoneBase* ZoneBase);
+	void RemoveZoneBaseFromList(ASimpliCityZoneBase* ZoneBase);
+
 	UPROPERTY(EditAnywhere,NoClear,BlueprintReadOnly,Category = "SimpliCityZoneManager")
 	TSubclassOf<ASimpliCityZoneCell> ZoneCellClass;
 
@@ -62,5 +73,5 @@ public:
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = "SimpliCityZoneManager")
 	TMap<ASimpliCityZoneCell*, TEnumAsByte<ESimpliCityZoneType>> TemporaryCellStates;
 
-	TMap<ESimpliCityZoneType, TArray<ASimpliCityZoneBase*>> ZoneBasesPerType;
+	TMap<ESimpliCityZoneType, TArray<ASimpliCityZoneBase*>> ZoneBaseListPerType;
 };

@@ -36,9 +36,6 @@ public:
 	void RemoveObjectAtLocation(FVector Location);
 
 	UFUNCTION(BlueprintCallable,Category="SimpliCityObjectManager")
-	void User_RemoveObjectFromGrid(ASimpliCityObjectBase* RemovedObject);
-
-	UFUNCTION(BlueprintCallable,Category="SimpliCityObjectManager")
 	ASimpliCityObjectBase* GetObjectAtLocation(FVector Location);
 
 	UFUNCTION(BlueprintCallable,Category="SimpliCityObjectManager")

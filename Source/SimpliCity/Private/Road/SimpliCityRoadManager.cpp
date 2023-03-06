@@ -136,6 +136,23 @@ void ASimpliCityRoadManager::DestroyPermanentRoad(ASimpliCityObjectBase* Road) {
 	}
 }
 //////////////////////////////////////////////////////////////////////////
+void ASimpliCityRoadManager::DestroyObjects(TArray<ASimpliCityObjectBase*> ObjectList) {
+	for (auto Object : ObjectList) {
+		if (Object == nullptr)
+			continue;
+		if (ASimpliCityRoadBase* Road = Cast<ASimpliCityRoadBase>(Object)) {
+			TArray<ASimpliCityObjectBase*> neighborRoads = SCFL::GetObjectManager(this)->GetNeighborsOfType(Road->GetActorLocation(), ESimpliCityObjectType::Road);
+			PermanentRoadList.Remove(Road);
+			SCFL::GetObjectManager(this)->RemoveObjectFromGrid(Road);
+			for (auto nroad : neighborRoads) {
+				// if neighbor is not in the removal list, fix it
+				if (ObjectList.Contains(nroad) == false)
+					FixRoad(Cast<ASimpliCityRoadBase>(nroad));
+			}
+		}
+	}
+}
+//////////////////////////////////////////////////////////////////////////
 TArray<FVector> ASimpliCityRoadManager::GetNeighbors(FVector Location) const {
 	TArray<FVector> NeighborLocs;
 	TArray<ASimpliCityObjectBase*> RoadTypeNeighbors = SCFL::GetObjectManager(this)->GetNeighborsOfType(Location,ESimpliCityObjectType::Road);

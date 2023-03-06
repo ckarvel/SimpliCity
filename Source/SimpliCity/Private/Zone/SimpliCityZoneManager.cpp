@@ -5,6 +5,9 @@
 #include "Zone/SimpliCityZoneCell.h"
 #include "SimpliCityFunctionLibrary.h"
 #include "GridManager.h"
+#include "SimpliCityObjectManager.h"
+
+using SCFL = USimpliCityFunctionLibrary;
 
 ASimpliCityZoneManager::ASimpliCityZoneManager()
 {
@@ -84,4 +87,54 @@ TEnumAsByte<ESimpliCityZoneType> ASimpliCityZoneManager::GetZoneTypeAtLocation(F
 		return ESimpliCityZoneType::ZoneType_None;
 	}
 	return ZonedGridCells[index]->ZoneType;
+}
+
+bool ASimpliCityZoneManager::PlacePermanentZoneBase(ASimpliCityZoneBase* ZoneBase) {
+	if (ZoneBase == nullptr)
+		return false;
+	if (SCFL::GetObjectManager(this)->DoesObjectExistHere(ZoneBase->GetActorLocation())) {
+		return false;
+	}
+	SCFL::GetObjectManager(this)->AddObjectToGrid(ZoneBase);
+	AddZoneBaseToList(ZoneBase->ZoneType, ZoneBase);
+	return true;
+}
+
+void ASimpliCityZoneManager::DestroyObjects(TArray<ASimpliCityObjectBase*> ObjectList) {
+	for (auto Object : ObjectList) {
+		if (Object == nullptr)
+			continue;
+		if (ASimpliCityZoneBase* ZoneBase = Cast<ASimpliCityZoneBase>(Object)) {
+			RemoveZoneBaseFromList(ZoneBase);
+			SCFL::GetObjectManager(this)->RemoveObjectFromGrid(ZoneBase);
+		}
+	}
+}
+
+TArray<ASimpliCityZoneBase*> ASimpliCityZoneManager::GetAllZoneBasesOfType(ESimpliCityZoneType Type) {
+	TArray<ASimpliCityZoneBase*> ZoneBaseList = ZoneBaseListPerType.FindOrAdd(Type);
+	return ZoneBaseList;
+}
+
+void ASimpliCityZoneManager::AddZoneBaseToList(ESimpliCityZoneType Type,ASimpliCityZoneBase* ZoneBase) {
+	if (ZoneBaseListPerType.Contains(Type)) {
+		TArray<ASimpliCityZoneBase*> ZoneBaseList = ZoneBaseListPerType[Type];
+		if (ZoneBaseList.Contains(ZoneBase) == false) {
+			ZoneBaseList.Add(ZoneBase);
+			ZoneBaseListPerType[Type] = ZoneBaseList;
+		}
+	}
+}
+
+void ASimpliCityZoneManager::RemoveZoneBaseFromList(ASimpliCityZoneBase* ZoneBase) {
+	if (ZoneBase == nullptr)
+		return;
+	ESimpliCityZoneType Type = ZoneBase->ZoneType;
+	if (ZoneBaseListPerType.Contains(Type)) {
+		TArray<ASimpliCityZoneBase*> ZoneBaseList = ZoneBaseListPerType[Type];
+		if (ZoneBaseList.Contains(ZoneBase)) {
+			ZoneBaseList.Remove(ZoneBase);
+			ZoneBaseListPerType[Type] = ZoneBaseList;
+		}
+	}
 }

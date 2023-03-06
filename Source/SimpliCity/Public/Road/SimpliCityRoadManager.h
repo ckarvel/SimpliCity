@@ -41,6 +41,9 @@ protected:
 	void CreateTemporaryRoadsAtLocations(const TArray<FVector>& Locations);
 	void DestroyTemporaryRoadsAtLocations(const TArray<FVector> Locations);
 	void DestroyAllTemporaryRoads();
+
+	UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildManager")
+	void DestroyObjects(TArray<ASimpliCityObjectBase*> ObjectList);
 	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
 	void ConvertAllTemporaryToPermanent();
 	//////////////////////////////////////////////////////////////////////////

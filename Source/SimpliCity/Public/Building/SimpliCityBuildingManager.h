@@ -13,22 +13,23 @@ class SIMPLICITY_API ASimpliCityBuildingManager : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	ASimpliCityBuildingManager();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="SimpliCityBuildingManager")
 	bool IsCurrentlyBuilding;
 
 public:
+	UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingManager")
+	bool PlacePermanentBuilding(ASimpliCityBuildingBase* Building);
+
+	UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingManager")
+	void DestroyObjects(TArray<ASimpliCityObjectBase*> ObjectList);
+
 	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildingManager")
 	TArray<class ASimpliCityBuildingBase*> GetAllBuildingsOfType(ESimpliCityBuildingType Type);
-	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildingManager")
 	void AddBuildingToList(ESimpliCityBuildingType Type, ASimpliCityBuildingBase* Building);
-	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildingManager")
 	void RemoveBuildingFromList(ASimpliCityBuildingBase* Building);
 
 	TMap<ESimpliCityBuildingType,TArray<ASimpliCityBuildingBase*>> BuildingListPerType;

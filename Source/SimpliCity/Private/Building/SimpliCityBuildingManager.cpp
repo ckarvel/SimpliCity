@@ -5,19 +5,35 @@
 #include "Building/SimpliCityBuildingBase.h"
 #include "SimpliCityFunctionLibrary.h"
 #include "Utils/SimpliCityUtils.h"
+#include "SimpliCityObjectManager.h"
 
+using SCFL = USimpliCityFunctionLibrary;
 
-// Sets default values
 ASimpliCityBuildingManager::ASimpliCityBuildingManager()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 }
 
-// Called when the game starts or when spawned
-void ASimpliCityBuildingManager::BeginPlay()
-{
-	Super::BeginPlay();
+bool ASimpliCityBuildingManager::PlacePermanentBuilding(ASimpliCityBuildingBase* Building) {
+	if (Building == nullptr)
+		return false;
+	if (SCFL::GetObjectManager(this)->DoesObjectExistHere(Building->GetActorLocation())) {
+		return false;
+	}
+	SCFL::GetObjectManager(this)->AddObjectToGrid(Building);
+	AddBuildingToList(Building->BuildingType, Building);
+	return true;
+}
+
+void ASimpliCityBuildingManager::DestroyObjects(TArray<ASimpliCityObjectBase*> ObjectList) {
+	for (auto Object : ObjectList) {
+		if (Object == nullptr)
+			continue;
+		if (ASimpliCityBuildingBase* Building = Cast<ASimpliCityBuildingBase>(Object)) {
+			RemoveBuildingFromList(Building);
+			SCFL::GetObjectManager(this)->RemoveObjectFromGrid(Building);
+		}
+	}
 }
 
 TArray<ASimpliCityBuildingBase*> ASimpliCityBuildingManager::GetAllBuildingsOfType(ESimpliCityBuildingType Type) {
