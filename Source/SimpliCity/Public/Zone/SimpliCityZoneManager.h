@@ -23,38 +23,29 @@ protected:
 	bool IsCurrentlyBuilding;
 
 public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 	UFUNCTION(BlueprintCallable,Category="SimpliCityZoneManager")
 	void InitializeCellZones();
 
 	UFUNCTION(BlueprintCallable,Category="SimpliCityZoneManager")
-	bool IsCellSelected(class ASimpliCityZoneCell* Cell);
+	bool SaveLastCellState(ASimpliCityZoneCell* Cell);
 
 	UFUNCTION(BlueprintCallable,Category="SimpliCityZoneManager")
-	bool BackupCellDataIfNotExists(ASimpliCityZoneCell* Cell);
+	void ReloadCellState(ASimpliCityZoneCell* Cell);
 
 	UFUNCTION(BlueprintCallable,Category="SimpliCityZoneManager")
-	void RestoreCellData(ASimpliCityZoneCell* Cell);
+	void ReloadAllCellStates();
 
 	UFUNCTION(BlueprintCallable,Category="SimpliCityZoneManager")
-	void RestoreAllCellData();
-
-	UFUNCTION(BlueprintCallable,Category="SimpliCityZoneManager")
-	void ClearBackupData();
+	void ResetCellStates();
 
 	UFUNCTION(BlueprintCallable,Category="SimpliCityZoneManager")
 	TEnumAsByte<ESimpliCityZoneType> GetZoneTypeAtLocation(FVector Location);
-
-	UFUNCTION(BlueprintCallable,Category="SimpliCityZoneManager")
-	TArray<class ASimpliCityZoneCell*> GetUnfilledZonedCells();
 
 	UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneManager")
 	bool PlacePermanentZoneBase(ASimpliCityZoneBase* ZoneBase);
 
 	UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneManager")
-	void DestroyObjects(TArray<ASimpliCityObjectBase*> ObjectList);
+	void DestroyObjects(const TArray<ASimpliCityObjectBase*>& ObjectList);
 
 	UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneManager")
 	TArray<ASimpliCityZoneBase*> GetAllZoneBasesOfType(ESimpliCityZoneType Type);
@@ -65,13 +56,10 @@ public:
 	TSubclassOf<ASimpliCityZoneCell> ZoneCellClass;
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = "SimpliCityZoneManager")
-	TArray<ASimpliCityZoneCell*> EmptyZones;
+	TArray<ASimpliCityZoneCell*> GridCells;
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = "SimpliCityZoneManager")
-	TArray<ASimpliCityZoneCell*> ZonedGridCells;
-	
-	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = "SimpliCityZoneManager")
-	TMap<ASimpliCityZoneCell*, TEnumAsByte<ESimpliCityZoneType>> TemporaryCellStates;
+	TMap<ASimpliCityZoneCell*, TEnumAsByte<ESimpliCityZoneType>> LastCellStateMap;
 
-	TMap<ESimpliCityZoneType, TArray<ASimpliCityZoneBase*>> ZoneBaseListPerType;
+	TMap<ESimpliCityZoneType, TArray<ASimpliCityZoneBase*>> ZoneBasesPerType;
 };

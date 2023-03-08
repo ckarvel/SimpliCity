@@ -136,7 +136,7 @@ void ASimpliCityRoadManager::DestroyPermanentRoad(ASimpliCityObjectBase* Road) {
 	}
 }
 //////////////////////////////////////////////////////////////////////////
-void ASimpliCityRoadManager::DestroyObjects(TArray<ASimpliCityObjectBase*> ObjectList) {
+void ASimpliCityRoadManager::DestroyObjects(const TArray<ASimpliCityObjectBase*>& ObjectList) {
 	for (auto Object : ObjectList) {
 		if (Object == nullptr)
 			continue;

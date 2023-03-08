@@ -52,6 +52,10 @@ void ASimpliCityObjectManager::AddObjectToGrid(ASimpliCityObjectBase* AddedObjec
 		return;
 	}
 	ObjectGrid[index] = AddedObject;
+
+	// Broadcast when spawning a new object, not replacing
+	if (!IsReplacing)
+		OnSpawnedObject.Broadcast(location);
 }
 
 void ASimpliCityObjectManager::ReplaceObjectInGrid(ASimpliCityObjectBase* OldObject, ASimpliCityObjectBase* NewObject) {
@@ -62,8 +66,10 @@ void ASimpliCityObjectManager::ReplaceObjectInGrid(ASimpliCityObjectBase* OldObj
 	if (DoesObjectExistHere(OldObject->GetActorLocation()) == false) {
 		return; // object doesn't exist here so just ignore
 	}
+	IsReplacing = true;
 	RemoveObjectFromGrid(OldObject);
 	AddObjectToGrid(NewObject);
+	IsReplacing = false;
 }
 
 void ASimpliCityObjectManager::RemoveObjectFromGrid(ASimpliCityObjectBase* RemovedObject) {
@@ -86,6 +92,10 @@ void ASimpliCityObjectManager::RemoveObjectAtLocation(FVector Location) {
 		ObjectGrid[index]->Destroy();
 	}
 	ObjectGrid[index] = nullptr;
+
+	// Broadcast when truly destroying & won't replace
+	if (!IsReplacing)
+		OnDestroyedObject.Broadcast(Location);
 }
 
 ASimpliCityObjectBase* ASimpliCityObjectManager::GetObjectAtLocation(FVector Location) {

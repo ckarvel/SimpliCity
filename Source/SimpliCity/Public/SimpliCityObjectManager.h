@@ -7,6 +7,9 @@
 #include "SimpliCityObjectType.h"
 #include "SimpliCityObjectManager.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSpawnedObject, FVector, Location);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDestroyedObject, FVector, Location);
+
 class ASimpliCityObjectBase;
 
 UCLASS(Blueprintable)
@@ -47,6 +50,12 @@ public:
 	UFUNCTION(BlueprintCallable,Category="SimpliCityObjectManager")
 	bool IsInitialized() { return bInitialized; }
 
+	UPROPERTY(BlueprintAssignable, Category = "SimpliCityObjectManager")
+	FOnSpawnedObject OnSpawnedObject;
+
+	UPROPERTY(BlueprintAssignable, Category = "SimpliCityObjectManager")
+	FOnDestroyedObject OnDestroyedObject;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -56,4 +65,6 @@ public:
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "SimpliCityObjectManager")
 	bool bInitialized;
+
+	bool IsReplacing;
 };

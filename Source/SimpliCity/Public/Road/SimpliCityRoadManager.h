@@ -25,31 +25,32 @@ protected:
 	//////////////////////////////////////////////////////////////////////////
 	// build/destroy functions
 	//////////////////////////////////////////////////////////////////////////
-	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
+	UFUNCTION(BlueprintCallable,Category="SimpliCityRoadManager")
 	void UpdatePath(FVector Location);
 	//////////////////////////////////////////////////////////////////////////
 	// build functions
-	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
+	UFUNCTION(BlueprintCallable,Category="SimpliCityRoadManager")
 	void StartPlacingRoad(FVector Location);
-	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
+	UFUNCTION(BlueprintCallable,Category="SimpliCityRoadManager")
 	void FinishBuildingPath();
-	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
+	UFUNCTION(BlueprintCallable,Category="SimpliCityRoadManager")
 	void CancelBuildingPath();
-	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
+	UFUNCTION(BlueprintCallable,Category="SimpliCityRoadManager")
 	bool PlacePermanentRoad(const FVector Location,const FRotator Rotation);
-	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
+	UFUNCTION(BlueprintCallable,Category="SimpliCityRoadManager")
 	void CreateTemporaryRoadsAtLocations(const TArray<FVector>& Locations);
 	void DestroyTemporaryRoadsAtLocations(const TArray<FVector> Locations);
 	void DestroyAllTemporaryRoads();
 
-	UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildManager")
-	void DestroyObjects(TArray<ASimpliCityObjectBase*> ObjectList);
-	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
+	UFUNCTION(BlueprintCallable,Category="SimpliCityRoadManager")
 	void ConvertAllTemporaryToPermanent();
 	//////////////////////////////////////////////////////////////////////////
 	// destroy functions
-	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildManager")
+	UFUNCTION(BlueprintCallable,Category="SimpliCityRoadManager")
 	void DestroyPermanentRoad(ASimpliCityObjectBase* Road);
+
+	UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
+	void DestroyObjects(const TArray<ASimpliCityObjectBase*>& ObjectList);
 
 public:
 	void FixRoad(ASimpliCityObjectBase* Road);

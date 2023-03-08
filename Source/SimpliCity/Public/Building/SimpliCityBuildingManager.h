@@ -25,7 +25,7 @@ public:
 	bool PlacePermanentBuilding(ASimpliCityBuildingBase* Building);
 
 	UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingManager")
-	void DestroyObjects(TArray<ASimpliCityObjectBase*> ObjectList);
+	void DestroyObjects(const TArray<ASimpliCityObjectBase*>& ObjectList);
 
 	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildingManager")
 	TArray<class ASimpliCityBuildingBase*> GetAllBuildingsOfType(ESimpliCityBuildingType Type);

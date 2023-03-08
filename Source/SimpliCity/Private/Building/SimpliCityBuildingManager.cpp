@@ -25,7 +25,7 @@ bool ASimpliCityBuildingManager::PlacePermanentBuilding(ASimpliCityBuildingBase*
 	return true;
 }
 
-void ASimpliCityBuildingManager::DestroyObjects(TArray<ASimpliCityObjectBase*> ObjectList) {
+void ASimpliCityBuildingManager::DestroyObjects(const TArray<ASimpliCityObjectBase*>& ObjectList) {
 	for (auto Object : ObjectList) {
 		if (Object == nullptr)
 			continue;

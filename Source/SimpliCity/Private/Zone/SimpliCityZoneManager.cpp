@@ -32,61 +32,50 @@ void ASimpliCityZoneManager::InitializeCellZones() {
 			ASimpliCityZoneCell* Cell = GetWorld()->SpawnActor<ASimpliCityZoneCell>(ZoneCellClass,location, FRotator());
 			FAttachmentTransformRules AttachmentRules(EAttachmentRule::KeepWorld, false);
 			Cell->AttachToActor(this,AttachmentRules);
-			ZonedGridCells.Add(Cell);
+			GridCells.Add(Cell);
 		}
 	}
 }
 
-bool ASimpliCityZoneManager::IsCellSelected(ASimpliCityZoneCell* Cell) {
-	return TemporaryCellStates.Contains(Cell);
-}
-
-bool ASimpliCityZoneManager::BackupCellDataIfNotExists(ASimpliCityZoneCell* Cell) {
-	if (IsCellSelected(Cell) == false) {
-		TemporaryCellStates.Add(Cell, Cell->ZoneType);
+// When currently selecting zones, store the last state of each cell before applying new zone
+// if selection is canceled, load last state for each cell
+bool ASimpliCityZoneManager::SaveLastCellState(ASimpliCityZoneCell* Cell) {
+	if (LastCellStateMap.Contains(Cell) == false) {
+		LastCellStateMap.Add(Cell, Cell->ZoneType);
 		return true;
 	}
 	return false;
 }
 
-void ASimpliCityZoneManager::RestoreCellData(ASimpliCityZoneCell* Cell) {
-	if (IsCellSelected(Cell) == true) {
-		Cell->SetCellType(TemporaryCellStates[Cell]);
-		TemporaryCellStates.Remove(Cell);
+void ASimpliCityZoneManager::ReloadCellState(ASimpliCityZoneCell* Cell) {
+	if (LastCellStateMap.Contains(Cell) == true) {
+		Cell->SetCellType(LastCellStateMap[Cell]);
+		LastCellStateMap.Remove(Cell);
 	}
 }
 
-void ASimpliCityZoneManager::RestoreAllCellData() {
-	for (auto Cell : TemporaryCellStates) {
+void ASimpliCityZoneManager::ReloadAllCellStates() {
+	for (auto Cell : LastCellStateMap) {
 		Cell.Key->SetCellType(Cell.Value);
 	}
-	TemporaryCellStates.Empty();
+	ResetCellStates();
 }
 
-void ASimpliCityZoneManager::ClearBackupData() {
-	TemporaryCellStates.Empty();
-}
-
-TArray<ASimpliCityZoneCell*> ASimpliCityZoneManager::GetUnfilledZonedCells() {
-	return EmptyZones;
-}
-
-void ASimpliCityZoneManager::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
+void ASimpliCityZoneManager::ResetCellStates() {
+	LastCellStateMap.Empty();
 }
 
 TEnumAsByte<ESimpliCityZoneType> ASimpliCityZoneManager::GetZoneTypeAtLocation(FVector Location) {
 	int32 index = USimpliCityFunctionLibrary::GetGridManager(this)->LocationToIndex(Location);
-	if (index <= 0 || index >= ZonedGridCells.Num()) {
-		TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!! NOT IN RANGE!! (0 <= index(%d) < ZonedGridCells.Num()(%d)", index, ZonedGridCells.Num());
+	if (index <= 0 || index >= GridCells.Num()) {
+		TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!! NOT IN RANGE!! (0 <= index(%d) < ZonedGridCells.Num()(%d)", index, GridCells.Num());
 		return ESimpliCityZoneType::ZoneType_None;
 	}
-	if (ZonedGridCells[index] == nullptr) {
+	if (GridCells[index] == nullptr) {
 		TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!!! ZonedGridCells[index] == nullptr");
 		return ESimpliCityZoneType::ZoneType_None;
 	}
-	return ZonedGridCells[index]->ZoneType;
+	return GridCells[index]->ZoneType;
 }
 
 bool ASimpliCityZoneManager::PlacePermanentZoneBase(ASimpliCityZoneBase* ZoneBase) {
@@ -100,7 +89,7 @@ bool ASimpliCityZoneManager::PlacePermanentZoneBase(ASimpliCityZoneBase* ZoneBas
 	return true;
 }
 
-void ASimpliCityZoneManager::DestroyObjects(TArray<ASimpliCityObjectBase*> ObjectList) {
+void ASimpliCityZoneManager::DestroyObjects(const TArray<ASimpliCityObjectBase*>& ObjectList) {
 	for (auto Object : ObjectList) {
 		if (Object == nullptr)
 			continue;
@@ -112,17 +101,17 @@ void ASimpliCityZoneManager::DestroyObjects(TArray<ASimpliCityObjectBase*> Objec
 }
 
 TArray<ASimpliCityZoneBase*> ASimpliCityZoneManager::GetAllZoneBasesOfType(ESimpliCityZoneType Type) {
-	TArray<ASimpliCityZoneBase*> ZoneBaseList = ZoneBaseListPerType.FindOrAdd(Type);
+	TArray<ASimpliCityZoneBase*> ZoneBaseList = ZoneBasesPerType.FindOrAdd(Type);
 	return ZoneBaseList;
 }
 
 void ASimpliCityZoneManager::AddZoneBaseToList(ESimpliCityZoneType Type,ASimpliCityZoneBase* ZoneBase) {
-	if (ZoneBaseListPerType.Contains(Type)) {
-		TArray<ASimpliCityZoneBase*> ZoneBaseList = ZoneBaseListPerType[Type];
-		if (ZoneBaseList.Contains(ZoneBase) == false) {
-			ZoneBaseList.Add(ZoneBase);
-			ZoneBaseListPerType[Type] = ZoneBaseList;
-		}
+	if (Type == ESimpliCityZoneType::ZoneType_None)
+		return;
+	TArray<ASimpliCityZoneBase*> ZoneBaseList = ZoneBasesPerType.FindOrAdd(Type);
+	if (ZoneBaseList.Contains(ZoneBase) == false) {
+		ZoneBaseList.Add(ZoneBase);
+		ZoneBasesPerType[Type] = ZoneBaseList;
 	}
 }
 
@@ -130,11 +119,9 @@ void ASimpliCityZoneManager::RemoveZoneBaseFromList(ASimpliCityZoneBase* ZoneBas
 	if (ZoneBase == nullptr)
 		return;
 	ESimpliCityZoneType Type = ZoneBase->ZoneType;
-	if (ZoneBaseListPerType.Contains(Type)) {
-		TArray<ASimpliCityZoneBase*> ZoneBaseList = ZoneBaseListPerType[Type];
-		if (ZoneBaseList.Contains(ZoneBase)) {
-			ZoneBaseList.Remove(ZoneBase);
-			ZoneBaseListPerType[Type] = ZoneBaseList;
-		}
+	TArray<ASimpliCityZoneBase*> ZoneBaseList = ZoneBasesPerType.FindOrAdd(Type);
+	if (ZoneBaseList.Contains(ZoneBase)) {
+		ZoneBaseList.Remove(ZoneBase);
+		ZoneBasesPerType[Type] = ZoneBaseList;
 	}
 }
