@@ -138,3 +138,10 @@ TArray<ASimpliCityObjectBase*> ASimpliCityObjectManager::GetAllNeighbors(FVector
 	}
 	return allNeighbors;
 }
+
+bool ASimpliCityObjectManager::IsNearRoad(FVector Location) {
+	TArray<ASimpliCityObjectBase*> Neighbors = GetNeighborsOfType(Location, ESimpliCityObjectType::Road);
+	if (Neighbors.Num() > 0)
+		return true;
+	return false;
+}

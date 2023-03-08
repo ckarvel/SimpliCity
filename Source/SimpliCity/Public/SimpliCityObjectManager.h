@@ -47,6 +47,9 @@ public:
 	UFUNCTION(BlueprintCallable,Category="SimpliCityObjectManager")
 	TArray<ASimpliCityObjectBase*> GetAllNeighbors(FVector Location);
 
+	UFUNCTION(BlueprintCallable, Category = "SimpliCityObjectManager")
+	bool IsNearRoad(FVector Location);
+
 	UFUNCTION(BlueprintCallable,Category="SimpliCityObjectManager")
 	bool IsInitialized() { return bInitialized; }
 
