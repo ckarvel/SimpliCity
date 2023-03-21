@@ -56,6 +56,10 @@ public:
 	void FixRoad(ASimpliCityObjectBase* Road);
 	void SwapRoads(ASimpliCityObjectBase* OldRoad,ASimpliCityObjectBase* NewRoad);
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "SimpliCityRoadManager")
+	ASimpliCityRoadBase* SpawnRoad(TSubclassOf<ASimpliCityRoadBase> RoadClass, const FVector Location, const FRotator Rotation);
+	ASimpliCityRoadBase* SpawnRoad_Implementation(TSubclassOf<ASimpliCityRoadBase> RoadClass, const FVector Location, const FRotator Rotation);
+
 	UFUNCTION(BlueprintCallable,Category = "SimpliCityRoadManager")
 	virtual TArray<FVector> GetNeighbors(FVector Location) const override;
 
