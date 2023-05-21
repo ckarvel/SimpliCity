@@ -57,8 +57,8 @@ public:
 	void SwapRoads(ASimpliCityObjectBase* OldRoad,ASimpliCityObjectBase* NewRoad);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "SimpliCityRoadManager")
-	ASimpliCityRoadBase* SpawnRoad(TSubclassOf<ASimpliCityRoadBase> RoadClass, const FVector Location, const FRotator Rotation);
-	ASimpliCityRoadBase* SpawnRoad_Implementation(TSubclassOf<ASimpliCityRoadBase> RoadClass, const FVector Location, const FRotator Rotation);
+	ASimpliCityRoadBase* SpawnRoad(TSubclassOf<ASimpliCityRoadBase> RoadClass, const FVector Location, const FRotator Rotation, ASimpliCityObjectBase* RoadBeingReplaced);
+	ASimpliCityRoadBase* SpawnRoad_Implementation(TSubclassOf<ASimpliCityRoadBase> RoadClass, const FVector Location, const FRotator Rotation, ASimpliCityObjectBase* RoadBeingReplaced);
 
 	UFUNCTION(BlueprintCallable,Category = "SimpliCityRoadManager")
 	virtual TArray<FVector> GetNeighbors(FVector Location) const override;

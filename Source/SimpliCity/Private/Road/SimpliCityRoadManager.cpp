@@ -82,7 +82,7 @@ void ASimpliCityRoadManager::CancelBuildingPath() {
 }
 
 //////////////////////////////////////////////////////////////////////////
-ASimpliCityRoadBase* ASimpliCityRoadManager::SpawnRoad_Implementation(TSubclassOf<ASimpliCityRoadBase> RoadClass, const FVector Location, const FRotator Rotation) {
+ASimpliCityRoadBase* ASimpliCityRoadManager::SpawnRoad_Implementation(TSubclassOf<ASimpliCityRoadBase> RoadClass, const FVector Location, const FRotator Rotation, ASimpliCityObjectBase* RoadBeingReplaced) {
 	ASimpliCityRoadBase* Road = GetWorld()->SpawnActor<ASimpliCityRoadBase>(RoadClass, Location, Rotation);
 	return Road;
 }
@@ -91,7 +91,7 @@ bool ASimpliCityRoadManager::PlacePermanentRoad(const FVector Location, const FR
 	if (SCFL::GetObjectManager(this)->DoesObjectExistHere(Location)) {
 		return false;
 	}
-	ASimpliCityRoadBase* Road = SpawnRoad(RoadFixerComponent->GetDefaultRoadClass(), Location, Rotation);
+	ASimpliCityRoadBase* Road = SpawnRoad(RoadFixerComponent->GetDefaultRoadClass(), Location, Rotation, nullptr);
 	SCFL::GetObjectManager(this)->AddObjectToGrid(Road);
 	PermanentRoadList.Add(Road);
 	FixRoadAndNeighbors(Road);
@@ -100,7 +100,7 @@ bool ASimpliCityRoadManager::PlacePermanentRoad(const FVector Location, const FR
 //////////////////////////////////////////////////////////////////////////
 void ASimpliCityRoadManager::CreateTemporaryRoadsAtLocations(const TArray<FVector>& Locations) {
 	for (auto Location : Locations) {
-		ASimpliCityRoadBase* TempRoad = SpawnRoad(RoadFixerComponent->GetDefaultRoadClass(), Location, FRotator());
+		ASimpliCityRoadBase* TempRoad = SpawnRoad(RoadFixerComponent->GetDefaultRoadClass(), Location, FRotator(), nullptr);
 		SCFL::GetObjectManager(this)->AddObjectToGrid(TempRoad);
 		TemporaryRoadLocMap.Add(Location,TempRoad);
 		FixRoadAndNeighbors(TempRoad);
@@ -190,7 +190,7 @@ void ASimpliCityRoadManager::FixRoad(ASimpliCityObjectBase* Road) {
 	TSubclassOf<ASimpliCityRoadBase> SpawnRoadClass;
 	FRotator SpawnRotation;
 	RoadFixerComponent->GetRoadTypeAndRotationAtLocation(Road->GetActorLocation(),SpawnRoadClass,SpawnRotation);
-	ASimpliCityRoadBase* FixedRoad = SpawnRoad(SpawnRoadClass,Road->GetActorLocation(),SpawnRotation);
+	ASimpliCityRoadBase* FixedRoad = SpawnRoad(SpawnRoadClass,Road->GetActorLocation(),SpawnRotation, Road);
 
 #if WITH_EDITOR
 	FixedRoad->SetFolderPath("Roads");
