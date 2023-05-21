@@ -4,36 +4,35 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "SimpliCityObjectBase.h"
 #include "SimpliCityBuildingType.h"
+#include "SimpliCityObjectBase.h"
 #include "SimpliCityBuildingBase.generated.h"
 
 UCLASS(Blueprintable)
-class SIMPLICITY_API ASimpliCityBuildingBase : public ASimpliCityObjectBase
-{
-	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
-	ASimpliCityBuildingBase();
+class SIMPLICITY_API ASimpliCityBuildingBase : public ASimpliCityObjectBase {
+  GENERATED_BODY()
+
+public:
+  // Sets default values for this actor's properties
+  ASimpliCityBuildingBase();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+  // Called when the game starts or when spawned
+  virtual void BeginPlay() override;
 
-public:	
-	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildingBase")
-	FORCEINLINE class UStaticMeshComponent* GetStaticMeshComponent() const { return StaticMeshComponent; }
+public:
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingBase")
+  FORCEINLINE class UStaticMeshComponent *GetStaticMeshComponent() const { return StaticMeshComponent; }
 
-	UFUNCTION(BlueprintCallable,Category="SimpliCityBuildingBase")
-	class ASimpliCityRoadBase* GetRoadConnection() const { return RoadConnection; }
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingBase")
+  class ASimpliCityRoadBase *GetRoadConnection() const { return RoadConnection; }
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="SimpliCityBuildingBase")
-	UStaticMeshComponent* StaticMeshComponent;
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityBuildingBase")
+  UStaticMeshComponent *StaticMeshComponent;
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="SimpliCityBuildingBase")
-	ASimpliCityRoadBase* RoadConnection;
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityBuildingBase")
+  ASimpliCityRoadBase *RoadConnection;
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="SimpliCityBuildingBase",Meta = (ExposeOnSpawn=true))
-	TEnumAsByte<ESimpliCityBuildingType> BuildingType;
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityBuildingBase", Meta = (ExposeOnSpawn = true))
+  TEnumAsByte<ESimpliCityBuildingType> BuildingType;
 };

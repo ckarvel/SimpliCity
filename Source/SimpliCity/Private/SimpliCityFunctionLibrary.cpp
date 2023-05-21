@@ -1,24 +1,23 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "SimpliCityFunctionLibrary.h"
 
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "Blueprint/WidgetBlueprintLibrary.h"
 
 #include "GridManager.h"
 #include "MarkerManager.h"
 #include "MyAStarPathFinder.h"
 
 #include "SimpliCityGameInstance.h"
+#include "SimpliCityMainUI.h"
 #include "SimpliCityObjectManager.h"
 #include "SimpliCityPlayerController.h"
-#include "SimpliCityMainUI.h"
 
+#include "Building/SimpliCityBuildingManager.h"
 #include "Road/SimpliCityRoadManager.h"
 #include "Zone/SimpliCityZoneManager.h"
-#include "Building/SimpliCityBuildingManager.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Getters
@@ -26,7 +25,7 @@
 ASimpliCityPlayerController* USimpliCityFunctionLibrary::GetPlayerController(const UObject* WorldContextObject) {
   auto mgr = Cast<ASimpliCityPlayerController>(UGameplayStatics::GetPlayerController(WorldContextObject, 0));
   if (mgr == nullptr) {
-    TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!! mgr == nullptr");
+    TRACE_ERROR_PRINTF(LogSimpliCity, "ERROR!! mgr == nullptr");
   }
   return mgr;
 }
@@ -35,41 +34,42 @@ USimpliCityMainUI* USimpliCityFunctionLibrary::GetMainUI(UObject* WorldContextOb
   TArray<UUserWidget*> FoundWidgets;
   UWidgetBlueprintLibrary::GetAllWidgetsOfClass(WorldContextObject, FoundWidgets, USimpliCityMainUI::StaticClass());
   if (FoundWidgets.Num() <= 0) {
-    TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!! FoundWidgets.Num() <= 0");
+    TRACE_ERROR_PRINTF(LogSimpliCity, "ERROR!! FoundWidgets.Num() <= 0");
     return nullptr;
   }
   return Cast<USimpliCityMainUI>(FoundWidgets[0]);
 }
 
 AGridManager* USimpliCityFunctionLibrary::GetGridManager(const UObject* WorldContextObject) {
-  return GetManager<AGridManager>(WorldContextObject,AGridManager::StaticClass());
+  return GetManager<AGridManager>(WorldContextObject, AGridManager::StaticClass());
 }
 
 ASimpliCityObjectManager* USimpliCityFunctionLibrary::GetObjectManager(const UObject* WorldContextObject) {
-  return GetManager<ASimpliCityObjectManager>(WorldContextObject,ASimpliCityObjectManager::StaticClass());
+  return GetManager<ASimpliCityObjectManager>(WorldContextObject, ASimpliCityObjectManager::StaticClass());
 }
 
 AMarkerManager* USimpliCityFunctionLibrary::GetMarkerManager(const UObject* WorldContextObject) {
-  return GetManager<AMarkerManager>(WorldContextObject,AMarkerManager::StaticClass());
+  return GetManager<AMarkerManager>(WorldContextObject, AMarkerManager::StaticClass());
 }
 
 ASimpliCityRoadManager* USimpliCityFunctionLibrary::GetRoadManager(const UObject* WorldContextObject) {
-  return GetManager<ASimpliCityRoadManager>(WorldContextObject,ASimpliCityRoadManager::StaticClass());
+  return GetManager<ASimpliCityRoadManager>(WorldContextObject, ASimpliCityRoadManager::StaticClass());
 }
 
 ASimpliCityZoneManager* USimpliCityFunctionLibrary::GetZoneManager(const UObject* WorldContextObject) {
-  return GetManager<ASimpliCityZoneManager>(WorldContextObject,ASimpliCityZoneManager::StaticClass());
+  return GetManager<ASimpliCityZoneManager>(WorldContextObject, ASimpliCityZoneManager::StaticClass());
 }
 
 ASimpliCityBuildingManager* USimpliCityFunctionLibrary::GetBuildingManager(const UObject* WorldContextObject) {
-  return GetManager<ASimpliCityBuildingManager>(WorldContextObject,ASimpliCityBuildingManager::StaticClass());
+  return GetManager<ASimpliCityBuildingManager>(WorldContextObject, ASimpliCityBuildingManager::StaticClass());
 }
 
 template <class ManagerClass>
-ManagerClass* USimpliCityFunctionLibrary::GetManager(const UObject* WorldContextObject, TSubclassOf<ManagerClass> Class) {
-  ManagerClass* mgr = Cast<ManagerClass>(UGameplayStatics::GetActorOfClass(WorldContextObject,Class));
+ManagerClass* USimpliCityFunctionLibrary::GetManager(
+  const UObject* WorldContextObject, TSubclassOf<ManagerClass> Class) {
+  ManagerClass* mgr = Cast<ManagerClass>(UGameplayStatics::GetActorOfClass(WorldContextObject, Class));
   if (mgr == nullptr) {
-    TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!! mgr == nullptr");
+    TRACE_ERROR_PRINTF(LogSimpliCity, "ERROR!! mgr == nullptr");
   }
   return mgr;
 }
@@ -77,81 +77,78 @@ ManagerClass* USimpliCityFunctionLibrary::GetManager(const UObject* WorldContext
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Common Math Functions
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool USimpliCityFunctionLibrary::IsNearlyEqual(float A,float B) {
-  return FMath::IsNearlyEqual(A,B,0.1);
+bool USimpliCityFunctionLibrary::IsNearlyEqual(float A, float B) {
+  return FMath::IsNearlyEqual(A, B, 0.1);
 }
 
 bool USimpliCityFunctionLibrary::AreLocationsEqual(FVector LocationA, FVector LocationB, float Tolerance) {
-  FVector ZAdjustedA = FVector(LocationA.X,LocationA.Y,0.0);
-  FVector ZAdjustedB = FVector(LocationB.X,LocationB.Y,0.0);
-  return ZAdjustedA.Equals(ZAdjustedB,Tolerance);
+  FVector ZAdjustedA = FVector(LocationA.X, LocationA.Y, 0.0);
+  FVector ZAdjustedB = FVector(LocationB.X, LocationB.Y, 0.0);
+  return ZAdjustedA.Equals(ZAdjustedB, Tolerance);
 }
 
-FVector USimpliCityFunctionLibrary::GetMidpointBetween(FVector A,FVector B) {
+FVector USimpliCityFunctionLibrary::GetMidpointBetween(FVector A, FVector B) {
   float x = (A.X + B.X) / 2.0;
   float y = (A.Y + B.Y) / 2.0;
-  return FVector(x,y,50.0);
+  return FVector(x, y, 50.0);
 }
 
-FVector USimpliCityFunctionLibrary::VInterpTo(FVector Current,FVector Target,float Delta,float Speed) {
-  return FMath::VInterpTo(Current,Target,Delta,Speed);
+FVector USimpliCityFunctionLibrary::VInterpTo(FVector Current, FVector Target, float Delta, float Speed) {
+  return FMath::VInterpTo(Current, Target, Delta, Speed);
 }
 
-FRotator USimpliCityFunctionLibrary::RInterpTo(FRotator Current,FRotator Target,float Delta,float Speed) {
-  return FMath::RInterpTo(Current,Target,Delta,Speed);
+FRotator USimpliCityFunctionLibrary::RInterpTo(FRotator Current, FRotator Target, float Delta, float Speed) {
+  return FMath::RInterpTo(Current, Target, Delta, Speed);
 }
 
-float USimpliCityFunctionLibrary::FInterpTo(float Current,float Target,float Delta,float Speed) {
-  return FMath::FInterpTo(Current,Target,Delta,Speed);
+float USimpliCityFunctionLibrary::FInterpTo(float Current, float Target, float Delta, float Speed) {
+  return FMath::FInterpTo(Current, Target, Delta, Speed);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Math Algorithms
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-TArray<AActor*> USimpliCityFunctionLibrary::GetDifferenceInArrays(TArray<AActor*> A,TArray<AActor*> B) {
+TArray<AActor*> USimpliCityFunctionLibrary::GetDifferenceInArrays(TArray<AActor*> A, TArray<AActor*> B) {
   TSet<AActor*> ASet = TSet<AActor*>(A);
   TSet<AActor*> BSet = TSet<AActor*>(B);
   TSet<AActor*> diff = ASet.Difference(BSet);
   return diff.Array();
 }
 
-void USimpliCityFunctionLibrary::CalculateSelectionRectangle(FVector Start,FVector End,FVector& OutExtents,TArray<FVector>& OutVertices,TArray<int>& OutTriangles) {
-  float minX = FMath::Min(Start.X,End.X);
-  float minY = FMath::Min(Start.Y,End.Y);
-  float maxX = FMath::Max(Start.X,End.X);
-  float maxY = FMath::Max(Start.Y,End.Y);
+void USimpliCityFunctionLibrary::CalculateSelectionRectangle(
+  FVector Start, FVector End, FVector& OutExtents, TArray<FVector>& OutVertices, TArray<int>& OutTriangles) {
+  float minX = FMath::Min(Start.X, End.X);
+  float minY = FMath::Min(Start.Y, End.Y);
+  float maxX = FMath::Max(Start.X, End.X);
+  float maxY = FMath::Max(Start.Y, End.Y);
 
-  TArray<FVector> Vertices ={
-    FVector(minX, minY, 100),
-    FVector(minX, maxY, 100),
-    FVector(maxX, minY, 100),
-    FVector(maxX, maxY, 100)
-  };
+  TArray<FVector> Vertices
+    = { FVector(minX, minY, 100), FVector(minX, maxY, 100), FVector(maxX, minY, 100), FVector(maxX, maxY, 100) };
   OutVertices = Vertices;
 
-  OutExtents.X = FVector::Distance(Vertices[0],Vertices[2]) / 2.0;
-  OutExtents.Y = FVector::Distance(Vertices[0],Vertices[1]) / 2.0;
-  OutExtents.Z = 50.0; //arbitrary
+  OutExtents.X = FVector::Distance(Vertices[0], Vertices[2]) / 2.0;
+  OutExtents.Y = FVector::Distance(Vertices[0], Vertices[1]) / 2.0;
+  OutExtents.Z = 50.0; // arbitrary
 
   // order of vertices we made in the list above
   // counter-clockwise of a triangle starting at top
-  TArray<int> Triangles ={ 0, 1, 3, 3, 2, 0 };
+  TArray<int> Triangles = { 0, 1, 3, 3, 2, 0 };
   OutTriangles = Triangles;
 }
 
-TArray<FVector> USimpliCityFunctionLibrary::GetPathBetween(UObject* Graph,FVector Start,FVector End) {
+TArray<FVector> USimpliCityFunctionLibrary::GetPathBetween(UObject* Graph, FVector Start, FVector End) {
   if (Graph == nullptr) {
-    TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!! Graph == nullptr");
+    TRACE_ERROR_PRINTF(LogSimpliCity, "ERROR!! Graph == nullptr");
     return TArray<FVector>();
   }
-  MyAStarData Data = MyAStarPathFinder::AStarSearch(Graph,Start,End);
+  MyAStarData Data = MyAStarPathFinder::AStarSearch(Graph, Start, End);
   if (Data.error == true) {
-    TRACE_ERROR_PRINTF(LogSimpliCity,"%s",*Data.message);
+    TRACE_ERROR_PRINTF(LogSimpliCity, "%s", *Data.message);
   }
   return Data.path;
 }
 
-bool USimpliCityFunctionLibrary::ArePointsCollinear(FVector A,FVector B,FVector C) {
+bool USimpliCityFunctionLibrary::ArePointsCollinear(FVector A, FVector B, FVector C) {
   // (x2-x1)(y3-y2) - (y2-y1)(x3-x2) = 0
   float result = (B.X - A.X) * (C.Y - B.Y) - (B.Y - A.Y) * (C.X - B.X);
   return result == 0;
@@ -159,15 +156,15 @@ bool USimpliCityFunctionLibrary::ArePointsCollinear(FVector A,FVector B,FVector 
 
 TArray<FVector> USimpliCityFunctionLibrary::GetSimplifiedPath(TArray<FVector> Path) {
   if (Path.Num() < 3) {
-    TRACE_WARNING_PRINTF(LogSimpliCity,"Warning: Path has less than 3 points");
+    TRACE_WARNING_PRINTF(LogSimpliCity, "Warning: Path has less than 3 points");
     return Path;
   }
-   
+
   TArray<FVector> Out = Path;
   int start = 0;
-  while(start+2 < Out.Num()) {
-    if (USimpliCityFunctionLibrary::ArePointsCollinear(Out[start],Out[start+1],Out[start+2])) {
-      Out.RemoveAt(start+1);
+  while (start + 2 < Out.Num()) {
+    if (USimpliCityFunctionLibrary::ArePointsCollinear(Out[start], Out[start + 1], Out[start + 2])) {
+      Out.RemoveAt(start + 1);
       continue;
     }
     start++;
@@ -183,13 +180,13 @@ float USimpliCityFunctionLibrary::AngleBetween2Vectors(FVector A, FVector B) {
   return FMath::RadiansToDegrees(rads);
 }
 
-TArray<FVector> USimpliCityFunctionLibrary::QuadraticBezierCurve(FVector P0,FVector P1,FVector P2) {
+TArray<FVector> USimpliCityFunctionLibrary::QuadraticBezierCurve(FVector P0, FVector P1, FVector P2) {
   // B(t) = (1-t)^2 * P0 + 2(1-t)tP1 + t2P2,0 <= t <= 1
   float t = 0;
   int num_points = 10;
   float step_size = 1.0f / num_points;
   TArray<FVector> OutPoints;
-  while(t <= 1) {
+  while (t <= 1) {
     FVector C0 = FMath::Square(1 - t) * P0;
     FVector C1 = 2 * t * (1 - t) * P1;
     FVector C2 = FMath::Square(t) * P2;
@@ -201,21 +198,22 @@ TArray<FVector> USimpliCityFunctionLibrary::QuadraticBezierCurve(FVector P0,FVec
 
 TArray<FVector> USimpliCityFunctionLibrary::SmoothCurvedSegments(TArray<FVector> Path) {
   if (Path.Num() < 3) {
-    TRACE_WARNING_PRINTF(LogSimpliCity,"Warning: Path has less than 3 points");
+    TRACE_WARNING_PRINTF(LogSimpliCity, "Warning: Path has less than 3 points");
     return Path;
   }
 
   TArray<FVector> Out = Path;
   int start = 0;
-  while(start+2 < Out.Num()) {
+  while (start + 2 < Out.Num()) {
     // Get angle between 2 vectors
-    FVector A = Out[start+2] - Out[start+1];
-    FVector B = Out[start+1] - Out[start];
-    float angle = USimpliCityFunctionLibrary::AngleBetween2Vectors(A,B);
+    FVector A = Out[start + 2] - Out[start + 1];
+    FVector B = Out[start + 1] - Out[start];
+    float angle = USimpliCityFunctionLibrary::AngleBetween2Vectors(A, B);
     if (angle > 45) {
-      TArray<FVector> CurvePoints = USimpliCityFunctionLibrary::QuadraticBezierCurve(Out[start],Out[start+1],Out[start+2]);
-      Out.RemoveAt(start+2);
-      Out.RemoveAt(start+1);
+      TArray<FVector> CurvePoints
+        = USimpliCityFunctionLibrary::QuadraticBezierCurve(Out[start], Out[start + 1], Out[start + 2]);
+      Out.RemoveAt(start + 2);
+      Out.RemoveAt(start + 1);
       Out.RemoveAt(start);
       Out.Insert(CurvePoints, start);
       // start should be set to the last point in this curve

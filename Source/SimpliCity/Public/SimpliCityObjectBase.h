@@ -8,22 +8,24 @@
 #include "SimpliCityObjectBase.generated.h"
 
 UCLASS(Blueprintable)
-class SIMPLICITY_API ASimpliCityObjectBase : public AActor
-{
-	GENERATED_BODY()
+class SIMPLICITY_API ASimpliCityObjectBase : public AActor {
+  GENERATED_BODY()
 
 public:
-	ASimpliCityObjectBase();
-	UFUNCTION(BlueprintPure,Category="SimpliCityObjectBase")
-	FORCEINLINE TEnumAsByte<ESimpliCityObjectType> Type() const { return ObjectType; }
+  ASimpliCityObjectBase();
+  UFUNCTION(BlueprintPure, Category = "SimpliCityObjectBase")
+  FORCEINLINE TEnumAsByte<ESimpliCityObjectType> Type() const { return ObjectType; }
 
 protected:
-	virtual void BeginPlay() override;
+  virtual void BeginPlay() override;
 
 public:
-	virtual void SetNewMaterial();
+  virtual void SetNewMaterial();
+
+  // this object is placed permanently on the grid, start any necessary component behaviors
+  virtual void OnObjectPlaced();
 
 protected:
-	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "SimpliCityObjectBase")
-	TEnumAsByte<ESimpliCityObjectType> ObjectType;
+  UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "SimpliCityObjectBase")
+  TEnumAsByte<ESimpliCityObjectType> ObjectType;
 };

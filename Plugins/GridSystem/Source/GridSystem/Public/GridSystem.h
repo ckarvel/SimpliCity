@@ -5,13 +5,11 @@
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
 
-class FGridSystemModule : public IModuleInterface
-{
+class FGridSystemModule : public IModuleInterface {
 public:
-
-	/** IModuleInterface implementation */
-	virtual void StartupModule() override;
-	virtual void ShutdownModule() override;
+  /** IModuleInterface implementation */
+  virtual void StartupModule() override;
+  virtual void ShutdownModule() override;
 };
 
-DECLARE_LOG_CATEGORY_EXTERN(LogGridSystem,Log,All);
+DECLARE_LOG_CATEGORY_EXTERN(LogGridSystem, Log, All);

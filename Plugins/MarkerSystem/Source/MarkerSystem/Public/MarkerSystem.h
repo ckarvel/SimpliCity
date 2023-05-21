@@ -3,16 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Utils.h"
 #include "Modules/ModuleManager.h"
+#include "Utils.h"
 
-class FMarkerSystemModule : public IModuleInterface
-{
+class FMarkerSystemModule : public IModuleInterface {
 public:
-
-	/** IModuleInterface implementation */
-	virtual void StartupModule() override;
-	virtual void ShutdownModule() override;
+  /** IModuleInterface implementation */
+  virtual void StartupModule() override;
+  virtual void ShutdownModule() override;
 };
 
-DECLARE_LOG_CATEGORY_EXTERN(LogMarkerSystem,Log,All);
+DECLARE_LOG_CATEGORY_EXTERN(LogMarkerSystem, Log, All);

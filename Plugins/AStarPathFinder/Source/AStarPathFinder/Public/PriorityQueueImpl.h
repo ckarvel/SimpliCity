@@ -2,14 +2,14 @@
 
 #include "CoreMinimal.h"
 
-template <typename InElementType>
-struct TPriorityQueueNode {
+template <typename InElementType> struct TPriorityQueueNode {
   InElementType Element;
   float Priority;
 
-  TPriorityQueueNode() {}
+  TPriorityQueueNode() {
+  }
 
-  TPriorityQueueNode(InElementType InElement,float InPriority) {
+  TPriorityQueueNode(InElementType InElement, float InPriority) {
     Element = InElement;
     Priority = InPriority;
   }
@@ -19,8 +19,7 @@ struct TPriorityQueueNode {
   }
 };
 
-template <typename InElementType>
-class TPriorityQueue {
+template <typename InElementType> class TPriorityQueue {
 public:
   TPriorityQueue() {
     Array.Heapify();
@@ -40,8 +39,8 @@ public:
     return Node;
   }
 
-  void Push(InElementType Element,float Priority) {
-    Array.HeapPush(TPriorityQueueNode<InElementType>(Element,Priority));
+  void Push(InElementType Element, float Priority) {
+    Array.HeapPush(TPriorityQueueNode<InElementType>(Element, Priority));
   }
 
   // Always check if IsEmpty() before Peek-ing!

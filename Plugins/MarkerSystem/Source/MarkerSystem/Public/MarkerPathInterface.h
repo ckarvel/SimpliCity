@@ -9,7 +9,7 @@
  */
 class UMarkerComponent;
 
-UINTERFACE(minimalapi,meta=(CannotImplementInterfaceInBlueprint))
+UINTERFACE(minimalapi, meta = (CannotImplementInterfaceInBlueprint))
 class UMarkerPathInterface : public UInterface {
   GENERATED_BODY()
 };
@@ -18,7 +18,6 @@ class IMarkerPathInterface {
   GENERATED_BODY()
 
 public:
-  
   virtual TArray<UMarkerComponent*> GetClosestMarkerPair(UObject* PathObject, bool IsPedestrian) const = 0;
   virtual TArray<UMarkerComponent*> GetPedestrianMarkers() const = 0;
   virtual TArray<UMarkerComponent*> GetVehicleMarkers() const = 0;

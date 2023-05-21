@@ -8,18 +8,16 @@
 
 class AGridManager;
 /**
- * 
+ *
  */
 UCLASS()
-class SIMPLICITY_API USimpliCityGameInstance : public UGameInstance
-{
-	GENERATED_BODY()
+class SIMPLICITY_API USimpliCityGameInstance : public UGameInstance {
+  GENERATED_BODY()
 
 public:
-
-//	AGridManager* GetGridManager() const { return GridManager; }
-//protected:
-//	AGridManager* GridManager;
-//
-//	friend class ASimpliCityGameMode;
+  //	AGridManager* GetGridManager() const { return GridManager; }
+  // protected:
+  //	AGridManager* GridManager;
+  //
+  //	friend class ASimpliCityGameMode;
 };

@@ -1,42 +1,39 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Road/SimpliCityRoadBase.h"
 #include "Components/StaticMeshComponent.h"
 #include "MarkerComponent.h"
 #include "MarkerManager.h"
-#include "SimpliCityObjectManager.h"
 #include "SimpliCityFunctionLibrary.h"
+#include "SimpliCityObjectManager.h"
 
-ASimpliCityRoadBase::ASimpliCityRoadBase()
-{
-	PrimaryActorTick.bCanEverTick = false;
-	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RoadMesh"));
+ASimpliCityRoadBase::ASimpliCityRoadBase() {
+  PrimaryActorTick.bCanEverTick = false;
+  StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RoadMesh"));
   SetRootComponent(StaticMeshComponent);
-	ObjectType = ESimpliCityObjectType::Road;
+  ObjectType = ESimpliCityObjectType::Road;
 }
 
-void ASimpliCityRoadBase::BeginPlay()
-{
-	Super::BeginPlay();
+void ASimpliCityRoadBase::BeginPlay() {
+  Super::BeginPlay();
 }
 
 void ASimpliCityRoadBase::SetNewMaterial() {
   if (StaticMeshComponent == nullptr) {
-    TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!!! StaticMeshComponent == nullptr");
+    TRACE_ERROR_PRINTF(LogSimpliCity, "ERROR!!! StaticMeshComponent == nullptr");
     return;
   }
-	if (RoadMaterial != nullptr) {
-		StaticMeshComponent->SetMaterial(0, RoadMaterial);
-	}
+  if (RoadMaterial != nullptr) {
+    StaticMeshComponent->SetMaterial(0, RoadMaterial);
+  }
 }
 
 // only for use with vehicle markers
 // won't work with deadend/straight
 FVector ASimpliCityRoadBase::GetVehMarkerNormDirectionVector(UMarkerComponent* VMarker) const {
   if (VMarker == nullptr) {
-    TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!!! VMarker == nullptr");
-    return FVector(0,0,0);
+    TRACE_ERROR_PRINTF(LogSimpliCity, "ERROR!!! VMarker == nullptr");
+    return FVector(0, 0, 0);
   }
   FVector SrcLocation;
   FVector DestLocation;
@@ -49,8 +46,8 @@ FVector ASimpliCityRoadBase::GetVehMarkerNormDirectionVector(UMarkerComponent* V
     SrcLocation = VMarker->GetComponentLocation();
 
     if (AdjacentMarkers[0] == nullptr) {
-      TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!!! AdjacentMarkers[0] == nullptr");
-      return FVector(0,0,0);
+      TRACE_ERROR_PRINTF(LogSimpliCity, "ERROR!!! AdjacentMarkers[0] == nullptr");
+      return FVector(0, 0, 0);
     }
 
     DestLocation = AdjacentMarkers[0]->GetComponentLocation();
@@ -79,21 +76,20 @@ TArray<UMarkerComponent*> ASimpliCityRoadBase::GetClosestMarkerPair(UObject* Nei
 
   if (IsPedestrian == true) {
     CandidateMarkers = PedestrianMarkers;
-  }
-  else {
+  } else {
     CandidateMarkers = VehicleMarkers;
   }
 
   if (ASimpliCityRoadBase* Road = Cast<ASimpliCityRoadBase>(NeighborRoad)) {
-    UMarkerComponent* first = MarkerMgr->GetClosestMarkerTo(Road->GetActorLocation(),CandidateMarkers);
+    UMarkerComponent* first = MarkerMgr->GetClosestMarkerTo(Road->GetActorLocation(), CandidateMarkers);
     CandidateMarkers.Remove(first);
-    UMarkerComponent* second = MarkerMgr->GetClosestMarkerTo(Road->GetActorLocation(),CandidateMarkers);
+    UMarkerComponent* second = MarkerMgr->GetClosestMarkerTo(Road->GetActorLocation(), CandidateMarkers);
     ClosestMarkers.Add(first);
     ClosestMarkers.Add(second);
   }
 
   if (ClosestMarkers.Num() <= 0) {
-    TRACE_ERROR_PRINTF(LogSimpliCity,"ERROR!!! ClosestMarkers.Num() <= 0");
+    TRACE_ERROR_PRINTF(LogSimpliCity, "ERROR!!! ClosestMarkers.Num() <= 0");
     return TArray<UMarkerComponent*>();
   }
   return ClosestMarkers;
@@ -109,7 +105,8 @@ TArray<UMarkerComponent*> ASimpliCityRoadBase::GetVehicleMarkers() const {
 
 TArray<UObject*> ASimpliCityRoadBase::GetNeighborsOfSameType() const {
   TArray<UObject*> OutNeighbors;
-  TArray<ASimpliCityObjectBase*> Neighbors = USimpliCityFunctionLibrary::GetObjectManager(this)->GetNeighborsOfType(GetActorLocation(), ObjectType);
+  TArray<ASimpliCityObjectBase*> Neighbors
+    = USimpliCityFunctionLibrary::GetObjectManager(this)->GetNeighborsOfType(GetActorLocation(), ObjectType);
   OutNeighbors.Append(Neighbors);
   return OutNeighbors;
 }

@@ -5,15 +5,14 @@
 #include "SimpliCityMainUI.h"
 #include "Utils/SimpliCityUtils.h"
 
-#include "GameFramework/Pawn.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "Engine/World.h"
+#include "GameFramework/Pawn.h"
 
-ASimpliCityPlayerController::ASimpliCityPlayerController()
-{
-	bShowMouseCursor = true;
+ASimpliCityPlayerController::ASimpliCityPlayerController() {
+  bShowMouseCursor = true;
   bEnableClickEvents = true;
-	DefaultMouseCursor = EMouseCursor::Default;
+  DefaultMouseCursor = EMouseCursor::Default;
 }
 
 void ASimpliCityPlayerController::BeginPlay() {
@@ -39,36 +38,36 @@ void ASimpliCityPlayerController::ClearBindings() {
 
 void ASimpliCityPlayerController::ResetBindings() {
   ClearBindings();
-  OnArrowInput.AddDynamic(ThePlayer,&ASimpliCityCharacter::MoveByUnits);
-  OnMiddleMouseClick.AddDynamic(ThePlayer,&ASimpliCityCharacter::SetRotationCenter);
-  OnMiddleMouseHold.AddDynamic(ThePlayer,&ASimpliCityCharacter::RotateByUnits);
+  OnArrowInput.AddDynamic(ThePlayer, &ASimpliCityCharacter::MoveByUnits);
+  OnMiddleMouseClick.AddDynamic(ThePlayer, &ASimpliCityCharacter::SetRotationCenter);
+  OnMiddleMouseHold.AddDynamic(ThePlayer, &ASimpliCityCharacter::RotateByUnits);
 }
 
 void ASimpliCityPlayerController::PlayerTick(float DeltaTime) {
   Super::PlayerTick(DeltaTime);
 
   FHitResult TraceHitResult;
-  GetHitResultUnderCursor(ECC_Visibility,false,TraceHitResult);
+  GetHitResultUnderCursor(ECC_Visibility, false, TraceHitResult);
   bool blocked = TraceHitResult.bBlockingHit;
   FVector location = TraceHitResult.Location;
   TickHitLocation = location;
 
-  HandleInputEvents(blocked,location);
+  HandleInputEvents(blocked, location);
 }
 
 //
-//void ASimpliCityPlayerController::ClearAllBindings() {
+// void ASimpliCityPlayerController::ClearAllBindings() {
 //  ClearBindings();
 //  OnMouseHover.RemoveAll();
 //}
 
-void ASimpliCityPlayerController::HandleInputEvents(bool blockingHit,FVector location) {
+void ASimpliCityPlayerController::HandleInputEvents(bool blockingHit, FVector location) {
   // move camera
-  OnArrowInput.Broadcast(FVector(GetInputAxisValue("MoveForward"),GetInputAxisValue("MoveRight"),0));
+  OnArrowInput.Broadcast(FVector(GetInputAxisValue("MoveForward"), GetInputAxisValue("MoveRight"), 0));
 
   if (blockingHit) {
-     // we prob dont need this... highlighting stuff should be done w/ overlap events
-     OnMouseHover.Broadcast(location); 
+    // we prob dont need this... highlighting stuff should be done w/ overlap events
+    OnMouseHover.Broadcast(location);
   }
 
   // right-click or esc for cancel
@@ -80,31 +79,26 @@ void ASimpliCityPlayerController::HandleInputEvents(bool blockingHit,FVector loc
 
   bool rotating = false;
 
-  if (WasInputKeyJustReleased(EKeys::LeftMouseButton)
-    || WasInputKeyJustReleased(EKeys::MiddleMouseButton)) {
+  if (WasInputKeyJustReleased(EKeys::LeftMouseButton) || WasInputKeyJustReleased(EKeys::MiddleMouseButton)) {
     OnMouseUp.Broadcast();
     FInputModeGameAndUI inputMode;
     inputMode.SetHideCursorDuringCapture(false);
     SetInputMode(inputMode);
-  }
-  else if (blockingHit && IsInputKeyDown(EKeys::LeftMouseButton)) {
+  } else if (blockingHit && IsInputKeyDown(EKeys::LeftMouseButton)) {
     if (WasInputKeyJustPressed(EKeys::LeftMouseButton))
       OnMouseClick.Broadcast(location);
     else
       OnMouseHold.Broadcast(location);
-  }
-  else if (IsInputKeyDown(EKeys::MiddleMouseButton)) {
+  } else if (IsInputKeyDown(EKeys::MiddleMouseButton)) {
     if (WasInputKeyJustPressed(EKeys::MiddleMouseButton)) {
       OnMiddleMouseClick.Broadcast(location);
-    }
-    else {
-      FRotator rotation = FRotator(GetInputAxisValue("RotationY"),GetInputAxisValue("RotationX"),0);
+    } else {
+      FRotator rotation = FRotator(GetInputAxisValue("RotationY"), GetInputAxisValue("RotationX"), 0);
       OnMiddleMouseHold.Broadcast(rotation);
     }
     rotating = true;
     SetInputMode(FInputModeGameOnly()); // allows cursor to go past the screen edges
-  }
-  else if (rotating == false) { // don't zoom while rotating
+  } else if (rotating == false) { // don't zoom while rotating
     float zoomAxis = GetInputAxisValue("Zoom");
     ThePlayer->ZoomByUnits(zoomAxis);
   }

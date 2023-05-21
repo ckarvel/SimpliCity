@@ -3,18 +3,17 @@
 #include "MarkerComponent.h"
 
 UMarkerComponent::UMarkerComponent()
-  : openForConnections(true),
-    laneDirection(0),
-    canCurve(false)
-{
+  : openForConnections(true)
+  , laneDirection(0)
+  , canCurve(false) {
   PrimaryComponentTick.bCanEverTick = false;
 }
 
 #if WITH_EDITOR
 void UMarkerComponent::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) {
-
-  FName PropertyName = (PropertyChangedEvent.Property != nullptr) ? PropertyChangedEvent.Property->GetFName() : NAME_None;
-  if (PropertyName == GET_MEMBER_NAME_CHECKED(UMarkerComponent,visualizeComponent)) {
+  FName PropertyName
+    = (PropertyChangedEvent.Property != nullptr) ? PropertyChangedEvent.Property->GetFName() : NAME_None;
+  if (PropertyName == GET_MEMBER_NAME_CHECKED(UMarkerComponent, visualizeComponent)) {
     bVisualizeComponent = visualizeComponent;
   }
   Super::PostEditChangeProperty(PropertyChangedEvent);
