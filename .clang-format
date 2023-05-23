@@ -1,7 +1,8 @@
 # Format Style Options - Created with Clang Power Tools
 ---
+AllowShortFunctionsOnASingleLine: None
 ColumnLimit: 120
-IncludeBlocks: Regroup
+IncludeBlocks: Preserve
 IncludeCategories: 
   - Regex: '^"(llvm|llvm-c|clang|clang-c)/'
     Priority: 2
@@ -16,7 +17,6 @@ IncludeCategories:
   - Regex: '.*'
     Priority: 0
     CaseSensitive: false
-  
-  
+PointerAlignment: Left
 SortIncludes: true
 ...

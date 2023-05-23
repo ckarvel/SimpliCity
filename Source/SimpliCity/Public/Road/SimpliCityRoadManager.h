@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "PathFinderInterface.h"
+#include "SimpliCityBaseManager.h"
 #include "SimpliCityRoadManager.generated.h"
 
 class AMarkerManager;
@@ -13,7 +14,7 @@ class ASimpliCityRoadBase;
 class USimpliCityRoadFixerComponent;
 
 UCLASS(Blueprintable)
-class SIMPLICITY_API ASimpliCityRoadManager : public AActor, public IPathFinderInterface {
+class SIMPLICITY_API ASimpliCityRoadManager : public ASimpliCityBaseManager, public IPathFinderInterface {
   GENERATED_BODY()
 
 public:
@@ -21,6 +22,11 @@ public:
   ASimpliCityRoadManager();
 
 protected:
+  virtual void Update_Implementation() override;
+  virtual void StartBuilding(FVector Location) override;
+  virtual void FinishBuilding() override;
+  virtual void CancelBuilding() override;
+  virtual void DestroyObjects(const TArray<ASimpliCityObjectBase*>& ObjectList) override;
   //////////////////////////////////////////////////////////////////////////
   // build/destroy functions
   //////////////////////////////////////////////////////////////////////////
@@ -48,18 +54,15 @@ protected:
   UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
   void DestroyPermanentRoad(ASimpliCityObjectBase* Road);
 
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
-  void DestroyObjects(const TArray<ASimpliCityObjectBase*>& ObjectList);
-
 public:
   void FixRoad(ASimpliCityObjectBase* Road);
   void SwapRoads(ASimpliCityObjectBase* OldRoad, ASimpliCityObjectBase* NewRoad);
 
   UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "SimpliCityRoadManager")
   ASimpliCityRoadBase* SpawnRoad(TSubclassOf<ASimpliCityRoadBase> RoadClass, const FVector Location,
-    const FRotator Rotation, ASimpliCityObjectBase* RoadBeingReplaced);
+                                 const FRotator Rotation, ASimpliCityObjectBase* RoadBeingReplaced);
   ASimpliCityRoadBase* SpawnRoad_Implementation(TSubclassOf<ASimpliCityRoadBase> RoadClass, const FVector Location,
-    const FRotator Rotation, ASimpliCityObjectBase* RoadBeingReplaced);
+                                                const FRotator Rotation, ASimpliCityObjectBase* RoadBeingReplaced);
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
   virtual TArray<FVector> GetNeighbors(FVector Location) const override;

@@ -1,12 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SimpliCityObjectManager.h"
+
 #include "GridManager.h"
 #include "SimpliCityFunctionLibrary.h"
 #include "SimpliCityObjectBase.h"
 
-ASimpliCityObjectManager::ASimpliCityObjectManager()
-  : bInitialized(false) {
+ASimpliCityObjectManager::ASimpliCityObjectManager() : bInitialized(false) {
   PrimaryActorTick.bCanEverTick = false;
 }
 
@@ -103,8 +103,8 @@ ASimpliCityObjectBase* ASimpliCityObjectManager::GetObjectAtLocation(FVector Loc
   return ObjectGrid[index];
 }
 
-TArray<ASimpliCityObjectBase*> ASimpliCityObjectManager::GetNeighborsOfType(
-  FVector Location, TEnumAsByte<ESimpliCityObjectType> ObjectType) {
+TArray<ASimpliCityObjectBase*>
+ASimpliCityObjectManager::GetNeighborsOfType(FVector Location, TEnumAsByte<ESimpliCityObjectType> ObjectType) {
   AGridManager* grdMgr = USimpliCityFunctionLibrary::GetGridManager(this);
   int32 currentIdx = grdMgr->LocationToIndex(Location);
   TArray<int32> neighborIdxs;

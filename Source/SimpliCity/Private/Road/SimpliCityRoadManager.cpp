@@ -1,15 +1,15 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Road/SimpliCityRoadManager.h"
+
+#include "GameFramework/PlayerController.h"
+#include "GridManager.h"
+#include "Kismet/GameplayStatics.h"
+#include "MarkerManager.h"
 #include "Road/SimpliCityRoadBase.h"
 #include "Road/SimpliCityRoadFixerComponent.h"
-
-#include "SimpliCityObjectBase.h"
-
-#include "GridManager.h"
-#include "MarkerManager.h"
-
 #include "SimpliCityFunctionLibrary.h"
+#include "SimpliCityObjectBase.h"
 #include "SimpliCityObjectManager.h"
 
 using SCFL = USimpliCityFunctionLibrary;
@@ -17,6 +17,59 @@ using SCFL = USimpliCityFunctionLibrary;
 //////////////////////////////////////////////////////////////////////////
 ASimpliCityRoadManager::ASimpliCityRoadManager() {
   PrimaryActorTick.bCanEverTick = false;
+}
+
+//////////////////////////////////////////////////////////////////////////
+void ASimpliCityRoadManager::Update_Implementation() {
+  APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+  if (PlayerController) {
+    FHitResult HitResult;
+    PlayerController->GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, HitResult);
+    if (HitResult.bBlockingHit) {
+      UpdatePath(HitResult.Location);
+    }
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////
+void ASimpliCityRoadManager::StartBuilding(FVector Location) {
+  ASimpliCityBaseManager::StartBuilding(Location);
+  oldPath.Empty();
+}
+
+//////////////////////////////////////////////////////////////////////////
+void ASimpliCityRoadManager::FinishBuilding() {
+  ASimpliCityBaseManager::FinishBuilding();
+  oldPath.Empty();
+  ConvertAllTemporaryToPermanent();
+  TArray<UObject*> NewRoads;
+  NewRoads.Append(PermanentRoadList);
+  AgentMarkerGraph->UpdateGraph(NewRoads);
+}
+
+//////////////////////////////////////////////////////////////////////////
+void ASimpliCityRoadManager::CancelBuilding() {
+  ASimpliCityBaseManager::CancelBuilding();
+  oldPath.Empty();
+  DestroyAllTemporaryRoads();
+}
+
+//////////////////////////////////////////////////////////////////////////
+void ASimpliCityRoadManager::DestroyObjects(const TArray<ASimpliCityObjectBase*>& ObjectList) {
+  for (auto Object : ObjectList) {
+    if (Object == nullptr)
+      continue;
+    if (ASimpliCityRoadBase* Road = Cast<ASimpliCityRoadBase>(Object)) {
+      TArray<ASimpliCityObjectBase*> neighborRoads =
+          SCFL::GetObjectManager(this)->GetNeighborsOfType(Road->GetActorLocation(), ESimpliCityObjectType::Road);
+      ASimpliCityBaseManager::DestroyObject(Object);
+      for (auto nroad : neighborRoads) {
+        // if neighbor is not in the removal list, fix it
+        if (ObjectList.Contains(nroad) == false)
+          FixRoad(Cast<ASimpliCityRoadBase>(nroad));
+      }
+    }
+  }
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -85,7 +138,8 @@ void ASimpliCityRoadManager::CancelBuildingPath() {
 
 //////////////////////////////////////////////////////////////////////////
 ASimpliCityRoadBase* ASimpliCityRoadManager::SpawnRoad_Implementation(TSubclassOf<ASimpliCityRoadBase> RoadClass,
-  const FVector Location, const FRotator Rotation, ASimpliCityObjectBase* RoadBeingReplaced) {
+                                                                      const FVector Location, const FRotator Rotation,
+                                                                      ASimpliCityObjectBase* RoadBeingReplaced) {
   ASimpliCityRoadBase* Road = GetWorld()->SpawnActor<ASimpliCityRoadBase>(RoadClass, Location, Rotation);
   return Road;
 }
@@ -141,8 +195,8 @@ void ASimpliCityRoadManager::DestroyAllTemporaryRoads() {
 //////////////////////////////////////////////////////////////////////////
 void ASimpliCityRoadManager::DestroyPermanentRoad(ASimpliCityObjectBase* Road) {
   if (ASimpliCityRoadBase* RObj = Cast<ASimpliCityRoadBase>(Road)) {
-    TArray<ASimpliCityObjectBase*> neighborRoads
-      = SCFL::GetObjectManager(this)->GetNeighborsOfType(RObj->GetActorLocation(), ESimpliCityObjectType::Road);
+    TArray<ASimpliCityObjectBase*> neighborRoads =
+        SCFL::GetObjectManager(this)->GetNeighborsOfType(RObj->GetActorLocation(), ESimpliCityObjectType::Road);
     PermanentRoadList.Remove(RObj);
     SCFL::GetObjectManager(this)->RemoveObjectFromGrid(RObj);
     for (auto nroad : neighborRoads) {
@@ -152,29 +206,10 @@ void ASimpliCityRoadManager::DestroyPermanentRoad(ASimpliCityObjectBase* Road) {
 }
 
 //////////////////////////////////////////////////////////////////////////
-void ASimpliCityRoadManager::DestroyObjects(const TArray<ASimpliCityObjectBase*>& ObjectList) {
-  for (auto Object : ObjectList) {
-    if (Object == nullptr)
-      continue;
-    if (ASimpliCityRoadBase* Road = Cast<ASimpliCityRoadBase>(Object)) {
-      TArray<ASimpliCityObjectBase*> neighborRoads
-        = SCFL::GetObjectManager(this)->GetNeighborsOfType(Road->GetActorLocation(), ESimpliCityObjectType::Road);
-      PermanentRoadList.Remove(Road);
-      SCFL::GetObjectManager(this)->RemoveObjectFromGrid(Road);
-      for (auto nroad : neighborRoads) {
-        // if neighbor is not in the removal list, fix it
-        if (ObjectList.Contains(nroad) == false)
-          FixRoad(Cast<ASimpliCityRoadBase>(nroad));
-      }
-    }
-  }
-}
-
-//////////////////////////////////////////////////////////////////////////
 TArray<FVector> ASimpliCityRoadManager::GetNeighbors(FVector Location) const {
   TArray<FVector> NeighborLocs;
-  TArray<ASimpliCityObjectBase*> RoadTypeNeighbors
-    = SCFL::GetObjectManager(this)->GetNeighborsOfType(Location, ESimpliCityObjectType::Road);
+  TArray<ASimpliCityObjectBase*> RoadTypeNeighbors =
+      SCFL::GetObjectManager(this)->GetNeighborsOfType(Location, ESimpliCityObjectType::Road);
   for (auto Object : RoadTypeNeighbors) {
     NeighborLocs.Add(Object->GetActorLocation());
   }
@@ -216,8 +251,8 @@ void ASimpliCityRoadManager::FixRoad(ASimpliCityObjectBase* Road) {
 
 //////////////////////////////////////////////////////////////////////////
 void ASimpliCityRoadManager::FixNeighborsAtLocation(FVector Location) {
-  TArray<ASimpliCityObjectBase*> neighborRoads
-    = SCFL::GetObjectManager(this)->GetNeighborsOfType(Location, ESimpliCityObjectType::Road);
+  TArray<ASimpliCityObjectBase*> neighborRoads =
+      SCFL::GetObjectManager(this)->GetNeighborsOfType(Location, ESimpliCityObjectType::Road);
   for (auto road : neighborRoads) {
     FixRoad(Cast<ASimpliCityRoadBase>(road));
   }

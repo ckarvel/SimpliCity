@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "SimpliCityCharacter.h"
+
 #include "SimpliCityFunctionLibrary.h"
 #include "Utils/SimpliCityUtils.h"
 
@@ -15,11 +16,7 @@
 #include "UObject/ConstructorHelpers.h"
 
 ASimpliCityCharacter::ASimpliCityCharacter()
-  : moveSpeed(35)
-  , rotationSpeed(10)
-  , zoomSpeed(50)
-  , minZoom(1000)
-  , maxZoom(30000) {
+    : moveSpeed(35), rotationSpeed(10), zoomSpeed(50), minZoom(1000), maxZoom(30000) {
   PrimaryActorTick.bCanEverTick = false;
   bUseControllerRotationYaw = false;
   PlayerCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
@@ -54,8 +51,8 @@ void ASimpliCityCharacter::MoveByUnits(FVector translation) {
     return;
   }
 
-  FVector new_location
-    = USimpliCityFunctionLibrary::VInterpTo(GetActorLocation(), location, GetWorld()->GetDeltaSeconds(), moveSpeed);
+  FVector new_location =
+      USimpliCityFunctionLibrary::VInterpTo(GetActorLocation(), location, GetWorld()->GetDeltaSeconds(), moveSpeed);
   SetActorLocation(new_location);
 }
 
@@ -95,8 +92,8 @@ void ASimpliCityCharacter::RotateByUnits(FRotator rotator) {
     return;
   }
 
-  FRotator new_rotation
-    = USimpliCityFunctionLibrary::RInterpTo(GetActorRotation(), result, GetWorld()->GetDeltaSeconds(), rotationSpeed);
+  FRotator new_rotation =
+      USimpliCityFunctionLibrary::RInterpTo(GetActorRotation(), result, GetWorld()->GetDeltaSeconds(), rotationSpeed);
   SetActorRotation(new_rotation);
 
   if (orbitMode) {
@@ -113,7 +110,7 @@ void ASimpliCityCharacter::ZoomByUnits(float axis) {
     return;
   }
 
-  float finalZoom = USimpliCityFunctionLibrary::FInterpTo(
-    SpringArmComponent->TargetArmLength, targetZoom, GetWorld()->GetDeltaSeconds(), zoomSpeed);
+  float finalZoom = USimpliCityFunctionLibrary::FInterpTo(SpringArmComponent->TargetArmLength, targetZoom,
+                                                          GetWorld()->GetDeltaSeconds(), zoomSpeed);
   SpringArmComponent->TargetArmLength = finalZoom;
 }

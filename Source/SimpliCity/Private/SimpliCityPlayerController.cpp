@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "SimpliCityPlayerController.h"
+
 #include "SimpliCityCharacter.h"
 #include "SimpliCityMainUI.h"
 #include "Utils/SimpliCityUtils.h"
@@ -98,7 +99,7 @@ void ASimpliCityPlayerController::HandleInputEvents(bool blockingHit, FVector lo
     }
     rotating = true;
     SetInputMode(FInputModeGameOnly()); // allows cursor to go past the screen edges
-  } else if (rotating == false) { // don't zoom while rotating
+  } else if (rotating == false) {       // don't zoom while rotating
     float zoomAxis = GetInputAxisValue("Zoom");
     ThePlayer->ZoomByUnits(zoomAxis);
   }

@@ -1,6 +1,7 @@
 // Property of Carina Karvel
 
 #include "MyEditorUtilityActor.h"
+
 #include "Components/LineBatchComponent.h"
 
 AMyEditorUtilityActor::AMyEditorUtilityActor() {
@@ -8,21 +9,21 @@ AMyEditorUtilityActor::AMyEditorUtilityActor() {
 }
 
 void AMyEditorUtilityActor::DrawLine(const FVector& Start, const FVector& End, const FLinearColor& Color,
-  float Thickness, float LifeTime, uint8 DepthPriority) {
+                                     float Thickness, float LifeTime, uint8 DepthPriority) {
   if (LineBatchComponent) {
     LineBatchComponent->DrawLine(Start, End, Color, DepthPriority, Thickness, LifeTime);
   }
 }
 
-void AMyEditorUtilityActor::DrawPoint(
-  const FVector& Position, const FLinearColor& Color, float PointSize, uint8 DepthPriority, float LifeTime) {
+void AMyEditorUtilityActor::DrawPoint(const FVector& Position, const FLinearColor& Color, float PointSize,
+                                      uint8 DepthPriority, float LifeTime) {
   if (LineBatchComponent) {
     LineBatchComponent->DrawPoint(Position, Color, PointSize, DepthPriority, LifeTime);
   }
 }
 
 void AMyEditorUtilityActor::DrawArrow(const FVector& Start, const FVector& End, float ArrowSize, FColor const& Color,
-  float LifeTime, uint8 DepthPriority, float Thickness) {
+                                      float LifeTime, uint8 DepthPriority, float Thickness) {
   if (ArrowSize <= 0) {
     ArrowSize = 10.f;
   }
@@ -45,7 +46,7 @@ void AMyEditorUtilityActor::DrawArrow(const FVector& Start, const FVector& End, 
   float ArrowSqrt = FMath::Sqrt(ArrowSize);
   FVector ArrowPos;
   DrawLine(End, End + TM.TransformPosition(FVector(-ArrowSqrt, ArrowSqrt, 0)), FLinearColor(Color), Thickness, LifeTime,
-    DepthPriority);
+           DepthPriority);
   DrawLine(End, End + TM.TransformPosition(FVector(-ArrowSqrt, -ArrowSqrt, 0)), FLinearColor(Color), Thickness,
-    LifeTime, DepthPriority);
+           LifeTime, DepthPriority);
 }

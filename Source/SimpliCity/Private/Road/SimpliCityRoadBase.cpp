@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Road/SimpliCityRoadBase.h"
+
 #include "Components/StaticMeshComponent.h"
 #include "MarkerComponent.h"
 #include "MarkerManager.h"
@@ -105,8 +106,8 @@ TArray<UMarkerComponent*> ASimpliCityRoadBase::GetVehicleMarkers() const {
 
 TArray<UObject*> ASimpliCityRoadBase::GetNeighborsOfSameType() const {
   TArray<UObject*> OutNeighbors;
-  TArray<ASimpliCityObjectBase*> Neighbors
-    = USimpliCityFunctionLibrary::GetObjectManager(this)->GetNeighborsOfType(GetActorLocation(), ObjectType);
+  TArray<ASimpliCityObjectBase*> Neighbors =
+      USimpliCityFunctionLibrary::GetObjectManager(this)->GetNeighborsOfType(GetActorLocation(), ObjectType);
   OutNeighbors.Append(Neighbors);
   return OutNeighbors;
 }

@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Zone/SimpliCityZoneManager.h"
+
 #include "GridManager.h"
 #include "SimpliCityFunctionLibrary.h"
 #include "SimpliCityObjectManager.h"
@@ -65,8 +66,8 @@ void ASimpliCityZoneManager::ResetCellStates() {
 TEnumAsByte<ESimpliCityZoneType> ASimpliCityZoneManager::GetZoneTypeAtLocation(FVector Location) {
   int32 index = USimpliCityFunctionLibrary::GetGridManager(this)->LocationToIndex(Location);
   if (index <= 0 || index >= GridCells.Num()) {
-    TRACE_ERROR_PRINTF(
-      LogSimpliCity, "ERROR!! NOT IN RANGE!! (0 <= index(%d) < ZonedGridCells.Num()(%d)", index, GridCells.Num());
+    TRACE_ERROR_PRINTF(LogSimpliCity, "ERROR!! NOT IN RANGE!! (0 <= index(%d) < ZonedGridCells.Num()(%d)", index,
+                       GridCells.Num());
     return ESimpliCityZoneType::ZoneType_None;
   }
   if (GridCells[index] == nullptr) {

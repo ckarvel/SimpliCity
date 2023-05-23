@@ -1,6 +1,7 @@
 // Property of Carina Karvel
 
 #include "GridManager.h"
+
 #include "GridSystem.h"
 
 #include "Kismet/KismetMaterialLibrary.h"
@@ -8,12 +9,7 @@
 #include "ProceduralMeshComponent.h"
 
 AGridManager::AGridManager()
-  : NumRows(10)
-  , NumCols(10)
-  , TileSize(200.0)
-  , LineThickness(10.0)
-  , LineOpacity(1.0)
-  , SelectionOpacity(0.5) {
+    : NumRows(10), NumCols(10), TileSize(200.0), LineThickness(10.0), LineOpacity(1.0), SelectionOpacity(0.5) {
   PrimaryActorTick.bCanEverTick = false;
   LineMeshComponent = CreateDefaultSubobject<UProceduralMeshComponent>("LineMesh");
   SetRootComponent(LineMeshComponent);
@@ -121,7 +117,7 @@ void AGridManager::GetAllNeighborIndexes(int32 Index, TArray<int32>& Neighbors) 
     return;
   }
   Neighbors.Empty();
-  Neighbors.Append({ -1, -1, -1, -1 });
+  Neighbors.Append({-1, -1, -1, -1});
   // just in case a boundary cell (only affects left and right)
   // divide by num of cols
   bool onLeftBoundary = Index % NumCols == 0;
@@ -192,8 +188,8 @@ void AGridManager::HideGridLines() {
   LineMeshComponent->SetVisibility(false);
 }
 
-void AGridManager::CreateLineProceduralMesh(
-  UProceduralMeshComponent* mesh, const TArray<FVector>& vertices, const TArray<int>& triangles) {
+void AGridManager::CreateLineProceduralMesh(UProceduralMeshComponent* mesh, const TArray<FVector>& vertices,
+                                            const TArray<int>& triangles) {
   UMaterialInstanceDynamic* LineMeshInstance = CreateMaterialInstance(LineColor, LineOpacity);
   TArray<FVector> normals;
   TArray<FVector2D> uvs;
@@ -211,8 +207,8 @@ void AGridManager::CreateLineProceduralMesh(
   mesh->SetMaterial(0, LineMeshInstance);
 }
 
-void AGridManager::CreateSelectionProceduralMesh(
-  UProceduralMeshComponent* mesh, const TArray<FVector>& vertices, const TArray<int>& triangles) {
+void AGridManager::CreateSelectionProceduralMesh(UProceduralMeshComponent* mesh, const TArray<FVector>& vertices,
+                                                 const TArray<int>& triangles) {
   UMaterialInstanceDynamic* SelectionMeshInstance = CreateMaterialInstance(SelectionColor, SelectionOpacity);
   TArray<FVector> normals;
   TArray<FVector2D> uvs;
@@ -271,8 +267,8 @@ void AGridManager::CreateLinesOnY(TArray<FVector>& vertices, TArray<int>& triang
   }
 }
 
-void AGridManager::CreateLine(
-  FVector start, FVector end, float thickness, TArray<FVector>& vertices, TArray<int>& triangles) {
+void AGridManager::CreateLine(FVector start, FVector end, float thickness, TArray<FVector>& vertices,
+                              TArray<int>& triangles) {
   float halfThickness = thickness / 2.0;
   FVector lineDir = end - start;
   lineDir.Normalize();
