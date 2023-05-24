@@ -11,6 +11,7 @@ using SCFL = USimpliCityFunctionLibrary;
 ASimpliCityObjectBase* USimpliObjectBase::SpawnActor(FVector Location) {
   SpawnedActor = GetOuter()->GetWorld()->SpawnActor<ASimpliCityObjectBase>(DefaultClass, Location, FRotator());
   SCFL::GetObjectManager(this)->AddObjectToGrid(SpawnedActor);
+  SpawnedActor->SetObjectBase(this);
   return SpawnedActor;
 }
 

@@ -38,7 +38,6 @@ protected:
   TSubclassOf<ASimpliCityRoadBase> Road_2Way_CornerClass;
   TSubclassOf<ASimpliCityRoadBase> Road_2Way_StraightClass;
   TSubclassOf<ASimpliCityRoadBase> Road_1WayClass;
-  ASimpliCityRoadBase* NeighboringObjects;
 };
 
 UCLASS()

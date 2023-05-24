@@ -12,20 +12,12 @@ using SCFL = USimpliCityFunctionLibrary;
 // Sets default values
 ASimpliCityBaseManager::ASimpliCityBaseManager() : CurrentlyBuilding(false) {
   // Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-  PrimaryActorTick.bCanEverTick = true;
+  PrimaryActorTick.bCanEverTick = false;
 }
 
 // Called when the game starts or when spawned
 void ASimpliCityBaseManager::BeginPlay() {
   Super::BeginPlay();
-}
-
-// Called every frame
-void ASimpliCityBaseManager::Tick(float DeltaTime) {
-  Super::Tick(DeltaTime);
-  if (CurrentlyBuilding) {
-    Update();
-  }
 }
 
 void ASimpliCityBaseManager::Update_Implementation() {
@@ -45,7 +37,8 @@ void ASimpliCityBaseManager::CancelBuilding() {
   FinishBuilding();
 }
 
-USimpliObjectBase* ASimpliCityBaseManager::CreateObject(ESimpliCityObjectType ObjectType, const FVector Location) {
+USimpliObjectBase* ASimpliCityBaseManager::CreateObject(TEnumAsByte<ESimpliCityObjectType> ObjectType,
+                                                        const FVector Location) {
   USimpliObjectBase* Object = nullptr;
   switch (ObjectType) {
   case ESimpliCityObjectType::Road:
@@ -57,22 +50,40 @@ USimpliObjectBase* ASimpliCityBaseManager::CreateObject(ESimpliCityObjectType Ob
   case ESimpliCityObjectType::Zone:
     Object = NewObject<USimpliZoneBase>(this, USimpliZoneBase::StaticClass());
     break;
+
+    if (Object) {
+      Object->SpawnActor(Location);
+    }
   }
+  return Object;
+}
+
+ASimpliCityObjectBase* ASimpliCityBaseManager::PlaceObject(TSubclassOf<ASimpliCityObjectBase> ObjectClass,
+                                                           const FVector Location, const FRotator Rotation) {
+  ASimpliCityObjectBase* Object = nullptr;
+  if (SCFL::GetObjectManager(this)->DoesObjectExistHere(Location)) {
+    return Object;
+  }
+  SCFL::GetObjectManager(this)->AddObjectToGrid(Object);
+  return Object;
+}
+
+ASimpliCityObjectBase* ASimpliCityBaseManager::PlaceTemporaryObject(TSubclassOf<ASimpliCityObjectBase> ObjectClass,
+                                                                    const FVector Location, const FRotator Rotation) {
+  ASimpliCityObjectBase* Object = PlaceObject(ObjectClass, Location, Rotation);
   if (Object) {
-    Object->SpawnActor(Location);
+    Temporary_ObjectToLocation.Add(Location, Object);
   }
   return Object;
 }
 
 ASimpliCityObjectBase* ASimpliCityBaseManager::PlacePermanentObject(TSubclassOf<ASimpliCityObjectBase> ObjectClass,
                                                                     const FVector Location, const FRotator Rotation) {
-  ASimpliCityObjectBase* SpawnedObject = nullptr;
-  if (SCFL::GetObjectManager(this)->DoesObjectExistHere(Location)) {
-    return SpawnedObject;
+  ASimpliCityObjectBase* Object = PlaceObject(ObjectClass, Location, Rotation);
+  if (Object) {
+    PermanentObjectList.Add(Object);
   }
-  SCFL::GetObjectManager(this)->AddObjectToGrid(SpawnedObject);
-  PermanentObjectList.Add(SpawnedObject);
-  return SpawnedObject;
+  return Object;
 }
 
 void ASimpliCityBaseManager::DestroyObject(ASimpliCityObjectBase* Object) {

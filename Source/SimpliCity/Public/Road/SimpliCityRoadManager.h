@@ -23,9 +23,13 @@ public:
 
 protected:
   virtual void Update_Implementation() override;
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
   virtual void StartBuilding(FVector Location) override;
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
   virtual void FinishBuilding() override;
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
   virtual void CancelBuilding() override;
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
   virtual void DestroyObjects(const TArray<ASimpliCityObjectBase*>& ObjectList) override;
   //////////////////////////////////////////////////////////////////////////
   // build/destroy functions

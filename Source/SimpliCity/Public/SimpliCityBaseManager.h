@@ -22,15 +22,12 @@ protected:
   // Called when the game starts or when spawned
   virtual void BeginPlay() override;
 
-  // if a temporary object being placed currently exists in the world
-  UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SimpliCityBaseManager")
+  bool BuildEnabled; // set from user interface
   bool CurrentlyBuilding;
 
   FVector StartLocation;
-
-  TArray<ASimpliCityObjectBase*> TemporaryObjectList;
-
-  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityBaseManager")
+  FVector LastLocation;
+  TMap<FVector, ASimpliCityObjectBase*> Temporary_ObjectToLocation;
   TArray<ASimpliCityObjectBase*> PermanentObjectList;
 
   UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "SimpliCityBaseManager")
@@ -41,17 +38,34 @@ protected:
   virtual void CancelBuilding();
 
 public:
-  // Called every frame
-  virtual void Tick(float DeltaTime) override;
+  virtual USimpliObjectBase* CreateObject(TEnumAsByte<ESimpliCityObjectType> ObjectType, const FVector Location);
 
-  virtual USimpliObjectBase* CreateObject(ESimpliCityObjectType ObjectType, const FVector Location);
+  virtual ASimpliCityObjectBase* PlaceObject(TSubclassOf<ASimpliCityObjectBase> ObjectClass, const FVector Location,
+                                             const FRotator Rotation);
+
+  virtual ASimpliCityObjectBase* PlaceTemporaryObject(TSubclassOf<ASimpliCityObjectBase> ObjectClass,
+                                                      const FVector Location, const FRotator Rotation);
+
   UFUNCTION(BlueprintCallable, Category = "SimpliCityBaseManager")
   virtual ASimpliCityObjectBase* PlacePermanentObject(TSubclassOf<ASimpliCityObjectBase> ObjectClass,
                                                       const FVector Location, const FRotator Rotation);
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityBaseManager")
   virtual void DestroyObject(ASimpliCityObjectBase* Object);
+  virtual void DestroyObjects(const TArray<ASimpliCityObjectBase*>& ObjectList);
+
+  UFUNCTION(BlueprintPure, Category = "SimpliCityBaseManager")
+  bool IsEnabled() {
+    return BuildEnabled;
+  }
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityBaseManager")
-  virtual void DestroyObjects(const TArray<ASimpliCityObjectBase*>& ObjectList);
+  void Enable() {
+    BuildEnabled = true;
+  }
+
+  UFUNCTION(BlueprintPure, Category = "SimpliCityBaseManager")
+  bool IsActivelyBuilding() {
+    return CurrentlyBuilding;
+  }
 };
