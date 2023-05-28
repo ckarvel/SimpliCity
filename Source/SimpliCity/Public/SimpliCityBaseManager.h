@@ -64,6 +64,11 @@ public:
     BuildEnabled = true;
   }
 
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityBaseManager")
+  void Disable() {
+    BuildEnabled = false;
+  }
+
   UFUNCTION(BlueprintPure, Category = "SimpliCityBaseManager")
   bool IsActivelyBuilding() {
     return CurrentlyBuilding;

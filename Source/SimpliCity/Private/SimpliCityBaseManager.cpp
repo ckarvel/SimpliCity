@@ -34,7 +34,7 @@ void ASimpliCityBaseManager::FinishBuilding() {
 }
 
 void ASimpliCityBaseManager::CancelBuilding() {
-  FinishBuilding();
+  ASimpliCityBaseManager::FinishBuilding();
 }
 
 USimpliObjectBase* ASimpliCityBaseManager::CreateObject(TEnumAsByte<ESimpliCityObjectType> ObjectType,

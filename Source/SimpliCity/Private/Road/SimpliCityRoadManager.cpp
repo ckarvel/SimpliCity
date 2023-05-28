@@ -96,7 +96,7 @@ void ASimpliCityRoadManager::UpdatePath(FVector Location) {
   TSet<FVector> removeRoads = oldPath.Difference(newPath);
   TArray<FVector> removeRoadsArr = removeRoads.Array();
   ASimpliCityObjectManager* objectMgr = SCFL::GetObjectManager(this);
-  for (auto roadLoc : removeRoadsArr) {
+  for (auto const& roadLoc : removeRoadsArr) {
     // if this location is not a temporary road, then we don't want to remove this road.
     if (Temporary_ObjectToLocation.Contains(roadLoc) == false) {
       removeRoads.Remove(roadLoc);
@@ -107,7 +107,7 @@ void ASimpliCityRoadManager::UpdatePath(FVector Location) {
   TSet<FVector> createRoads = newPath.Difference(oldPath);
   TArray<FVector> createRoadsArr = createRoads.Array();
   // temporary roads to create
-  for (auto roadLoc : createRoadsArr) {
+  for (auto const& roadLoc : createRoadsArr) {
     if (objectMgr->DoesObjectExistHere(roadLoc) == true) {
       createRoads.Remove(roadLoc);
       // TRACE_SCREENMSG_PRINTF("Don't create: Permanent object exists here!");
