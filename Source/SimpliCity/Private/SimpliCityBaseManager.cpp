@@ -10,17 +10,19 @@
 using SCFL = USimpliCityFunctionLibrary;
 
 // Sets default values
-ASimpliCityBaseManager::ASimpliCityBaseManager() : CurrentlyBuilding(false) {
-  // Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-  PrimaryActorTick.bCanEverTick = false;
+ASimpliCityBaseManager::ASimpliCityBaseManager() : BuildEnabled(false), CurrentlyBuilding(false) {
+  PrimaryActorTick.bCanEverTick = true;
+  // PrimaryActorTick.SetTickFunctionEnable(true);
+  PrimaryActorTick.bStartWithTickEnabled = false;
+}
+
+void ASimpliCityBaseManager::Tick(float DeltaTime) {
+  Super::Tick(DeltaTime);
 }
 
 // Called when the game starts or when spawned
 void ASimpliCityBaseManager::BeginPlay() {
   Super::BeginPlay();
-}
-
-void ASimpliCityBaseManager::Update_Implementation() {
 }
 
 void ASimpliCityBaseManager::StartBuilding(FVector Location) {
@@ -98,38 +100,3 @@ void ASimpliCityBaseManager::DestroyObjects(const TArray<ASimpliCityObjectBase*>
     DestroyObject(Object);
   }
 }
-
-//// building manager has a spawned building already but just destroy and recreate
-// bool ASimpliCityBuildingManager::PlacePermanentBuilding(ASimpliCityBuildingBase* Building) {
-//   if (Building == nullptr)
-//     return false;
-//   if (SCFL::GetObjectManager(this)->DoesObjectExistHere(Building->GetActorLocation())) {
-//     return false;
-//   }
-//   SCFL::GetObjectManager(this)->AddObjectToGrid(Building);
-//   AddBuildingToList(Building->BuildingType, Building);
-//   return true;
-// }
-//
-// bool ASimpliCityZoneManager::PlacePermanentZoneBase(ASimpliCityZoneBase* ZoneBase) {
-//   if (ZoneBase == nullptr)
-//     return false;
-//   if (SCFL::GetObjectManager(this)->DoesObjectExistHere(ZoneBase->GetActorLocation())) {
-//     return false;
-//   }
-//   SCFL::GetObjectManager(this)->AddObjectToGrid(ZoneBase);
-//   AddZoneBaseToList(ZoneBase->ZoneType, ZoneBase);
-//   return true;
-// }
-//
-// bool ASimpliCityRoadManager::PlacePermanentRoad(
-//   TSubclassOf<ASimpliCityObjectBase> ObjectClass, const FVector Location, const FRotator Rotation) {
-//   if (SCFL::GetObjectManager(this)->DoesObjectExistHere(Location)) {
-//     return false;
-//   }
-//   ASimpliCityRoadBase* Road = SpawnRoad(RoadFixerComponent->GetDefaultRoadClass(), Location, Rotation, nullptr);
-//   SCFL::GetObjectManager(this)->AddObjectToGrid(Road);
-//   PermanentRoadList.Add(Road);
-//   FixRoadAndNeighbors(Road);
-//   return true;
-// }

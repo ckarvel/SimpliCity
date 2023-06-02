@@ -23,22 +23,15 @@ protected:
   virtual void BeginPlay() override;
 
 public:
+  UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SimpliCityObjectBase")
+  UTexture2D* BuildIcon;
+
   virtual void SetNewMaterial();
 
   // this object is placed permanently on the grid, start any necessary component behaviors
   virtual void OnObjectPlaced();
 
-  void SetObjectBase(USimpliObjectBase* Base) {
-    ObjectBase = Base;
-  }
-
-  USimpliObjectBase* GetObjectBase() {
-    return ObjectBase;
-  }
-
 protected:
   UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "SimpliCityObjectBase")
   TEnumAsByte<ESimpliCityObjectType> ObjectType;
-
-  USimpliObjectBase* ObjectBase;
 };

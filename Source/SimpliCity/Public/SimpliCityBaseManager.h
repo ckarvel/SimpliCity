@@ -19,23 +19,35 @@ public:
   ASimpliCityBaseManager();
 
 protected:
+  virtual void Tick(float DeltaTime) override;
   // Called when the game starts or when spawned
   virtual void BeginPlay() override;
 
-  bool BuildEnabled; // set from user interface
+  UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ASimpliCityBaseManager")
+  bool BuildEnabled;
+  UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ASimpliCityBaseManager")
   bool CurrentlyBuilding;
+  UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ASimpliCityBaseManager")
+  TArray<ASimpliCityObjectBase*> PermanentObjectList;
 
+  UTexture2D* BuildIcon;
   FVector StartLocation;
   FVector LastLocation;
   TMap<FVector, ASimpliCityObjectBase*> Temporary_ObjectToLocation;
-  TArray<ASimpliCityObjectBase*> PermanentObjectList;
 
-  UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "SimpliCityBaseManager")
-  void Update();
-  virtual void Update_Implementation();
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ASimpliCityBaseManager")
+  TSubclassOf<ASimpliCityObjectBase> DefaultBlueprintClass;
+
   virtual void StartBuilding(FVector Location);
+  // to be implemented by child
+  // tick()
+  virtual void Update(FVector Location){};
   virtual void FinishBuilding();
   virtual void CancelBuilding();
+
+  UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "ASimpliCityBaseManager")
+  ASimpliCityObjectBase* SpawnObjectOfType(TSubclassOf<ASimpliCityObjectBase> Class, const FVector Location,
+                                           const FRotator Rotation, UTexture2D* Icon);
 
 public:
   virtual USimpliObjectBase* CreateObject(TEnumAsByte<ESimpliCityObjectType> ObjectType, const FVector Location);
@@ -59,14 +71,16 @@ public:
     return BuildEnabled;
   }
 
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityBaseManager")
-  void Enable() {
-    BuildEnabled = true;
+  virtual void Enable(UTexture2D* NewIcon) {
+    if (NewIcon) {
+      BuildEnabled = true;
+      BuildIcon = NewIcon;
+    }
   }
 
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityBaseManager")
-  void Disable() {
+  virtual void Disable() {
     BuildEnabled = false;
+    BuildIcon = nullptr;
   }
 
   UFUNCTION(BlueprintPure, Category = "SimpliCityBaseManager")

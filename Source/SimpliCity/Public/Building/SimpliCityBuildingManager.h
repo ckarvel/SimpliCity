@@ -5,30 +5,47 @@
 #include "Building/SimpliCityBuildingType.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "SimpliCityBaseManager.h"
 #include "SimpliCityBuildingManager.generated.h"
 
-UCLASS()
-class SIMPLICITY_API ASimpliCityBuildingManager : public AActor {
+UCLASS(Blueprintable)
+class SIMPLICITY_API ASimpliCityBuildingManager : public ASimpliCityBaseManager {
   GENERATED_BODY()
 
 public:
   ASimpliCityBuildingManager();
 
 protected:
+  virtual void Tick(float DeltaTime) override;
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingManager")
+  virtual void Update(FVector Location) override;
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingManager")
+  virtual void StartBuilding(FVector Location) override;
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingManager")
+  virtual void FinishBuilding() override;
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingManager")
+  virtual void CancelBuilding() override;
+
   UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SimpliCityBuildingManager")
-  bool IsCurrentlyBuilding;
+  ASimpliCityObjectBase* ActiveObject;
 
 public:
   UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingManager")
-  bool PlacePermanentBuilding(ASimpliCityBuildingBase *Building);
+  virtual void Enable(UTexture2D* NewIcon) override;
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingManager")
+  virtual void Disable() override;
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingManager")
-  void DestroyObjects(const TArray<ASimpliCityObjectBase *> &ObjectList);
+  bool PlacePermanentBuilding(ASimpliCityBuildingBase* Building);
+  virtual ASimpliCityObjectBase* PlacePermanentObject(TSubclassOf<ASimpliCityObjectBase> ObjectClass,
+                                                      const FVector Location, const FRotator Rotation) override;
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingManager")
-  TArray<class ASimpliCityBuildingBase *> GetAllBuildingsOfType(ESimpliCityBuildingType Type);
-  void AddBuildingToList(ESimpliCityBuildingType Type, ASimpliCityBuildingBase *Building);
-  void RemoveBuildingFromList(ASimpliCityBuildingBase *Building);
+  virtual void DestroyObjects(const TArray<ASimpliCityObjectBase*>& ObjectList) override;
 
-  TMap<ESimpliCityBuildingType, TArray<ASimpliCityBuildingBase *>> BuildingListPerType;
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingManager")
+  TArray<class ASimpliCityBuildingBase*> GetAllBuildingsOfType(ESimpliCityBuildingType Type);
+  void AddBuildingToList(ESimpliCityBuildingType Type, ASimpliCityBuildingBase* Building);
+  void RemoveBuildingFromList(ASimpliCityBuildingBase* Building);
+  TMap<ESimpliCityBuildingType, TArray<ASimpliCityBuildingBase*>> BuildingListPerType;
 };

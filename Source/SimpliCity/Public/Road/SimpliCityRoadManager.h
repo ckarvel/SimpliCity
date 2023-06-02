@@ -22,7 +22,10 @@ public:
   ASimpliCityRoadManager();
 
 protected:
-  virtual void Update_Implementation() override;
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
+  virtual void Update(FVector Location) override;
+  // UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
+  // virtual void Update_Implementation(FVector Location) override;
   UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
   virtual void StartBuilding(FVector Location) override;
   UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
@@ -31,23 +34,12 @@ protected:
   virtual void CancelBuilding() override;
   UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
   virtual void DestroyObjects(const TArray<ASimpliCityObjectBase*>& ObjectList) override;
-  //////////////////////////////////////////////////////////////////////////
-  // build/destroy functions
-  //////////////////////////////////////////////////////////////////////////
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
-  void UpdatePath(FVector Location);
-  //////////////////////////////////////////////////////////////////////////
-  // build functions
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
-  void StartPlacingRoad(FVector Location);
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
-  void FinishBuildingPath();
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
-  void CancelBuildingPath();
+
   UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
   bool PlacePermanentRoad(const FVector Location, const FRotator Rotation);
   UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
   void CreateTemporaryRoadsAtLocations(const TArray<FVector>& Locations);
+
   void DestroyTemporaryRoadsAtLocations(const TArray<FVector> Locations);
   void DestroyAllTemporaryRoads();
 
@@ -59,14 +51,13 @@ protected:
   void DestroyPermanentRoad(ASimpliCityObjectBase* Road);
 
 public:
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
+  virtual void Enable(UTexture2D* NewIcon) override;
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
+  virtual void Disable() override;
+
   void FixRoad(ASimpliCityObjectBase* Road);
   void SwapRoads(ASimpliCityObjectBase* OldRoad, ASimpliCityObjectBase* NewRoad);
-
-  UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "SimpliCityRoadManager")
-  ASimpliCityRoadBase* SpawnRoad(TSubclassOf<ASimpliCityRoadBase> RoadClass, const FVector Location,
-                                 const FRotator Rotation, ASimpliCityObjectBase* RoadBeingReplaced);
-  ASimpliCityRoadBase* SpawnRoad_Implementation(TSubclassOf<ASimpliCityRoadBase> RoadClass, const FVector Location,
-                                                const FRotator Rotation, ASimpliCityObjectBase* RoadBeingReplaced);
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
   virtual TArray<FVector> GetNeighbors(FVector Location) const override;
@@ -88,18 +79,6 @@ public:
   UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityRoadManager")
   AMarkerManager* AgentMarkerGraph;
 
-protected:
-  UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "SimpliCityRoadManager")
-  bool IsCurrentlyBuilding;
-
-  UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SimpliCityRoadManager")
-  TMap<FVector, ASimpliCityRoadBase*> TemporaryRoadLocMap;
-
-  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityRoadManager")
-  TArray<ASimpliCityRoadBase*> PermanentRoadList;
-
 private:
-  FVector startLocation;
-  FVector lastLocation; // keep track of last tile origin
   TSet<FVector> oldPath;
 };
