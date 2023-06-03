@@ -1,6 +1,7 @@
 # Format Style Options - Created with Clang Power Tools
 ---
 AllowShortFunctionsOnASingleLine: None
+BreakConstructorInitializers: BeforeComma
 ColumnLimit: 120
 IncludeBlocks: Preserve
 IncludeCategories: 
@@ -19,4 +20,5 @@ IncludeCategories:
     CaseSensitive: false
 PointerAlignment: Left
 SortIncludes: true
+TabWidth: 2
 ...

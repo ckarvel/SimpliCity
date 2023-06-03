@@ -10,13 +10,45 @@
 using SCFL = USimpliCityFunctionLibrary;
 
 ASimpliCityZoneManager::ASimpliCityZoneManager() {
-  PrimaryActorTick.bCanEverTick = true;
   ZoneCellClass = ASimpliCityZoneCell::StaticClass();
 }
 
 void ASimpliCityZoneManager::BeginPlay() {
   Super::BeginPlay();
   InitializeCellZones();
+}
+
+//////////////////////////////////////////////////////////////////////////
+void ASimpliCityZoneManager::Enable(UTexture2D* NewIcon) {
+  ASimpliCityBaseManager::Enable(NewIcon);
+}
+
+//////////////////////////////////////////////////////////////////////////
+void ASimpliCityZoneManager::Disable() {
+  ASimpliCityBaseManager::Disable();
+}
+
+//////////////////////////////////////////////////////////////////////////
+void ASimpliCityZoneManager::StartBuilding() {
+  ASimpliCityBaseManager::StartBuilding();
+}
+
+//////////////////////////////////////////////////////////////////////////
+bool ASimpliCityZoneManager::UpdateBuilding(FVector Location) {
+  if (ASimpliCityBaseManager::UpdateBuilding(Location) == false) {
+    return false;
+  }
+  return true;
+}
+
+//////////////////////////////////////////////////////////////////////////
+void ASimpliCityZoneManager::FinishBuilding() {
+  ASimpliCityBaseManager::FinishBuilding();
+}
+
+//////////////////////////////////////////////////////////////////////////
+void ASimpliCityZoneManager::CancelBuilding() {
+  ASimpliCityBaseManager::CancelBuilding();
 }
 
 void ASimpliCityZoneManager::InitializeCellZones() {

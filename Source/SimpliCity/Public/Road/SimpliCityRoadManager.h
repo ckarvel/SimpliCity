@@ -23,11 +23,9 @@ public:
 
 protected:
   UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
-  virtual void Update(FVector Location) override;
-  // UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
-  // virtual void Update_Implementation(FVector Location) override;
+  virtual void StartBuilding() override;
   UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
-  virtual void StartBuilding(FVector Location) override;
+  virtual bool UpdateBuilding(FVector Location) override;
   UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
   virtual void FinishBuilding() override;
   UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
@@ -35,20 +33,14 @@ protected:
   UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
   virtual void DestroyObjects(const TArray<ASimpliCityObjectBase*>& ObjectList) override;
 
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
-  bool PlacePermanentRoad(const FVector Location, const FRotator Rotation);
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
+private:
   void CreateTemporaryRoadsAtLocations(const TArray<FVector>& Locations);
-
-  void DestroyTemporaryRoadsAtLocations(const TArray<FVector> Locations);
-  void DestroyAllTemporaryRoads();
-
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
   void ConvertAllTemporaryToPermanent();
-  //////////////////////////////////////////////////////////////////////////
-  // destroy functions
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
-  void DestroyPermanentRoad(ASimpliCityObjectBase* Road);
+  void DestroyTemporaryRoadsAtLocations(const TArray<FVector> Locations);
+  void FixRoad(ASimpliCityObjectBase* Road);
+  void SwapRoads(ASimpliCityObjectBase* OldRoad, ASimpliCityObjectBase* NewRoad);
+  void FixNeighborsAtLocation(FVector Location);
+  void FixRoadAndNeighbors(ASimpliCityObjectBase* Road);
 
 public:
   UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
@@ -56,22 +48,12 @@ public:
   UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
   virtual void Disable() override;
 
-  void FixRoad(ASimpliCityObjectBase* Road);
-  void SwapRoads(ASimpliCityObjectBase* OldRoad, ASimpliCityObjectBase* NewRoad);
-
   UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
   virtual TArray<FVector> GetNeighbors(FVector Location) const override;
 
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
   virtual float GetCost(FVector Location) const override {
     return 1.0;
   } // todo
-
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
-  void FixNeighborsAtLocation(FVector Location);
-
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
-  void FixRoadAndNeighbors(ASimpliCityObjectBase* Road);
 
   UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SimpliCityRoadManager")
   USimpliCityRoadFixerComponent* RoadFixerComponent;

@@ -9,6 +9,7 @@
 #include "SimpliCityBaseManager.generated.h"
 
 class USimpliObjectBase;
+class AGridManager;
 
 UCLASS()
 class SIMPLICITY_API ASimpliCityBaseManager : public AActor {
@@ -22,7 +23,7 @@ protected:
   virtual void Tick(float DeltaTime) override;
   // Called when the game starts or when spawned
   virtual void BeginPlay() override;
-
+  AGridManager* GridManager;
   UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ASimpliCityBaseManager")
   bool BuildEnabled;
   UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ASimpliCityBaseManager")
@@ -38,10 +39,9 @@ protected:
   UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ASimpliCityBaseManager")
   TSubclassOf<ASimpliCityObjectBase> DefaultBlueprintClass;
 
-  virtual void StartBuilding(FVector Location);
-  // to be implemented by child
-  // tick()
+  virtual void StartBuilding();
   virtual void Update(FVector Location){};
+  virtual bool UpdateBuilding(FVector Location);
   virtual void FinishBuilding();
   virtual void CancelBuilding();
 

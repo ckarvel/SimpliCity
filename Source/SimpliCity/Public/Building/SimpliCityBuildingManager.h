@@ -16,11 +16,10 @@ public:
   ASimpliCityBuildingManager();
 
 protected:
-  virtual void Tick(float DeltaTime) override;
   UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingManager")
-  virtual void Update(FVector Location) override;
+  virtual bool UpdateBuilding(FVector Location) override;
   UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingManager")
-  virtual void StartBuilding(FVector Location) override;
+  virtual void StartBuilding() override;
   UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingManager")
   virtual void FinishBuilding() override;
   UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingManager")

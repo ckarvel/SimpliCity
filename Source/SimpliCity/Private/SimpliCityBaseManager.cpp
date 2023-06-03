@@ -3,42 +3,85 @@
 #include "SimpliCityBaseManager.h"
 
 #include "GridManager.h"
+#include "Kismet/GameplayStatics.h"
 #include "SimpliCityFunctionLibrary.h"
 #include "SimpliCityObjectManager.h"
 #include "SimpliObjectBase.h"
 
 using SCFL = USimpliCityFunctionLibrary;
 
-// Sets default values
-ASimpliCityBaseManager::ASimpliCityBaseManager() : BuildEnabled(false), CurrentlyBuilding(false) {
+//////////////////////////////////////////////////////////////////////////
+ASimpliCityBaseManager::ASimpliCityBaseManager()
+    : BuildEnabled(false)
+    , CurrentlyBuilding(false)
+    , StartLocation(FVector(-1, -1, -1)) {
   PrimaryActorTick.bCanEverTick = true;
   // PrimaryActorTick.SetTickFunctionEnable(true);
   PrimaryActorTick.bStartWithTickEnabled = false;
 }
 
-void ASimpliCityBaseManager::Tick(float DeltaTime) {
-  Super::Tick(DeltaTime);
-}
-
-// Called when the game starts or when spawned
+//////////////////////////////////////////////////////////////////////////
 void ASimpliCityBaseManager::BeginPlay() {
   Super::BeginPlay();
+  GridManager = SCFL::GetGridManager(this);
 }
 
-void ASimpliCityBaseManager::StartBuilding(FVector Location) {
+//////////////////////////////////////////////////////////////////////////
+void ASimpliCityBaseManager::StartBuilding() {
   CurrentlyBuilding = true;
-  StartLocation = SCFL::GetGridManager(this)->LocationToCenter(Location);
+  PrimaryActorTick.SetTickFunctionEnable(true);
 }
 
+//////////////////////////////////////////////////////////////////////////
+bool ASimpliCityBaseManager::UpdateBuilding(FVector Location) {
+  if (CurrentlyBuilding == false) {
+    return false;
+  }
+
+  FVector currentLocation = GridManager->LocationToCenter(Location);
+
+  // if just started, set start location
+  if (GridManager->IsLocationValid(StartLocation) == false) {
+    StartLocation = currentLocation;
+  }
+
+  if (LastLocation == currentLocation) {
+    return false;
+  }
+
+  LastLocation = currentLocation;
+
+  // return true if we received a new location
+  return true;
+}
+
+//////////////////////////////////////////////////////////////////////////
+void ASimpliCityBaseManager::Tick(float DeltaTime) {
+  Super::Tick(DeltaTime);
+  // TRACE_LOG(LogSimpliCity, "ASimpliCityBuildingManager::Tick");
+  APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+  if (PlayerController) {
+    FHitResult HitResult;
+    PlayerController->GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, HitResult);
+    if (HitResult.bBlockingHit) {
+      UpdateBuilding(HitResult.Location);
+    }
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////
 void ASimpliCityBaseManager::FinishBuilding() {
   CurrentlyBuilding = false;
-  StartLocation = FVector();
+  StartLocation = FVector(-1, -1, -1);
+  LastLocation = FVector(-1, -1, -1);
 }
 
+//////////////////////////////////////////////////////////////////////////
 void ASimpliCityBaseManager::CancelBuilding() {
   ASimpliCityBaseManager::FinishBuilding();
 }
 
+//////////////////////////////////////////////////////////////////////////
 USimpliObjectBase* ASimpliCityBaseManager::CreateObject(TEnumAsByte<ESimpliCityObjectType> ObjectType,
                                                         const FVector Location) {
   USimpliObjectBase* Object = nullptr;
@@ -60,6 +103,7 @@ USimpliObjectBase* ASimpliCityBaseManager::CreateObject(TEnumAsByte<ESimpliCityO
   return Object;
 }
 
+//////////////////////////////////////////////////////////////////////////
 ASimpliCityObjectBase* ASimpliCityBaseManager::PlaceObject(TSubclassOf<ASimpliCityObjectBase> ObjectClass,
                                                            const FVector Location, const FRotator Rotation) {
   ASimpliCityObjectBase* Object = nullptr;
@@ -70,6 +114,7 @@ ASimpliCityObjectBase* ASimpliCityBaseManager::PlaceObject(TSubclassOf<ASimpliCi
   return Object;
 }
 
+//////////////////////////////////////////////////////////////////////////
 ASimpliCityObjectBase* ASimpliCityBaseManager::PlaceTemporaryObject(TSubclassOf<ASimpliCityObjectBase> ObjectClass,
                                                                     const FVector Location, const FRotator Rotation) {
   ASimpliCityObjectBase* Object = PlaceObject(ObjectClass, Location, Rotation);
@@ -79,6 +124,7 @@ ASimpliCityObjectBase* ASimpliCityBaseManager::PlaceTemporaryObject(TSubclassOf<
   return Object;
 }
 
+//////////////////////////////////////////////////////////////////////////
 ASimpliCityObjectBase* ASimpliCityBaseManager::PlacePermanentObject(TSubclassOf<ASimpliCityObjectBase> ObjectClass,
                                                                     const FVector Location, const FRotator Rotation) {
   ASimpliCityObjectBase* Object = PlaceObject(ObjectClass, Location, Rotation);
@@ -88,11 +134,13 @@ ASimpliCityObjectBase* ASimpliCityBaseManager::PlacePermanentObject(TSubclassOf<
   return Object;
 }
 
+//////////////////////////////////////////////////////////////////////////
 void ASimpliCityBaseManager::DestroyObject(ASimpliCityObjectBase* Object) {
   PermanentObjectList.Remove(Object);
   SCFL::GetObjectManager(this)->RemoveObjectFromGrid(Object);
 }
 
+//////////////////////////////////////////////////////////////////////////
 void ASimpliCityBaseManager::DestroyObjects(const TArray<ASimpliCityObjectBase*>& ObjectList) {
   for (auto Object : ObjectList) {
     if (Object == nullptr)
