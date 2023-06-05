@@ -1,14 +1,14 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
-
 using UnrealBuildTool;
 
-public class SimpliCity : ModuleRules
-{
-	public SimpliCity(ReadOnlyTargetRules Target) : base(Target)
-	{
-		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+public class SimpliCity : ModuleRules {
+  public SimpliCity(ReadOnlyTargetRules Target)
+      : base(Target) {
+    PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay", "NavigationSystem", "AIModule", "Niagara",
-					"GridSystem", "AStarPathFinder", "MarkerSystem"});
-	}
+    PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore",
+                                                        "HeadMountedDisplay", "NavigationSystem", "AIModule", "Niagara",
+                                                        "GridSystem", "ProceduralMeshComponent", "AStarPathFinder",
+                                                        "MarkerSystem" });
+  }
 }

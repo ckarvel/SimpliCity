@@ -5,6 +5,7 @@
 #include "GridManager.h"
 #include "SimpliCityFunctionLibrary.h"
 #include "SimpliCityObjectManager.h"
+#include "SimpliCityObjectSelector.h"
 #include "Zone/SimpliCityZoneCell.h"
 
 using SCFL = USimpliCityFunctionLibrary;
@@ -16,11 +17,13 @@ ASimpliCityZoneManager::ASimpliCityZoneManager() {
 void ASimpliCityZoneManager::BeginPlay() {
   Super::BeginPlay();
   InitializeCellZones();
+  ObjectSelector = SCFL::GetSelector(this);
 }
 
 //////////////////////////////////////////////////////////////////////////
 void ASimpliCityZoneManager::Enable(UTexture2D* NewIcon) {
   ASimpliCityBaseManager::Enable(NewIcon);
+  GetBuildType(NewIcon, BuildType);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -31,24 +34,44 @@ void ASimpliCityZoneManager::Disable() {
 //////////////////////////////////////////////////////////////////////////
 void ASimpliCityZoneManager::StartBuilding() {
   ASimpliCityBaseManager::StartBuilding();
+  ObjectSelector->VisualizeSelection = false;
 }
 
 //////////////////////////////////////////////////////////////////////////
 bool ASimpliCityZoneManager::UpdateBuilding(FVector Location) {
-  if (ASimpliCityBaseManager::UpdateBuilding(Location) == false) {
+  ASimpliCityBaseManager::UpdateBuilding(Location);
+  TSet<ASimpliCityZoneCell*> newCells =
+      TSet<ASimpliCityZoneCell*>(ObjectSelector->UpdateSelection<ASimpliCityZoneCell>(StartLocation, LastLocation));
+  if (newCells.Num() == 0) {
+    ReloadAllCellStates();
     return false;
   }
+  TSet<ASimpliCityZoneCell*> reloadCells = oldCells.Difference(newCells);
+  // reload states of cells that aren't in the selection area anymore
+  for (auto const& cell : reloadCells.Array()) {
+    ReloadCellState(cell);
+  }
+  TSet<ASimpliCityZoneCell*> saveCells = newCells.Difference(oldCells);
+  for (auto const& cell : saveCells.Array()) {
+    SaveLastCellState(cell);
+    cell->SetCellType(BuildType);
+  }
+  oldCells = newCells;
   return true;
 }
 
 //////////////////////////////////////////////////////////////////////////
 void ASimpliCityZoneManager::FinishBuilding() {
   ASimpliCityBaseManager::FinishBuilding();
+  ObjectSelector->FinishSelection();
+  ResetCellStates();
 }
 
 //////////////////////////////////////////////////////////////////////////
 void ASimpliCityZoneManager::CancelBuilding() {
   ASimpliCityBaseManager::CancelBuilding();
+  ObjectSelector->FinishSelection();
+  ReloadAllCellStates();
 }
 
 void ASimpliCityZoneManager::InitializeCellZones() {

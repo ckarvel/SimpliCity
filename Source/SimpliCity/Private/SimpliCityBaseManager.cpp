@@ -74,6 +74,7 @@ void ASimpliCityBaseManager::FinishBuilding() {
   CurrentlyBuilding = false;
   StartLocation = FVector(-1, -1, -1);
   LastLocation = FVector(-1, -1, -1);
+  PrimaryActorTick.SetTickFunctionEnable(false);
 }
 
 //////////////////////////////////////////////////////////////////////////

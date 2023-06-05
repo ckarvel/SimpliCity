@@ -71,7 +71,6 @@ void ASimpliCityBuildingManager::FinishBuilding() {
   ASimpliCityBaseManager::FinishBuilding();
   PermanentObjectList.Add(ActiveObject);
   ActiveObject = nullptr;
-  PrimaryActorTick.SetTickFunctionEnable(false);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -81,7 +80,6 @@ void ASimpliCityBuildingManager::CancelBuilding() {
     ActiveObject->Destroy();
     ActiveObject = nullptr;
   }
-  PrimaryActorTick.SetTickFunctionEnable(false);
 }
 
 bool ASimpliCityBuildingManager::PlacePermanentBuilding(ASimpliCityBuildingBase* Building) {

@@ -17,6 +17,7 @@ public:
   ASimpliCityZoneManager();
 
 protected:
+  class ASimpliCityObjectSelector* ObjectSelector;
   virtual void BeginPlay() override;
   UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneManager")
   virtual void StartBuilding() override;
@@ -27,8 +28,11 @@ protected:
   UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneManager")
   virtual void CancelBuilding() override;
 
-  UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SimpliCityZoneManager")
-  bool IsCurrentlyBuilding;
+  UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "SimpliCityZoneManager")
+  void GetBuildType(UTexture2D* Icon, TEnumAsByte<ESimpliCityZoneType>& OutType);
+
+  TEnumAsByte<ESimpliCityZoneType> BuildType;
+  TSet<ASimpliCityZoneCell*> oldCells;
 
 public:
   UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneManager")

@@ -9,7 +9,12 @@
 #include "ProceduralMeshComponent.h"
 
 AGridManager::AGridManager()
-    : NumRows(10), NumCols(10), TileSize(200.0), LineThickness(10.0), LineOpacity(1.0), SelectionOpacity(0.5) {
+    : NumRows(10)
+    , NumCols(10)
+    , TileSize(200.0)
+    , LineThickness(10.0)
+    , LineOpacity(1.0)
+    , SelectionOpacity(0.5) {
   PrimaryActorTick.bCanEverTick = false;
   LineMeshComponent = CreateDefaultSubobject<UProceduralMeshComponent>("LineMesh");
   SetRootComponent(LineMeshComponent);

@@ -13,6 +13,7 @@
 #include "SimpliCityGameInstance.h"
 #include "SimpliCityMainUI.h"
 #include "SimpliCityObjectManager.h"
+#include "SimpliCityObjectSelector.h"
 #include "SimpliCityPlayerController.h"
 
 #include "Building/SimpliCityBuildingManager.h"
@@ -65,13 +66,22 @@ ASimpliCityBuildingManager* USimpliCityFunctionLibrary::GetBuildingManager(const
 }
 
 template <class ManagerClass>
-ManagerClass* USimpliCityFunctionLibrary::GetManager(
-  const UObject* WorldContextObject, TSubclassOf<ManagerClass> Class) {
+ManagerClass* USimpliCityFunctionLibrary::GetManager(const UObject* WorldContextObject,
+                                                     TSubclassOf<ManagerClass> Class) {
   ManagerClass* mgr = Cast<ManagerClass>(UGameplayStatics::GetActorOfClass(WorldContextObject, Class));
   if (mgr == nullptr) {
     TRACE_ERROR_PRINTF(LogSimpliCity, "ERROR!! mgr == nullptr");
   }
   return mgr;
+}
+
+ASimpliCityObjectSelector* USimpliCityFunctionLibrary::GetSelector(const UObject* WorldContextObject) {
+  ASimpliCityObjectSelector* selector = Cast<ASimpliCityObjectSelector>(
+      UGameplayStatics::GetActorOfClass(WorldContextObject, ASimpliCityObjectSelector::StaticClass()));
+  if (selector == nullptr) {
+    TRACE_ERROR_PRINTF(LogSimpliCity, "ERROR!! selector == nullptr");
+  }
+  return selector;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -115,15 +125,15 @@ TArray<AActor*> USimpliCityFunctionLibrary::GetDifferenceInArrays(TArray<AActor*
   return diff.Array();
 }
 
-void USimpliCityFunctionLibrary::CalculateSelectionRectangle(
-  FVector Start, FVector End, FVector& OutExtents, TArray<FVector>& OutVertices, TArray<int>& OutTriangles) {
+void USimpliCityFunctionLibrary::CalculateSelectionRectangle(FVector Start, FVector End, FVector& OutExtents,
+                                                             TArray<FVector>& OutVertices, TArray<int>& OutTriangles) {
   float minX = FMath::Min(Start.X, End.X);
   float minY = FMath::Min(Start.Y, End.Y);
   float maxX = FMath::Max(Start.X, End.X);
   float maxY = FMath::Max(Start.Y, End.Y);
 
-  TArray<FVector> Vertices
-    = { FVector(minX, minY, 100), FVector(minX, maxY, 100), FVector(maxX, minY, 100), FVector(maxX, maxY, 100) };
+  TArray<FVector> Vertices = {FVector(minX, minY, 100), FVector(minX, maxY, 100), FVector(maxX, minY, 100),
+                              FVector(maxX, maxY, 100)};
   OutVertices = Vertices;
 
   OutExtents.X = FVector::Distance(Vertices[0], Vertices[2]) / 2.0;
@@ -132,7 +142,7 @@ void USimpliCityFunctionLibrary::CalculateSelectionRectangle(
 
   // order of vertices we made in the list above
   // counter-clockwise of a triangle starting at top
-  TArray<int> Triangles = { 0, 1, 3, 3, 2, 0 };
+  TArray<int> Triangles = {0, 1, 3, 3, 2, 0};
   OutTriangles = Triangles;
 }
 
@@ -210,8 +220,8 @@ TArray<FVector> USimpliCityFunctionLibrary::SmoothCurvedSegments(TArray<FVector>
     FVector B = Out[start + 1] - Out[start];
     float angle = USimpliCityFunctionLibrary::AngleBetween2Vectors(A, B);
     if (angle > 45) {
-      TArray<FVector> CurvePoints
-        = USimpliCityFunctionLibrary::QuadraticBezierCurve(Out[start], Out[start + 1], Out[start + 2]);
+      TArray<FVector> CurvePoints =
+          USimpliCityFunctionLibrary::QuadraticBezierCurve(Out[start], Out[start + 1], Out[start + 2]);
       Out.RemoveAt(start + 2);
       Out.RemoveAt(start + 1);
       Out.RemoveAt(start);
