@@ -17,9 +17,9 @@ public:
 
 protected:
   UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingManager")
-  virtual bool UpdateBuilding(FVector Location) override;
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingManager")
   virtual void StartBuilding() override;
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingManager")
+  virtual bool UpdateBuilding(FVector Location) override;
   UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingManager")
   virtual void FinishBuilding() override;
   UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingManager")

@@ -50,14 +50,12 @@ public:
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
   virtual TArray<FVector> GetNeighbors(FVector Location) const override;
-
   virtual float GetCost(FVector Location) const override {
     return 1.0;
   } // todo
 
   UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SimpliCityRoadManager")
   USimpliCityRoadFixerComponent* RoadFixerComponent;
-
   UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityRoadManager")
   AMarkerManager* AgentMarkerGraph;
 

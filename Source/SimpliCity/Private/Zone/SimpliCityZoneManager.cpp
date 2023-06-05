@@ -74,6 +74,7 @@ void ASimpliCityZoneManager::CancelBuilding() {
   ReloadAllCellStates();
 }
 
+//////////////////////////////////////////////////////////////////////////
 void ASimpliCityZoneManager::InitializeCellZones() {
   AGridManager* gridMgr = USimpliCityFunctionLibrary::GetGridManager(this);
   int numRows = gridMgr->GetNumRows();
@@ -90,8 +91,9 @@ void ASimpliCityZoneManager::InitializeCellZones() {
   }
 }
 
+//////////////////////////////////////////////////////////////////////////
 // When currently selecting zones, store the last state of each cell before applying new zone
-// if selection is canceled, load last state for each cell
+// if selection is canceled, load last state for each cell (reload)
 bool ASimpliCityZoneManager::SaveLastCellState(ASimpliCityZoneCell* Cell) {
   if (LastCellStateMap.Contains(Cell) == false) {
     LastCellStateMap.Add(Cell, Cell->ZoneType);
@@ -100,6 +102,7 @@ bool ASimpliCityZoneManager::SaveLastCellState(ASimpliCityZoneCell* Cell) {
   return false;
 }
 
+//////////////////////////////////////////////////////////////////////////
 void ASimpliCityZoneManager::ReloadCellState(ASimpliCityZoneCell* Cell) {
   if (LastCellStateMap.Contains(Cell) == true) {
     Cell->SetCellType(LastCellStateMap[Cell]);
@@ -107,6 +110,7 @@ void ASimpliCityZoneManager::ReloadCellState(ASimpliCityZoneCell* Cell) {
   }
 }
 
+//////////////////////////////////////////////////////////////////////////
 void ASimpliCityZoneManager::ReloadAllCellStates() {
   for (auto Cell : LastCellStateMap) {
     Cell.Key->SetCellType(Cell.Value);
@@ -114,10 +118,13 @@ void ASimpliCityZoneManager::ReloadAllCellStates() {
   ResetCellStates();
 }
 
+//////////////////////////////////////////////////////////////////////////
+// clear all saved states
 void ASimpliCityZoneManager::ResetCellStates() {
   LastCellStateMap.Empty();
 }
 
+//////////////////////////////////////////////////////////////////////////
 TEnumAsByte<ESimpliCityZoneType> ASimpliCityZoneManager::GetZoneTypeAtLocation(FVector Location) {
   int32 index = USimpliCityFunctionLibrary::GetGridManager(this)->LocationToIndex(Location);
   if (index <= 0 || index >= GridCells.Num()) {
@@ -132,6 +139,7 @@ TEnumAsByte<ESimpliCityZoneType> ASimpliCityZoneManager::GetZoneTypeAtLocation(F
   return GridCells[index]->ZoneType;
 }
 
+//////////////////////////////////////////////////////////////////////////
 bool ASimpliCityZoneManager::PlacePermanentZoneBase(ASimpliCityZoneBase* ZoneBase) {
   if (ZoneBase == nullptr)
     return false;
@@ -143,6 +151,19 @@ bool ASimpliCityZoneManager::PlacePermanentZoneBase(ASimpliCityZoneBase* ZoneBas
   return true;
 }
 
+ASimpliCityObjectBase* ASimpliCityZoneManager::PlacePermanentObject(TSubclassOf<ASimpliCityObjectBase> ObjectClass,
+                                                                        const FVector Location,
+                                                                        const FRotator Rotation) {
+  ASimpliCityObjectBase* Object = ASimpliCityBaseManager::PlacePermanentObject(ObjectClass, Location, Rotation);
+  if (Object == nullptr) {
+    return Object;
+  }
+  ASimpliCityZoneBase* Building = Cast<ASimpliCityZoneBase>(Object);
+  AddZoneBaseToList(Building->ZoneType, Building);
+  return Object;
+}
+
+//////////////////////////////////////////////////////////////////////////
 void ASimpliCityZoneManager::DestroyObjects(const TArray<ASimpliCityObjectBase*>& ObjectList) {
   for (auto Object : ObjectList) {
     if (Object == nullptr)
@@ -154,11 +175,13 @@ void ASimpliCityZoneManager::DestroyObjects(const TArray<ASimpliCityObjectBase*>
   }
 }
 
+//////////////////////////////////////////////////////////////////////////
 TArray<ASimpliCityZoneBase*> ASimpliCityZoneManager::GetAllZoneBasesOfType(ESimpliCityZoneType Type) {
   TArray<ASimpliCityZoneBase*> ZoneBaseList = ZoneBasesPerType.FindOrAdd(Type);
   return ZoneBaseList;
 }
 
+//////////////////////////////////////////////////////////////////////////
 void ASimpliCityZoneManager::AddZoneBaseToList(ESimpliCityZoneType Type, ASimpliCityZoneBase* ZoneBase) {
   if (Type == ESimpliCityZoneType::ZoneType_None)
     return;
@@ -169,6 +192,7 @@ void ASimpliCityZoneManager::AddZoneBaseToList(ESimpliCityZoneType Type, ASimpli
   }
 }
 
+//////////////////////////////////////////////////////////////////////////
 void ASimpliCityZoneManager::RemoveZoneBaseFromList(ASimpliCityZoneBase* ZoneBase) {
   if (ZoneBase == nullptr)
     return;
