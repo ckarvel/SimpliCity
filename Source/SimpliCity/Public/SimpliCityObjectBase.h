@@ -22,11 +22,27 @@ public:
 protected:
   virtual void BeginPlay() override;
 
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityObjectBase")
+  class UMaterialInstance* ErrorMaterial; // incorrect placement, usually red
+
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityObjectBase")
+  class UMaterialInstance* GoodMaterial; // correct placement, usually green
+
 public:
+  UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SimpliCityObjectBase")
+  class UStaticMeshComponent* StaticMeshComponent;
+
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityObjectBase")
+  FORCEINLINE UStaticMeshComponent* GetStaticMeshComponent() const {
+    return StaticMeshComponent;
+  }
+
   UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SimpliCityObjectBase")
   UTexture2D* BuildIcon;
 
-  virtual void SetNewMaterial();
+  virtual void SetNewMaterial(UMaterialInstance* Material);
+
+  virtual void SetNewLocation(FVector Location);
 
   // this object is placed permanently on the grid, start any necessary component behaviors
   virtual void OnObjectPlaced();

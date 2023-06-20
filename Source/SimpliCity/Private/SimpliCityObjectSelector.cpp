@@ -7,7 +7,7 @@
 #include "Materials/MaterialInstanceDynamic.h"
 #include "ProceduralMeshComponent.h"
 #include "SimpliCityFunctionLibrary.h"
-#include "Zone/SimpliCityZoneCell.h"
+#include "Zone/SimpliCityZoneBase.h"
 
 //////////////////////////////////////////////////////////////////////////
 ASimpliCityObjectSelector::ASimpliCityObjectSelector()
@@ -89,4 +89,4 @@ void ASimpliCityObjectSelector::DrawSelection(TArray<FVector> Vertices, TArray<i
   SelectionMeshComponent->SetVisibility(true);
 }
 
-template TArray<ASimpliCityZoneCell*> ASimpliCityObjectSelector::UpdateSelection(FVector Start, FVector End);
+template TArray<ASimpliCityZoneBase*> ASimpliCityObjectSelector::UpdateSelection(FVector Start, FVector End);

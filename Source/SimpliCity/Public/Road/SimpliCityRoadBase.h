@@ -16,16 +16,7 @@ class SIMPLICITY_API ASimpliCityRoadBase : public ASimpliCityObjectBase, public 
   GENERATED_BODY()
 
 public:
-  // Sets default values for this actor's properties
   ASimpliCityRoadBase();
-
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadBase")
-  FORCEINLINE UStaticMeshComponent* GetStaticMeshComponent() const {
-    return StaticMeshComponent;
-  }
-
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadBase")
-  void SetNewMaterial() override;
 
   ///////////////////////////////////// UMarkerPathInterface /////////////////////////////////////
   UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadBase")
@@ -45,11 +36,6 @@ public:
   ///////////////////////////////////// UMarkerPathInterface /////////////////////////////////////
 
 protected:
-  // Called when the game starts or when spawned
-  virtual void BeginPlay() override;
-
-  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityRoadBase")
-  class UStaticMeshComponent* StaticMeshComponent;
 
   UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityRoadBase")
   class UMaterialInstance* RoadMaterial;

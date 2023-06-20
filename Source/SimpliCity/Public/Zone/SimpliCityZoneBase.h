@@ -16,23 +16,21 @@ public:
   // Sets default values for this actor's properties
   ASimpliCityZoneBase();
 
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneBase")
+  TEnumAsByte<ESimpliCityZoneType> GetZoneType() const {
+    return ZoneType;
+  }
+
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneBase")
+  void SetZoneType(TEnumAsByte<ESimpliCityZoneType> Type, UMaterialInstance* Material);
+
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneBase")
+  void ShowActiveMaterial();
+
 protected:
-  // Called when the game starts or when spawned
-  virtual void BeginPlay() override;
-
-public:
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneBase")
-  FORCEINLINE class UStaticMeshComponent *GetStaticMeshComponent() const { return StaticMeshComponent; }
-
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneBase")
-  class ASimpliCityRoadBase *GetRoadConnection() const { return RoadConnection; }
-
-  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityZoneBase")
-  UStaticMeshComponent *StaticMeshComponent;
-
-  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityZoneBase")
-  ASimpliCityRoadBase *RoadConnection;
-
   UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityZoneBase", Meta = (ExposeOnSpawn = true))
   TEnumAsByte<ESimpliCityZoneType> ZoneType;
+
+  UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SimpliCityZoneBase")
+  class UMaterialInstance* ActiveMaterial;
 };

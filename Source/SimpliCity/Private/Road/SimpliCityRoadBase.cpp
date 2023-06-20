@@ -9,24 +9,7 @@
 #include "SimpliCityObjectManager.h"
 
 ASimpliCityRoadBase::ASimpliCityRoadBase() {
-  PrimaryActorTick.bCanEverTick = false;
-  StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RoadMesh"));
-  SetRootComponent(StaticMeshComponent);
   ObjectType = ESimpliCityObjectType::Road;
-}
-
-void ASimpliCityRoadBase::BeginPlay() {
-  Super::BeginPlay();
-}
-
-void ASimpliCityRoadBase::SetNewMaterial() {
-  if (StaticMeshComponent == nullptr) {
-    TRACE_ERROR_PRINTF(LogSimpliCity, "ERROR!!! StaticMeshComponent == nullptr");
-    return;
-  }
-  if (RoadMaterial != nullptr) {
-    StaticMeshComponent->SetMaterial(0, RoadMaterial);
-  }
 }
 
 // only for use with vehicle markers

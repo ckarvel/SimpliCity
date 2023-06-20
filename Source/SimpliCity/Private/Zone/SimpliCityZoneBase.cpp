@@ -10,13 +10,20 @@
 
 // Sets default values
 ASimpliCityZoneBase::ASimpliCityZoneBase() {
-  PrimaryActorTick.bCanEverTick = false;
-  StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ZoneMesh"));
-  SetRootComponent(StaticMeshComponent);
   ObjectType = ESimpliCityObjectType::Zone;
 }
 
-// Called when the game starts or when spawned
-void ASimpliCityZoneBase::BeginPlay() {
-  Super::BeginPlay();
+void ASimpliCityZoneBase::SetZoneType(TEnumAsByte<ESimpliCityZoneType> Type,
+                                      UMaterialInstance* Material) {
+  if (Type != ZoneType) {
+    ZoneType = Type;
+  }
+  if (ActiveMaterial != Material) {
+    ActiveMaterial = Material;
+  }
+  ShowActiveMaterial();
+}
+
+void ASimpliCityZoneBase::ShowActiveMaterial() {
+  StaticMeshComponent->SetMaterial(0, ActiveMaterial);
 }

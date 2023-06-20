@@ -3,13 +3,10 @@
 #include "Building/SimpliCityBuildingManager.h"
 
 #include "Building/SimpliCityBuildingBase.h"
-#include "GridManager.h"
 
-#include "SimpliCityFunctionLibrary.h"
+#include "GridManager.h"
 #include "SimpliCityObjectManager.h"
 #include "Utils/SimpliCityUtils.h"
-
-using SCFL = USimpliCityFunctionLibrary;
 
 ASimpliCityBuildingManager::ASimpliCityBuildingManager()
     : ActiveObject(nullptr) {
@@ -61,7 +58,7 @@ bool ASimpliCityBuildingManager::UpdateBuilding(FVector Location) {
   }
 
   if (ActiveObject) {
-    ActiveObject->SetActorLocation(LastLocation);
+    ActiveObject->SetNewLocation(LastLocation);
   }
   return true;
 }
@@ -82,17 +79,19 @@ void ASimpliCityBuildingManager::CancelBuilding() {
   }
 }
 
+//////////////////////////////////////////////////////////////////////////
 bool ASimpliCityBuildingManager::PlacePermanentBuilding(ASimpliCityBuildingBase* Building) {
   if (Building == nullptr)
     return false;
-  if (SCFL::GetObjectManager(this)->DoesObjectExistHere(Building->GetActorLocation())) {
+  if (ObjectManager->DoesObjectExistHere(Building->GetActorLocation())) {
     return false;
   }
-  SCFL::GetObjectManager(this)->AddObjectToGrid(Building);
-  AddBuildingToList(Building->BuildingType, Building);
+  ObjectManager->AddObjectToGrid(Building);
+  AddBuildingToList(Building->GetBuildingType(), Building);
   return true;
 }
 
+//////////////////////////////////////////////////////////////////////////
 ASimpliCityObjectBase* ASimpliCityBuildingManager::PlacePermanentObject(TSubclassOf<ASimpliCityObjectBase> ObjectClass,
                                                                         const FVector Location,
                                                                         const FRotator Rotation) {
@@ -101,7 +100,7 @@ ASimpliCityObjectBase* ASimpliCityBuildingManager::PlacePermanentObject(TSubclas
     return Object;
   }
   ASimpliCityBuildingBase* Building = Cast<ASimpliCityBuildingBase>(Object);
-  AddBuildingToList(Building->BuildingType, Building);
+  AddBuildingToList(Building->GetBuildingType(), Building);
   return Object;
 }
 
@@ -134,7 +133,7 @@ void ASimpliCityBuildingManager::AddBuildingToList(ESimpliCityBuildingType Type,
 void ASimpliCityBuildingManager::RemoveBuildingFromList(ASimpliCityBuildingBase* Building) {
   if (Building == nullptr)
     return;
-  ESimpliCityBuildingType Type = Building->BuildingType;
+  ESimpliCityBuildingType Type = Building->GetBuildingType();
   if (BuildingListPerType.Contains(Type)) {
     TArray<ASimpliCityBuildingBase*> BuildingList = BuildingListPerType[Type];
     if (BuildingList.Contains(Building)) {

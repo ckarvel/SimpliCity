@@ -10,6 +10,7 @@
 
 class USimpliObjectBase;
 class AGridManager;
+class ASimpliCityObjectManager;
 
 UCLASS()
 class SIMPLICITY_API ASimpliCityBaseManager : public AActor {
@@ -24,6 +25,7 @@ protected:
   // Called when the game starts or when spawned
   virtual void BeginPlay() override;
   AGridManager* GridManager;
+  ASimpliCityObjectManager* ObjectManager;
   UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ASimpliCityBaseManager")
   bool BuildEnabled;
   UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ASimpliCityBaseManager")

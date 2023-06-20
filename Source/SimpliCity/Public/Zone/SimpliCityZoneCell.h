@@ -31,14 +31,6 @@ public:
   class UStaticMeshComponent *StaticMeshComponent;
 
   UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SimpliCityZoneCell")
-  class UMaterialInstance *DefaultMaterial;
+  class UMaterialInstance *ActiveMaterial;
 
-  UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SimpliCityZoneCell")
-  class UMaterialInstance *ResidentialMaterial;
-
-  UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SimpliCityZoneCell")
-  class UMaterialInstance *CommercialMaterial;
-
-  UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SimpliCityZoneCell")
-  class UMaterialInstance *IndustrialMaterial;
 };

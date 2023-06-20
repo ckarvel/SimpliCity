@@ -12,27 +12,22 @@ UCLASS(Blueprintable)
 class SIMPLICITY_API ASimpliCityBuildingBase : public ASimpliCityObjectBase {
   GENERATED_BODY()
 
-public:
-  // Sets default values for this actor's properties
-  ASimpliCityBuildingBase();
-
 protected:
-  // Called when the game starts or when spawned
-  virtual void BeginPlay() override;
-
-public:
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingBase")
-  FORCEINLINE class UStaticMeshComponent *GetStaticMeshComponent() const { return StaticMeshComponent; }
-
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingBase")
-  class ASimpliCityRoadBase *GetRoadConnection() const { return RoadConnection; }
-
   UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityBuildingBase")
-  UStaticMeshComponent *StaticMeshComponent;
-
-  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityBuildingBase")
-  ASimpliCityRoadBase *RoadConnection;
+  class ASimpliCityRoadBase* RoadConnection;
 
   UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityBuildingBase", Meta = (ExposeOnSpawn = true))
   TEnumAsByte<ESimpliCityBuildingType> BuildingType;
+
+
+public:
+  ASimpliCityBuildingBase();
+
+  virtual void SetNewLocation(FVector Location) override;
+
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingBase")
+  ASimpliCityRoadBase *GetRoadConnection() const { return RoadConnection; }
+
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingBase")
+  TEnumAsByte<ESimpliCityBuildingType> GetBuildingType() const { return BuildingType; }
 };

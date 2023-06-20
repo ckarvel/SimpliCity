@@ -9,7 +9,8 @@
 #include "SimpliCityZoneType.h"
 #include "SimpliCityZoneManager.generated.h"
 
-class ASimpliCityZoneCell;
+class ASimpliCityZoneBase;
+class ASimpliCityBuildingBase;
 
 UCLASS(Blueprintable)
 class SIMPLICITY_API ASimpliCityZoneManager : public ASimpliCityBaseManager {
@@ -24,25 +25,27 @@ public:
   virtual void Disable() override;
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneManager")
-  bool PlacePermanentZoneBase(ASimpliCityZoneBase* ZoneBase);
-  virtual ASimpliCityObjectBase* PlacePermanentObject(TSubclassOf<ASimpliCityObjectBase> ObjectClass,
-                                                      const FVector Location, const FRotator Rotation) override;
-
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneManager")
   void DestroyObjects(const TArray<ASimpliCityObjectBase*>& ObjectList);
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneManager")
   TEnumAsByte<ESimpliCityZoneType> GetZoneTypeAtLocation(FVector Location);
   UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneManager")
-  TArray<ASimpliCityZoneBase*> GetAllZoneBasesOfType(ESimpliCityZoneType Type);
+  TArray<ASimpliCityBuildingBase*> GetAllBuildingsOfType(ESimpliCityZoneType Type);
 
-  void AddZoneBaseToList(ESimpliCityZoneType Type, ASimpliCityZoneBase* ZoneBase);
-  void RemoveZoneBaseFromList(ASimpliCityZoneBase* ZoneBase);
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneManager")
+  UMaterialInstance* GetTypeMaterial(ESimpliCityZoneType ZoneType);
+
+  void AddBuildingToList(ASimpliCityZoneBase* Zone, ASimpliCityBuildingBase* Building);
+  void RemoveBuildingFromList(ASimpliCityBuildingBase* Building);
+
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneManager")
+  TArray<ASimpliCityZoneBase*> GetEmptyZones();
 
 protected:
   virtual void BeginPlay() override;
   UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneManager")
   virtual void StartBuilding() override;
+
   UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneManager")
   virtual bool UpdateBuilding(FVector Location) override;
   UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneManager")
@@ -55,22 +58,32 @@ protected:
 
 private:
   void InitializeCellZones();
-  bool SaveLastCellState(ASimpliCityZoneCell* Cell);
-  void ReloadCellState(ASimpliCityZoneCell* Cell);
+  bool SaveLastCellState(ASimpliCityZoneBase* Zone);
+  void ReloadCellState(ASimpliCityZoneBase* Zone);
   void ReloadAllCellStates();
   void ResetCellStates();
 
-
 public:
-protected:
-  UPROPERTY(EditAnywhere, NoClear, BlueprintReadOnly, Category = "SimpliCityZoneManager")
-  TSubclassOf<ASimpliCityZoneCell> ZoneCellClass;
-  TMap<ESimpliCityZoneType, TArray<ASimpliCityZoneBase*>> ZoneBasesPerType;
+  UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SimpliCityZoneManager")
+  class UMaterialInstance* DefaultMaterial;
+
+  UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SimpliCityZoneManager")
+  class UMaterialInstance* ResidentialMaterial;
+
+  UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SimpliCityZoneManager")
+  class UMaterialInstance* CommercialMaterial;
+
+  UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SimpliCityZoneManager")
+  class UMaterialInstance* IndustrialMaterial;
 
 private:
-  TArray<ASimpliCityZoneCell*> GridCells;
-  TMap<ASimpliCityZoneCell*, TEnumAsByte<ESimpliCityZoneType>> LastCellStateMap;
+  TArray<ASimpliCityZoneBase*> ZoneGrid;
+  
+  TMap<ESimpliCityZoneType, TArray<ASimpliCityZoneBase*>> ZonesPerType;
+  TMap<ASimpliCityBuildingBase*, ASimpliCityZoneBase*> BuildingToZoneMap;
+
   class ASimpliCityObjectSelector* ObjectSelector;
   TEnumAsByte<ESimpliCityZoneType> BuildType;
-  TSet<ASimpliCityZoneCell*> oldCells;
+  TMap<ASimpliCityZoneBase*, TEnumAsByte<ESimpliCityZoneType>> LastZoneStateMap;
+  TSet<ASimpliCityZoneBase*> oldZones;
 };
