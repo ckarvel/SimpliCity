@@ -16,10 +16,10 @@ ASimpliCityBuildingBase::ASimpliCityBuildingBase() {
 }
 
 void ASimpliCityBuildingBase::SetNewLocation(FVector Location) {
-  auto* ObjectMgr = SCFL::GetObjectManager(this);
-  auto Neighbors = ObjectMgr->GetNeighborsOfType(Location, ESimpliCityObjectType::Road);
+  ASimpliCityObjectBase::SetNewLocation(Location);
+  auto Neighbors = ObjectManager->GetNeighborsOfType(Location, ESimpliCityObjectType::Road);
   // if location is occupied set material red for error
-  if (ObjectMgr->DoesObjectExistHere(Location) || Neighbors.Num() <= 0) {
+  if (ObjectManager->DoesObjectExistHere(Location) || Neighbors.Num() <= 0) {
     return SetNewMaterial(ErrorMaterial);
   }
 

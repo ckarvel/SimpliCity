@@ -150,3 +150,11 @@ void ASimpliCityBaseManager::DestroyObjects(const TArray<ASimpliCityObjectBase*>
     DestroyObject(Object);
   }
 }
+
+ASimpliCityObjectBase* ASimpliCityBaseManager::GetTemporaryObjectAtLocation(FVector Location) {
+  ASimpliCityObjectBase* const* TempObject = Temporary_ObjectToLocation.Find(Location);
+  if (TempObject != nullptr) {
+    return *TempObject;
+  }
+  return nullptr;
+}

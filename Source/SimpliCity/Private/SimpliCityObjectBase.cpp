@@ -4,6 +4,7 @@
 
 #include "SimpliCityFunctionLibrary.h"
 #include "SimpliCityObjectManager.h"
+#include "GridManager.h"
 
 using SCFL = USimpliCityFunctionLibrary;
 
@@ -16,9 +17,11 @@ ASimpliCityObjectBase::ASimpliCityObjectBase() {
 
 void ASimpliCityObjectBase::BeginPlay() {
   Super::BeginPlay();
+  GridManager = SCFL::GetGridManager(this);
+  ObjectManager = SCFL::GetObjectManager(this);
 }
 
-// Called when the game starts or when spawned
+
 void ASimpliCityObjectBase::SetNewMaterial(UMaterialInstance* Material) {
   if (StaticMeshComponent == nullptr || Material == nullptr) {
     TRACE_ERROR_PRINTF(LogSimpliCity, "ERROR!!! StaticMeshComponent or Material == nullptr");
@@ -29,9 +32,4 @@ void ASimpliCityObjectBase::SetNewMaterial(UMaterialInstance* Material) {
 
 void ASimpliCityObjectBase::SetNewLocation(FVector Location) {
   SetActorLocation(Location);
-}
-
-// Called when object is placed down
-void ASimpliCityObjectBase::OnObjectPlaced() {
-  // implement
 }

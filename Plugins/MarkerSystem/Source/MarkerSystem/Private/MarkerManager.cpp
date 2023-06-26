@@ -187,7 +187,15 @@ void AMarkerManager::AddNeighborConnections(UObject* ObjectA, UObject* ObjectB, 
   BMarkers = MarkerPathObjectB->GetClosestMarkerPair(ObjectA, isPedestrian);
 
   for (auto MarkerA : AMarkers) {
+    if (MarkerA == nullptr) {
+      TRACE_ERROR_PRINTF(LogMarkerSystem, "ERROR!! MarkerA == nullptr!");
+      continue;
+    }
     UMarkerComponent* MarkerB = GetClosestMarkerTo(MarkerA->GetComponentLocation(), BMarkers);
+    if (MarkerB == nullptr) {
+      TRACE_ERROR_PRINTF(LogMarkerSystem, "ERROR!! MarkerB == nullptr!");
+      continue;
+    }
     // verify lane dirs are equal
     if (MarkerA->laneDirection != MarkerB->laneDirection) {
       FVector AVect = MarkerPathObjectA->GetVehMarkerNormDirectionVector(MarkerA);

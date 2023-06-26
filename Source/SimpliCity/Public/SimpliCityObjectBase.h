@@ -21,7 +21,8 @@ public:
 
 protected:
   virtual void BeginPlay() override;
-
+  class AGridManager* GridManager;
+  class ASimpliCityObjectManager* ObjectManager;
   UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityObjectBase")
   class UMaterialInstance* ErrorMaterial; // incorrect placement, usually red
 
@@ -29,7 +30,7 @@ protected:
   class UMaterialInstance* GoodMaterial; // correct placement, usually green
 
 public:
-  UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SimpliCityObjectBase")
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityObjectBase")
   class UStaticMeshComponent* StaticMeshComponent;
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityObjectBase")
@@ -45,7 +46,8 @@ public:
   virtual void SetNewLocation(FVector Location);
 
   // this object is placed permanently on the grid, start any necessary component behaviors
-  virtual void OnObjectPlaced();
+  UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "SimpliCityObjectBase")
+  void OnObjectPlaced();
 
 protected:
   UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "SimpliCityObjectBase")

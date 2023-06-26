@@ -19,10 +19,9 @@ void USimpliCityRoadFixerComponent::BeginPlay() {
 }
 
 void USimpliCityRoadFixerComponent::GetRoadTypeAndRotationAtLocation(FVector location,
+                                                                     TArray<ASimpliCityObjectBase*> neighborRoads,
                                                                      TSubclassOf<ASimpliCityRoadBase>& OutRoadClass,
                                                                      FRotator& OutRotation) {
-  TArray<ASimpliCityObjectBase*> neighborRoads =
-      USimpliCityFunctionLibrary::GetObjectManager(this)->GetAllNeighbors(location);
   OutRotation = FRotator(0, 0, 0); // zero it out just in case
   int roadCount = 0;
   for (auto road : neighborRoads) {

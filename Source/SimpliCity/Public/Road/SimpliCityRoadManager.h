@@ -38,9 +38,9 @@ private:
   void ConvertAllTemporaryToPermanent();
   void DestroyTemporaryRoadsAtLocations(const TArray<FVector> Locations);
   void FixRoad(ASimpliCityObjectBase* Road);
-  void SwapRoads(ASimpliCityObjectBase* OldRoad, ASimpliCityObjectBase* NewRoad);
   void FixNeighborsAtLocation(FVector Location);
   void FixRoadAndNeighbors(ASimpliCityObjectBase* Road);
+  TArray<ASimpliCityObjectBase*> GetTempAndPermNeighbors(FVector Location) const;
 
 public:
   UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")

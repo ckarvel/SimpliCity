@@ -6,6 +6,7 @@
 #include "CoreMinimal.h"
 #include "SimpliCityRoadFixerComponent.generated.h"
 
+class ASimpliCityObjectBase;
 class ASimpliCityRoadBase;
 UCLASS(Blueprintable, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class SIMPLICITY_API USimpliCityRoadFixerComponent : public UActorComponent {
@@ -36,8 +37,10 @@ public:
   UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadFixer")
   bool IsRoad(class ASimpliCityObjectBase* obj);
   UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadFixer")
-  void GetRoadTypeAndRotationAtLocation(
-    FVector location, TSubclassOf<class ASimpliCityRoadBase>& OutRoadClass, FRotator& OutRotation);
+  void GetRoadTypeAndRotationAtLocation(FVector location,
+                                        TArray<ASimpliCityObjectBase*> neighborRoads,
+                                        TSubclassOf<class ASimpliCityRoadBase>& OutRoadClass,
+                                        FRotator& OutRotation);
 
 private:
   void Set4WayRoadInfo(FVector location, TArray<ASimpliCityObjectBase*> neighbors,

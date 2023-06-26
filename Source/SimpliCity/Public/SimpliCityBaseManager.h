@@ -20,6 +20,8 @@ public:
   // Sets default values for this actor's properties
   ASimpliCityBaseManager();
 
+  ASimpliCityObjectBase* GetTemporaryObjectAtLocation(FVector Location);
+
 protected:
   virtual void Tick(float DeltaTime) override;
   // Called when the game starts or when spawned

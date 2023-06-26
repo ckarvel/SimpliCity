@@ -86,10 +86,14 @@ void ASimpliCityRoadManager::CancelBuilding() {
 
 //////////////////////////////////////////////////////////////////////////
 void ASimpliCityRoadManager::CreateTemporaryRoadsAtLocations(const TArray<FVector>& Locations) {
-  for (auto const& Location : Locations) {
+  int index = 0;
+  int length = Locations.Num();
+  for (int i = 0; i < length;  i++) {
+    auto Location = Locations[i];
     ASimpliCityObjectBase* TempRoad = SpawnObjectOfType(DefaultBlueprintClass, Location, FRotator(), BuildIcon);
+    ASimpliCityRoadBase* Road = Cast<ASimpliCityRoadBase>(TempRoad);
     // todo: a shadow grid so this road isn't valid until its placed
-    ObjectManager->AddObjectToGrid(TempRoad);
+    //ObjectManager->AddObjectToGrid(TempRoad);
     Temporary_ObjectToLocation.Add(Location, TempRoad);
     FixRoadAndNeighbors(TempRoad);
   }
@@ -97,9 +101,17 @@ void ASimpliCityRoadManager::CreateTemporaryRoadsAtLocations(const TArray<FVecto
 
 //////////////////////////////////////////////////////////////////////////
 void ASimpliCityRoadManager::ConvertAllTemporaryToPermanent() {
-  TArray<ASimpliCityObjectBase*> RoadValues;
-  Temporary_ObjectToLocation.GenerateValueArray(RoadValues);
-  PermanentObjectList.Append(RoadValues);
+  for (auto Road : Temporary_ObjectToLocation) {
+    auto RoadLoc = Road.Key;
+    auto NewRoad = Road.Value;
+    if (auto OldRoad = ObjectManager->GetObjectAtLocation(RoadLoc)) {
+      PermanentObjectList.Remove(OldRoad);
+      ObjectManager->RemoveObjectFromGrid(OldRoad);
+    }
+    PermanentObjectList.Add(NewRoad);
+    ObjectManager->AddObjectToGrid(NewRoad);
+    NewRoad->OnObjectPlaced();
+  }
   Temporary_ObjectToLocation.Empty();
 }
 
@@ -107,7 +119,7 @@ void ASimpliCityRoadManager::ConvertAllTemporaryToPermanent() {
 void ASimpliCityRoadManager::DestroyTemporaryRoadsAtLocations(const TArray<FVector> Locations) {
   for (auto const& Location : Locations) {
     ASimpliCityObjectBase* RoadToDestroy = Temporary_ObjectToLocation.FindAndRemoveChecked(Location);
-    ObjectManager->RemoveObjectFromGrid(RoadToDestroy);
+    RoadToDestroy->Destroy();
     FixNeighborsAtLocation(Location);
   }
 }
@@ -124,18 +136,28 @@ TArray<FVector> ASimpliCityRoadManager::GetNeighbors(FVector Location) const {
 }
 
 //////////////////////////////////////////////////////////////////////////
-// Recalculate Neighbors and Replace Static Mesh
-//////////////////////////////////////////////////////////////////////////
-void ASimpliCityRoadManager::SwapRoads(ASimpliCityObjectBase* OldRoad, ASimpliCityObjectBase* NewRoad) {
-  // replace in either the permanent or temporary road list (depending on which contains it)
-  if (PermanentObjectList.Contains(OldRoad)) {
-    PermanentObjectList.Remove(OldRoad);
-    PermanentObjectList.Add(NewRoad);
-  } else {
-    Temporary_ObjectToLocation.Add(OldRoad->GetActorLocation(), NewRoad);
+TArray<ASimpliCityObjectBase*> ASimpliCityRoadManager::GetTempAndPermNeighbors(FVector Location) const {
+  // get all perma neighbors, so 4 in total even if some are nullptr
+  TArray<ASimpliCityObjectBase*> neighborRoads = ObjectManager->GetAllNeighbors(Location);
+  int length = neighborRoads.Num();
+
+  // perma neighbor list is sorted so we use the index to find the location
+  int locIndex = GridManager->LocationToIndex(Location);
+  TArray<int> OutIndexes;
+  GridManager->GetAllNeighborIndexes(locIndex, OutIndexes);
+
+  for (int i = 0; i < length; i++) {
+    // check if a temp neighbor exists, if so replace (temp has priority as neighbor here)
+    int index = OutIndexes[i];
+    if (GridManager->IsIndexValid(index) == false)
+      continue;
+    // store the temporary object at this spot
+    FVector indexLoc = GridManager->IndexToLocation(index, true);
+    if (auto temproad = Temporary_ObjectToLocation.Find(indexLoc)) {
+      neighborRoads[i] = *temproad;
+    }
   }
-  // replace in the master object list
-  ObjectManager->ReplaceObjectInGrid(OldRoad, NewRoad);
+  return neighborRoads;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -144,26 +166,43 @@ void ASimpliCityRoadManager::FixRoad(ASimpliCityObjectBase* Road) {
     TRACE_ERROR_PRINTF(LogSimpliCity, "ERROR!! RoadFixerComponent == nullptr");
     return;
   }
-  TSubclassOf<ASimpliCityRoadBase> SpawnRoadClass;
+  if (Road == nullptr || Road->Type() != ESimpliCityObjectType::Road)
+    return;
+
+  TSubclassOf<ASimpliCityRoadBase> OutRoadClass;
   FVector SpawnLocation = Road->GetActorLocation();
-  FRotator SpawnRotation;
-  RoadFixerComponent->GetRoadTypeAndRotationAtLocation(SpawnLocation, SpawnRoadClass, SpawnRotation);
-  // ASimpliCityRoadBase* FixedRoad = SpawnRoad(SpawnRoadClass, Road->GetActorLocation(), SpawnRotation, Road);
-  ASimpliCityObjectBase* FixedRoad = SpawnObjectOfType(SpawnRoadClass, SpawnLocation, SpawnRotation, Road->BuildIcon);
+  FRotator OutRotation;
+
+  TArray<ASimpliCityObjectBase*> neighborRoads = GetTempAndPermNeighbors(SpawnLocation);
+  RoadFixerComponent->GetRoadTypeAndRotationAtLocation(SpawnLocation, neighborRoads, OutRoadClass, OutRotation);
+
+  // if this road has same class and rotation...
+  if (Road->GetClass() == OutRoadClass && Road->GetActorRotation().Equals(OutRotation)) {
+    TRACE_LOG_PRINTF(LogSimpliCity, "No need to fix road");
+    return;
+  }
+
+  ASimpliCityObjectBase* FixedRoad = SpawnObjectOfType(OutRoadClass, SpawnLocation, OutRotation, Road->BuildIcon);
 
 #if WITH_EDITOR
   FixedRoad->SetFolderPath("Roads");
 #endif
 
-  SwapRoads(Road, FixedRoad);
+  // if old road is temporary, delete it
+  if (auto TempRoad = Temporary_ObjectToLocation.Find(SpawnLocation)) {
+    // There might be a permanent and temporary road on this tile. (grid vs shadow grid)
+    // So remove TempRoad not Road. Road may be permanent
+    (*TempRoad)->Destroy();
+  }
+  // else don't delete it, temp will just overlay the perm one
+  Temporary_ObjectToLocation.Add(SpawnLocation, FixedRoad);
 }
 
 //////////////////////////////////////////////////////////////////////////
 void ASimpliCityRoadManager::FixNeighborsAtLocation(FVector Location) {
-  TArray<ASimpliCityObjectBase*> neighborRoads =
-      ObjectManager->GetNeighborsOfType(Location, ESimpliCityObjectType::Road);
+  TArray<ASimpliCityObjectBase*> neighborRoads = GetTempAndPermNeighbors(Location);
   for (auto road : neighborRoads) {
-    FixRoad(Cast<ASimpliCityRoadBase>(road));
+    FixRoad(road);
   }
 }
 
@@ -177,17 +216,22 @@ void ASimpliCityRoadManager::FixRoadAndNeighbors(ASimpliCityObjectBase* Road) {
 //////////////////////////////////////////////////////////////////////////
 void ASimpliCityRoadManager::DestroyObjects(const TArray<ASimpliCityObjectBase*>& ObjectList) {
   for (auto Object : ObjectList) {
-    if (Object == nullptr)
-      continue;
-    if (ASimpliCityRoadBase* Road = Cast<ASimpliCityRoadBase>(Object)) {
-      TArray<ASimpliCityObjectBase*> neighborRoads =
-          ObjectManager->GetNeighborsOfType(Road->GetActorLocation(), ESimpliCityObjectType::Road);
-      ASimpliCityBaseManager::DestroyObject(Object);
-      for (auto nroad : neighborRoads) {
-        // if neighbor is not in the removal list, fix it
-        if (ObjectList.Contains(nroad) == false)
-          FixRoad(Cast<ASimpliCityRoadBase>(nroad));
-      }
+    if (Object == nullptr || Object->Type() != ESimpliCityObjectType::Road)
+      continue; // if null or not a road, ignore
+
+    FVector ObjectLocation = Object->GetActorLocation();
+    TArray<ASimpliCityObjectBase*> neighborRoads = GetTempAndPermNeighbors(ObjectLocation);
+    if (PermanentObjectList.Contains(Object)) {
+      ASimpliCityBaseManager::DestroyObject(Object); // destroys and removes from grid/list
+    } else {
+      // destroy and remove from temp list
+      Temporary_ObjectToLocation.Remove(ObjectLocation);
+      Object->Destroy();
+    }
+    for (auto nroad : neighborRoads) {
+      // if neighbor is not in the removal list, fix it
+      if (ObjectList.Contains(nroad) == false)
+        FixRoad(nroad);
     }
   }
 }
