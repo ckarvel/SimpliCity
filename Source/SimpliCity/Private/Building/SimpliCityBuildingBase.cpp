@@ -18,10 +18,10 @@ ASimpliCityBuildingBase::ASimpliCityBuildingBase() {
 void ASimpliCityBuildingBase::SetNewLocation(FVector Location) {
   ASimpliCityObjectBase::SetNewLocation(Location);
   auto Neighbors = ObjectManager->GetNeighborsOfType(Location, ESimpliCityObjectType::Road);
-  // if location is occupied set material red for error
-  if (ObjectManager->DoesObjectExistHere(Location) || Neighbors.Num() <= 0) {
-    return SetNewMaterial(ErrorMaterial);
+  if (Neighbors.Num() > 0) {
+    RoadConnection = Cast<ASimpliCityRoadBase>(Neighbors[0]);
+  } else {
+    bIsValidPlacement = false;
   }
-
-  RoadConnection = Cast<ASimpliCityRoadBase>(Neighbors[0]);
+  OnNewLocation(bIsValidPlacement);
 }

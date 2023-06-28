@@ -67,6 +67,7 @@ bool ASimpliCityBuildingManager::UpdateBuilding(FVector Location) {
 void ASimpliCityBuildingManager::FinishBuilding() {
   ASimpliCityBaseManager::FinishBuilding();
   PermanentObjectList.Add(ActiveObject);
+  ActiveObject->OnObjectPlaced();
   ActiveObject = nullptr;
 }
 
@@ -77,31 +78,6 @@ void ASimpliCityBuildingManager::CancelBuilding() {
     ActiveObject->Destroy();
     ActiveObject = nullptr;
   }
-}
-
-//////////////////////////////////////////////////////////////////////////
-bool ASimpliCityBuildingManager::PlacePermanentBuilding(ASimpliCityBuildingBase* Building) {
-  if (Building == nullptr)
-    return false;
-  if (ObjectManager->DoesObjectExistHere(Building->GetActorLocation())) {
-    return false;
-  }
-  ObjectManager->AddObjectToGrid(Building);
-  AddBuildingToList(Building->GetBuildingType(), Building);
-  return true;
-}
-
-//////////////////////////////////////////////////////////////////////////
-ASimpliCityObjectBase* ASimpliCityBuildingManager::PlacePermanentObject(TSubclassOf<ASimpliCityObjectBase> ObjectClass,
-                                                                        const FVector Location,
-                                                                        const FRotator Rotation) {
-  ASimpliCityObjectBase* Object = ASimpliCityBaseManager::PlacePermanentObject(ObjectClass, Location, Rotation);
-  if (Object == nullptr) {
-    return Object;
-  }
-  ASimpliCityBuildingBase* Building = Cast<ASimpliCityBuildingBase>(Object);
-  AddBuildingToList(Building->GetBuildingType(), Building);
-  return Object;
 }
 
 void ASimpliCityBuildingManager::DestroyObjects(const TArray<ASimpliCityObjectBase*>& ObjectList) {

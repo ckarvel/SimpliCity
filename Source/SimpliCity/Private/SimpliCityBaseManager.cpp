@@ -84,59 +84,6 @@ void ASimpliCityBaseManager::CancelBuilding() {
 }
 
 //////////////////////////////////////////////////////////////////////////
-USimpliObjectBase* ASimpliCityBaseManager::CreateObject(TEnumAsByte<ESimpliCityObjectType> ObjectType,
-                                                        const FVector Location) {
-  USimpliObjectBase* Object = nullptr;
-  switch (ObjectType) {
-  case ESimpliCityObjectType::Road:
-    Object = NewObject<USimpliRoadBase>(this, USimpliRoadBase::StaticClass());
-    break;
-  case ESimpliCityObjectType::Building:
-    Object = NewObject<USimpliBuildingBase>(this, USimpliBuildingBase::StaticClass());
-    break;
-  case ESimpliCityObjectType::Zone:
-    Object = NewObject<USimpliZoneBase>(this, USimpliZoneBase::StaticClass());
-    break;
-
-    if (Object) {
-      Object->SpawnActor(Location);
-    }
-  }
-  return Object;
-}
-
-//////////////////////////////////////////////////////////////////////////
-ASimpliCityObjectBase* ASimpliCityBaseManager::PlaceObject(TSubclassOf<ASimpliCityObjectBase> ObjectClass,
-                                                           const FVector Location, const FRotator Rotation) {
-  ASimpliCityObjectBase* Object = nullptr;
-  if (SCFL::GetObjectManager(this)->DoesObjectExistHere(Location)) {
-    return Object;
-  }
-  SCFL::GetObjectManager(this)->AddObjectToGrid(Object);
-  return Object;
-}
-
-//////////////////////////////////////////////////////////////////////////
-ASimpliCityObjectBase* ASimpliCityBaseManager::PlaceTemporaryObject(TSubclassOf<ASimpliCityObjectBase> ObjectClass,
-                                                                    const FVector Location, const FRotator Rotation) {
-  ASimpliCityObjectBase* Object = PlaceObject(ObjectClass, Location, Rotation);
-  if (Object) {
-    Temporary_ObjectToLocation.Add(Location, Object);
-  }
-  return Object;
-}
-
-//////////////////////////////////////////////////////////////////////////
-ASimpliCityObjectBase* ASimpliCityBaseManager::PlacePermanentObject(TSubclassOf<ASimpliCityObjectBase> ObjectClass,
-                                                                    const FVector Location, const FRotator Rotation) {
-  ASimpliCityObjectBase* Object = PlaceObject(ObjectClass, Location, Rotation);
-  if (Object) {
-    PermanentObjectList.Add(Object);
-  }
-  return Object;
-}
-
-//////////////////////////////////////////////////////////////////////////
 void ASimpliCityBaseManager::DestroyObject(ASimpliCityObjectBase* Object) {
   PermanentObjectList.Remove(Object);
   SCFL::GetObjectManager(this)->RemoveObjectFromGrid(Object);

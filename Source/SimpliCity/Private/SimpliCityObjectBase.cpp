@@ -9,7 +9,8 @@
 using SCFL = USimpliCityFunctionLibrary;
 
 // Sets default values
-ASimpliCityObjectBase::ASimpliCityObjectBase() {
+ASimpliCityObjectBase::ASimpliCityObjectBase()
+    : bIsValidPlacement(false) {
   PrimaryActorTick.bCanEverTick = false;
   StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ObjectMesh"));
   SetRootComponent(StaticMeshComponent);
@@ -21,15 +22,7 @@ void ASimpliCityObjectBase::BeginPlay() {
   ObjectManager = SCFL::GetObjectManager(this);
 }
 
-
-void ASimpliCityObjectBase::SetNewMaterial(UMaterialInstance* Material) {
-  if (StaticMeshComponent == nullptr || Material == nullptr) {
-    TRACE_ERROR_PRINTF(LogSimpliCity, "ERROR!!! StaticMeshComponent or Material == nullptr");
-    return;
-  }
-  StaticMeshComponent->SetMaterial(0, Material);
-}
-
 void ASimpliCityObjectBase::SetNewLocation(FVector Location) {
   SetActorLocation(Location);
+  bIsValidPlacement = ObjectManager->DoesObjectExistHere(Location) == false;
 }

@@ -18,8 +18,6 @@ class SIMPLICITY_API ASimpliCityRoadBase : public ASimpliCityObjectBase, public 
 public:
   ASimpliCityRoadBase();
 
-  virtual void SetNewLocation(FVector Location) override;
-
   ///////////////////////////////////// UMarkerPathInterface /////////////////////////////////////
   UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadBase")
   TArray<UMarkerComponent*> GetClosestMarkerPair(UObject* NeighborRoad, bool IsPedestrian) const override;

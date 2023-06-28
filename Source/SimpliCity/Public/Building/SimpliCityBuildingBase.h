@@ -25,6 +25,9 @@ public:
 
   virtual void SetNewLocation(FVector Location) override;
 
+  UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "SimpliCityBuildingBase")
+  void OnNewLocation(bool IsValid);
+
   UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingBase")
   ASimpliCityRoadBase *GetRoadConnection() const { return RoadConnection; }
 

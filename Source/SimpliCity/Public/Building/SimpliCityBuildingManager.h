@@ -35,11 +35,6 @@ public:
   virtual void Disable() override;
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingManager")
-  bool PlacePermanentBuilding(ASimpliCityBuildingBase* Building);
-  virtual ASimpliCityObjectBase* PlacePermanentObject(TSubclassOf<ASimpliCityObjectBase> ObjectClass,
-                                                      const FVector Location, const FRotator Rotation) override;
-
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingManager")
   virtual void DestroyObjects(const TArray<ASimpliCityObjectBase*>& ObjectList) override;
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingManager")

@@ -41,13 +41,13 @@ public:
   UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SimpliCityObjectBase")
   UTexture2D* BuildIcon;
 
-  virtual void SetNewMaterial(UMaterialInstance* Material);
-
   virtual void SetNewLocation(FVector Location);
 
   // this object is placed permanently on the grid, start any necessary component behaviors
   UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "SimpliCityObjectBase")
   void OnObjectPlaced();
+
+  bool bIsValidPlacement;
 
 protected:
   UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "SimpliCityObjectBase")

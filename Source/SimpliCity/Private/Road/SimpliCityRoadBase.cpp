@@ -21,31 +21,6 @@ void ASimpliCityRoadBase::BeginPlay() {
   RoadManager = SCFL::GetRoadManager(this);
 }
 
-void ASimpliCityRoadBase::SetNewLocation(FVector Location) {
-  // Get permanent road neighbors
-  TArray<ASimpliCityObjectBase*> Neighbors = ObjectManager->GetNeighborsOfType(Location, ESimpliCityObjectType::Road);
-
-  TArray<ASimpliCityObjectBase*> TempNeighbors;
-  // Get temporary road neighbors
-  TArray<FVector> NeighborLocs = GridManager->GetNeighbors(Location);
-  for (auto Loc : NeighborLocs) {
-    auto Object = RoadManager->GetTemporaryObjectAtLocation(Loc);
-    if (Object != nullptr) {
-      TempNeighbors.Add(Object);
-    }
-  }
-
-  int NumRoads = Neighbors.Num() + TempNeighbors.Num();
-  
-  // if location is occupied set material red for error
-  if (ObjectManager->DoesObjectExistHere(Location) || Neighbors.Num() <= 0) {
-    return SetNewMaterial(ErrorMaterial);
-  }
-
-  
-}
-
-
 // only for use with vehicle markers
 // won't work with deadend/straight
 FVector ASimpliCityRoadBase::GetVehMarkerNormDirectionVector(UMarkerComponent* VMarker) const {

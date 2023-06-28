@@ -28,19 +28,21 @@ protected:
   virtual void BeginPlay() override;
   AGridManager* GridManager;
   ASimpliCityObjectManager* ObjectManager;
-  UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ASimpliCityBaseManager")
+  UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "SimpliCityBaseManager")
   bool BuildEnabled;
-  UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ASimpliCityBaseManager")
+  UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "SimpliCityBaseManager")
   bool CurrentlyBuilding;
-  UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ASimpliCityBaseManager")
+  UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "SimpliCityBaseManager")
   TArray<ASimpliCityObjectBase*> PermanentObjectList;
 
   UTexture2D* BuildIcon;
   FVector StartLocation;
   FVector LastLocation;
+
+  UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "SimpliCityBaseManager")
   TMap<FVector, ASimpliCityObjectBase*> Temporary_ObjectToLocation;
 
-  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ASimpliCityBaseManager")
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityBaseManager")
   TSubclassOf<ASimpliCityObjectBase> DefaultBlueprintClass;
 
   virtual void StartBuilding();
@@ -49,22 +51,11 @@ protected:
   virtual void FinishBuilding();
   virtual void CancelBuilding();
 
-  UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "ASimpliCityBaseManager")
+  UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "SimpliCityBaseManager")
   ASimpliCityObjectBase* SpawnObjectOfType(TSubclassOf<ASimpliCityObjectBase> Class, const FVector Location,
                                            const FRotator Rotation, UTexture2D* Icon);
 
 public:
-  virtual USimpliObjectBase* CreateObject(TEnumAsByte<ESimpliCityObjectType> ObjectType, const FVector Location);
-
-  virtual ASimpliCityObjectBase* PlaceObject(TSubclassOf<ASimpliCityObjectBase> ObjectClass, const FVector Location,
-                                             const FRotator Rotation);
-
-  virtual ASimpliCityObjectBase* PlaceTemporaryObject(TSubclassOf<ASimpliCityObjectBase> ObjectClass,
-                                                      const FVector Location, const FRotator Rotation);
-
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityBaseManager")
-  virtual ASimpliCityObjectBase* PlacePermanentObject(TSubclassOf<ASimpliCityObjectBase> ObjectClass,
-                                                      const FVector Location, const FRotator Rotation);
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityBaseManager")
   virtual void DestroyObject(ASimpliCityObjectBase* Object);
