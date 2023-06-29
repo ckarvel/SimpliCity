@@ -9,6 +9,7 @@
 #include "Zone/SimpliCityZoneCell.h"
 #include "Building/SimpliCityBuildingBase.h"
 
+
 using SCFL = USimpliCityFunctionLibrary;
 
 ASimpliCityZoneManager::ASimpliCityZoneManager() {
@@ -25,11 +26,14 @@ void ASimpliCityZoneManager::BeginPlay() {
 void ASimpliCityZoneManager::Enable(UTexture2D* NewIcon) {
   ASimpliCityBaseManager::Enable(NewIcon);
   GetBuildType(NewIcon, BuildType);
+  GetWorldTimerManager().ClearTimer(SpawnTimerHandle);
 }
 
 //////////////////////////////////////////////////////////////////////////
 void ASimpliCityZoneManager::Disable() {
   ASimpliCityBaseManager::Disable();
+  GetWorld()->GetTimerManager().SetTimer(SpawnTimerHandle, this, &ASimpliCityZoneManager::TrySpawningBuildings, 5,
+                                         false);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -206,6 +210,7 @@ void ASimpliCityZoneManager::RemoveBuildingFromList(ASimpliCityBuildingBase* Bui
   BuildingToZoneMap.Remove(Building);
 }
 
+//////////////////////////////////////////////////////////////////////////
 TArray<ASimpliCityZoneBase*> ASimpliCityZoneManager::GetEmptyZones() {
   TArray<ASimpliCityZoneBase*> EmptyZones;
   for (auto Zone : ZoneGrid) {
@@ -215,4 +220,21 @@ TArray<ASimpliCityZoneBase*> ASimpliCityZoneManager::GetEmptyZones() {
     }
   }
   return EmptyZones;
+}
+
+//////////////////////////////////////////////////////////////////////////
+void ASimpliCityZoneManager::TrySpawningBuildings() {
+  TArray<ASimpliCityZoneBase*> EmptyZones = GetEmptyZones();
+  for (const auto& Zone : EmptyZones) {
+    // near a road?
+    TArray<ASimpliCityObjectBase*> Roads = ObjectManager->GetNeighborsOfType(Zone->GetActorLocation(),
+                                                                       ESimpliCityObjectType::Road);
+    if (Roads.Num() > 0) {
+      // valid
+      ASimpliCityObjectBase* BuildingObject = SpawnObjectOfType(DefaultBlueprintClass, FVector(0, 0, -1000), FRotator(0, 0, 0), Zone->BuildIcon);
+      BuildingObject->SetNewLocation(Zone->GetActorLocation());
+      if (BuildingObject != nullptr)
+        break; // let's continue in the next tick
+    }
+  }
 }

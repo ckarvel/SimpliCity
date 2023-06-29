@@ -3,6 +3,8 @@
 #include "Building/SimpliCityBuildingBase.h"
 
 #include "Components/StaticMeshComponent.h"
+#include "Kismet/KismetMathLibrary.h"
+
 #include "MarkerComponent.h"
 #include "MarkerManager.h"
 #include "Road/SimpliCityRoadBase.h"
@@ -11,7 +13,8 @@
 
 using SCFL = USimpliCityFunctionLibrary;
 
-ASimpliCityBuildingBase::ASimpliCityBuildingBase() {
+ASimpliCityBuildingBase::ASimpliCityBuildingBase()
+    : YawOffset(-90) {
   ObjectType = ESimpliCityObjectType::Building;
 }
 
@@ -20,6 +23,9 @@ void ASimpliCityBuildingBase::SetNewLocation(FVector Location) {
   auto Neighbors = ObjectManager->GetNeighborsOfType(Location, ESimpliCityObjectType::Road);
   if (Neighbors.Num() > 0) {
     RoadConnection = Cast<ASimpliCityRoadBase>(Neighbors[0]);
+    FRotator Rotation = UKismetMathLibrary::FindLookAtRotation(Location, RoadConnection->GetActorLocation());
+    Rotation.Yaw += YawOffset;
+    SetActorRotation(Rotation);
   } else {
     bIsValidPlacement = false;
   }

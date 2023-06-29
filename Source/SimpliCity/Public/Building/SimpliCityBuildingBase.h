@@ -19,6 +19,8 @@ protected:
   UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityBuildingBase", Meta = (ExposeOnSpawn = true))
   TEnumAsByte<ESimpliCityBuildingType> BuildingType;
 
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityBuildingBase")
+  float YawOffset;
 
 public:
   ASimpliCityBuildingBase();

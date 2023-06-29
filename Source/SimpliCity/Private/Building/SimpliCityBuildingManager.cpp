@@ -65,10 +65,12 @@ bool ASimpliCityBuildingManager::UpdateBuilding(FVector Location) {
 
 //////////////////////////////////////////////////////////////////////////
 void ASimpliCityBuildingManager::FinishBuilding() {
-  ASimpliCityBaseManager::FinishBuilding();
-  PermanentObjectList.Add(ActiveObject);
-  ActiveObject->OnObjectPlaced();
-  ActiveObject = nullptr;
+  if (ActiveObject->bIsValidPlacement) {
+    ASimpliCityBaseManager::FinishBuilding();
+    PermanentObjectList.Add(ActiveObject);
+    ActiveObject->OnObjectPlaced();
+    ActiveObject = nullptr;
+  }
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -40,6 +40,7 @@ public:
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneManager")
   TArray<ASimpliCityZoneBase*> GetEmptyZones();
+  void TrySpawningBuildings();
 
 protected:
   virtual void BeginPlay() override;
@@ -55,6 +56,8 @@ protected:
 
   UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "SimpliCityZoneManager")
   void GetBuildType(UTexture2D* Icon, TEnumAsByte<ESimpliCityZoneType>& OutType);
+
+  FTimerHandle SpawnTimerHandle;
 
 private:
   void InitializeCellZones();
@@ -86,4 +89,5 @@ private:
   TEnumAsByte<ESimpliCityZoneType> BuildType;
   TMap<ASimpliCityZoneBase*, TEnumAsByte<ESimpliCityZoneType>> LastZoneStateMap;
   TSet<ASimpliCityZoneBase*> oldZones;
+
 };
