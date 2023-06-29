@@ -25,15 +25,22 @@ void ASimpliCityZoneManager::BeginPlay() {
 //////////////////////////////////////////////////////////////////////////
 void ASimpliCityZoneManager::Enable(UTexture2D* NewIcon) {
   ASimpliCityBaseManager::Enable(NewIcon);
-  GetBuildType(NewIcon, BuildType);
+
+  if (BuildIconToType.Contains(NewIcon) == false) {
+    TEnumAsByte<ESimpliCityZoneType> BuildType;
+    GetBuildType(NewIcon, BuildType);
+    BuildIconToType.Emplace(NewIcon, BuildType);
+  }
+
   GetWorldTimerManager().ClearTimer(SpawnTimerHandle);
 }
 
 //////////////////////////////////////////////////////////////////////////
 void ASimpliCityZoneManager::Disable() {
   ASimpliCityBaseManager::Disable();
-  GetWorld()->GetTimerManager().SetTimer(SpawnTimerHandle, this, &ASimpliCityZoneManager::TrySpawningBuildings, 5,
-                                         false);
+  GetWorldTimerManager().SetTimer(SpawnTimerHandle, this,
+                                  &ASimpliCityZoneManager::TrySpawningBuildings,
+                                  2, true);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -72,7 +79,8 @@ bool ASimpliCityZoneManager::UpdateBuilding(FVector Location) {
   TSet<ASimpliCityZoneBase*> saveCells = newCells.Difference(oldZones);
   for (auto const& cell : saveCells.Array()) {
     SaveLastCellState(cell);
-    cell->SetZoneType(BuildType, GetTypeMaterial(BuildType));
+    TEnumAsByte<ESimpliCityZoneType> BuildType = BuildIconToType[BuildIcon];
+    cell->SetZoneType(BuildIcon, BuildType, GetTypeMaterial(BuildType));
   }
   oldZones = newCells;
   return true;
@@ -85,8 +93,12 @@ void ASimpliCityZoneManager::FinishBuilding() {
   ResetCellStates();
   for (auto Zone : LastZoneStateMap) {
     // if this zone's type differs from previous
-    auto CurrentType = Zone.Key->GetZoneType();
-    auto LastType = Zone.Value;
+    TEnumAsByte<ESimpliCityZoneType> CurrentType = Zone.Key->GetZoneType();
+    TEnumAsByte<ESimpliCityZoneType> LastType = ESimpliCityZoneType::ZoneType_None;
+    UTexture2D* Icon = Zone.Value;
+    if (Icon != nullptr) {
+      LastType = BuildIconToType[Icon];
+    }
     if (CurrentType != LastType) {
       TArray<ASimpliCityZoneBase*>& List = ZonesPerType.FindOrAdd(CurrentType);
       List.Add(Zone.Key);
@@ -126,7 +138,7 @@ void ASimpliCityZoneManager::InitializeCellZones() {
 // if selection is canceled, load last state for each cell (reload)
 bool ASimpliCityZoneManager::SaveLastCellState(ASimpliCityZoneBase* Cell) {
   if (LastZoneStateMap.Contains(Cell) == false) {
-    LastZoneStateMap.Add(Cell, Cell->GetZoneType());
+    LastZoneStateMap.Add(Cell, Cell->BuildIcon);
     return true;
   }
   return false;
@@ -135,8 +147,12 @@ bool ASimpliCityZoneManager::SaveLastCellState(ASimpliCityZoneBase* Cell) {
 //////////////////////////////////////////////////////////////////////////
 void ASimpliCityZoneManager::ReloadCellState(ASimpliCityZoneBase* Cell) {
   if (LastZoneStateMap.Contains(Cell) == true) {
-    auto Type = LastZoneStateMap[Cell];
-    Cell->SetZoneType(Type, GetTypeMaterial(Type));
+    TEnumAsByte<ESimpliCityZoneType> BuildType = ESimpliCityZoneType::ZoneType_None;
+    UTexture2D* Icon = LastZoneStateMap[Cell];
+    if (Icon != nullptr) {
+      BuildType = BuildIconToType[Icon];
+    }
+    Cell->SetZoneType(Icon, BuildType, GetTypeMaterial(BuildType));
     LastZoneStateMap.Remove(Cell);
   }
 }
@@ -144,8 +160,12 @@ void ASimpliCityZoneManager::ReloadCellState(ASimpliCityZoneBase* Cell) {
 //////////////////////////////////////////////////////////////////////////
 void ASimpliCityZoneManager::ReloadAllCellStates() {
   for (auto Cell : LastZoneStateMap) {
-    auto Type = Cell.Value;
-    Cell.Key->SetZoneType(Type, GetTypeMaterial(Type));
+    TEnumAsByte<ESimpliCityZoneType> BuildType = ESimpliCityZoneType::ZoneType_None;
+    UTexture2D* Icon = Cell.Value;
+    if (Icon != nullptr) {
+      BuildType = BuildIconToType[Icon];
+    }
+    Cell.Key->SetZoneType(Icon, BuildType, GetTypeMaterial(BuildType));
   }
   ResetCellStates();
 }
@@ -214,6 +234,9 @@ void ASimpliCityZoneManager::RemoveBuildingFromList(ASimpliCityBuildingBase* Bui
 TArray<ASimpliCityZoneBase*> ASimpliCityZoneManager::GetEmptyZones() {
   TArray<ASimpliCityZoneBase*> EmptyZones;
   for (auto Zone : ZoneGrid) {
+    // looking for zones that have a valid type and no building spawned
+    if (Zone->GetZoneType() == ESimpliCityZoneType::ZoneType_None)
+      continue;
     bool Exists = ObjectManager->DoesObjectExistHere(Zone->GetActorLocation());
     if (Exists == false) {
       EmptyZones.Add(Zone);
@@ -232,9 +255,15 @@ void ASimpliCityZoneManager::TrySpawningBuildings() {
     if (Roads.Num() > 0) {
       // valid
       ASimpliCityObjectBase* BuildingObject = SpawnObjectOfType(DefaultBlueprintClass, FVector(0, 0, -1000), FRotator(0, 0, 0), Zone->BuildIcon);
+
+#if WITH_EDITOR
+      BuildingObject->SetFolderPath("Buildings");
+#endif
+
       BuildingObject->SetNewLocation(Zone->GetActorLocation());
-      if (BuildingObject != nullptr)
-        break; // let's continue in the next tick
+      ObjectManager->AddObjectToGrid(BuildingObject);
+      BuildingObject->OnObjectPlaced();
+      break;
     }
   }
 }

@@ -13,8 +13,11 @@ ASimpliCityZoneBase::ASimpliCityZoneBase() {
   ObjectType = ESimpliCityObjectType::Zone;
 }
 
-void ASimpliCityZoneBase::SetZoneType(TEnumAsByte<ESimpliCityZoneType> Type,
+void ASimpliCityZoneBase::SetZoneType(UTexture2D* Icon,
+                                      TEnumAsByte<ESimpliCityZoneType> Type,
                                       UMaterialInstance* Material) {
+  BuildIcon = Icon;
+
   if (Type != ZoneType) {
     ZoneType = Type;
   }

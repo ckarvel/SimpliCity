@@ -65,11 +65,21 @@ bool ASimpliCityBuildingManager::UpdateBuilding(FVector Location) {
 
 //////////////////////////////////////////////////////////////////////////
 void ASimpliCityBuildingManager::FinishBuilding() {
+  if (ActiveObject == nullptr) { // how?! this has happened but... how
+    TRACE_ERROR_PRINTF(LogSimpliCity, "ERROR!! BuildingManager::FinishBuilding() ActiveObject == nullptr");
+    ASimpliCityBaseManager::FinishBuilding();
+    return;
+  }
+
   if (ActiveObject->bIsValidPlacement) {
     ASimpliCityBaseManager::FinishBuilding();
     PermanentObjectList.Add(ActiveObject);
+    ObjectManager->AddObjectToGrid(ActiveObject);
     ActiveObject->OnObjectPlaced();
     ActiveObject = nullptr;
+
+    // get a new building
+    StartBuilding();
   }
 }
 

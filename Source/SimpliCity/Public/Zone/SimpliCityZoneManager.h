@@ -80,14 +80,15 @@ public:
   class UMaterialInstance* IndustrialMaterial;
 
 private:
+  class ASimpliCityObjectSelector* ObjectSelector;
+
   TArray<ASimpliCityZoneBase*> ZoneGrid;
   
   TMap<ESimpliCityZoneType, TArray<ASimpliCityZoneBase*>> ZonesPerType;
   TMap<ASimpliCityBuildingBase*, ASimpliCityZoneBase*> BuildingToZoneMap;
 
-  class ASimpliCityObjectSelector* ObjectSelector;
-  TEnumAsByte<ESimpliCityZoneType> BuildType;
-  TMap<ASimpliCityZoneBase*, TEnumAsByte<ESimpliCityZoneType>> LastZoneStateMap;
+  TMap<UTexture2D*, TEnumAsByte<ESimpliCityZoneType>> BuildIconToType;
+  TMap<ASimpliCityZoneBase*, UTexture2D*> LastZoneStateMap;
   TSet<ASimpliCityZoneBase*> oldZones;
 
 };

@@ -22,7 +22,7 @@ public:
   }
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneBase")
-  void SetZoneType(TEnumAsByte<ESimpliCityZoneType> Type, UMaterialInstance* Material);
+  void SetZoneType(UTexture2D* Icon, TEnumAsByte<ESimpliCityZoneType> Type, UMaterialInstance* Material);
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneBase")
   void ShowActiveMaterial();
