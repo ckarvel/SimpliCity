@@ -10,5 +10,7 @@ enum ESimpliCityBuildingType {
   BuildingType_None UMETA(DisplayName = "None"),
   BuildingType_Power UMETA(DisplayName = "Power"),
   BuildingType_Water UMETA(DisplayName = "Water"),
-  BuildingType_Zoned UMETA(DisplayName = "Zoned")
+  BuildingType_Zoned UMETA(DisplayName = "Zoned"),
+  BuildingType_Factory UMETA(DisplayName = "Factory"),
+  BuildingType_Farm UMETA(DisplayName = "Farm")
 };
