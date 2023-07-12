@@ -20,7 +20,7 @@ public:
   ASimpliCityZoneManager();
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneManager")
-  virtual void Enable(UTexture2D* NewIcon) override;
+  virtual void Enable(ESimpliCityResourceType _TypeId) override;
   UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneManager")
   virtual void Disable() override;
 
@@ -28,7 +28,7 @@ public:
   void DestroyObjects(const TArray<ASimpliCityObjectBase*>& ObjectList);
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneManager")
-  TEnumAsByte<ESimpliCityZoneType> GetZoneTypeAtLocation(FVector Location);
+  ESimpliCityZoneType GetZoneTypeAtLocation(FVector Location);
   UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneManager")
   TArray<ASimpliCityBuildingBase*> GetAllBuildingsOfType(ESimpliCityZoneType Type);
 
@@ -55,7 +55,7 @@ protected:
   virtual void CancelBuilding() override;
 
   UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "SimpliCityZoneManager")
-  void GetBuildType(UTexture2D* Icon, TEnumAsByte<ESimpliCityZoneType>& OutType);
+  void GetBuildType(ESimpliCityResourceType TypeId, ESimpliCityZoneType& OutType);
 
   FTimerHandle SpawnTimerHandle;
 
@@ -87,8 +87,8 @@ private:
   TMap<ESimpliCityZoneType, TArray<ASimpliCityZoneBase*>> ZonesPerType;
   TMap<ASimpliCityBuildingBase*, ASimpliCityZoneBase*> BuildingToZoneMap;
 
-  TMap<UTexture2D*, TEnumAsByte<ESimpliCityZoneType>> BuildIconToType;
-  TMap<ASimpliCityZoneBase*, UTexture2D*> LastZoneStateMap;
+  TMap<ESimpliCityResourceType, ESimpliCityZoneType> BuildIconToType;
+  TMap<ASimpliCityZoneBase*, ESimpliCityResourceType> LastZoneStateMap;
   TSet<ASimpliCityZoneBase*> oldZones;
 
 };

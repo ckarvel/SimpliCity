@@ -44,7 +44,7 @@ private:
 
 public:
   UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
-  virtual void Enable(UTexture2D* NewIcon) override;
+  virtual void Enable(ESimpliCityResourceType _TypeId) override;
   UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
   virtual void Disable() override;
 

@@ -6,4 +6,9 @@
 #include "SimpliCityObjectType.generated.h"
 
 UENUM(BlueprintType)
-enum ESimpliCityObjectType { None, Road, Building, Zone };
+enum class ESimpliCityObjectType : uint8 {
+  None = 0,
+  Road = 1,
+  Building = 2,
+  Zone = 3
+};

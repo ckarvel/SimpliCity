@@ -6,9 +6,9 @@
 #include "SimpliCityZoneType.generated.h"
 
 UENUM(BlueprintType)
-enum ESimpliCityZoneType {
-  ZoneType_None UMETA(DisplayName = "None"),
-  ZoneType_Residential UMETA(DisplayName = "Residential"),
-  ZoneType_Commercial UMETA(DisplayName = "Commercial"),
-  ZoneType_Industrial UMETA(DisplayName = "Industrial")
+enum class ESimpliCityZoneType : uint8 {
+  None = 0,
+  Residential= 1,
+  Commercial= 2,
+  Industrial= 3
 };

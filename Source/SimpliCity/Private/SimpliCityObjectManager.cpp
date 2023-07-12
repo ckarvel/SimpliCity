@@ -104,7 +104,7 @@ ASimpliCityObjectBase* ASimpliCityObjectManager::GetObjectAtLocation(FVector Loc
 }
 
 TArray<ASimpliCityObjectBase*>
-ASimpliCityObjectManager::GetNeighborsOfType(FVector Location, TEnumAsByte<ESimpliCityObjectType> ObjectType) {
+ASimpliCityObjectManager::GetNeighborsOfType(FVector Location, ESimpliCityObjectType ObjectType) {
   AGridManager* grdMgr = USimpliCityFunctionLibrary::GetGridManager(this);
   int32 currentIdx = grdMgr->LocationToIndex(Location);
   TArray<int32> neighborIdxs;

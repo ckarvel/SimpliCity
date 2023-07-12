@@ -21,6 +21,55 @@
 #include "Zone/SimpliCityZoneManager.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool USimpliCityFunctionLibrary::DoesObjectMatchResource(ESimpliCityObjectType ObjType,
+                                                         ESimpliCityResourceType ResType) {
+  switch (ObjType) {
+    case ESimpliCityObjectType::Road:
+      return FSimpliCityRoadResource::TryFindResource(ResType);
+    case ESimpliCityObjectType::Zone:
+      return FSimpliCityZoneResource::TryFindResource(ResType);
+    case ESimpliCityObjectType::Building:
+      return ResType != ESimpliCityResourceType::None;
+  }
+  return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ESimpliCityObjectType USimpliCityFunctionLibrary::GetObjectFromResource(ESimpliCityResourceType ResType) {
+  for (uint8 i = 1; i <= uint8(ESimpliCityObjectType::Zone); i++) {
+      if (USimpliCityFunctionLibrary::DoesObjectMatchResource(ESimpliCityObjectType(i), ResType)) {
+        return ESimpliCityObjectType(i);
+      }
+  }
+  TRACE_ERROR_PRINTF(LogSimpliCity, "ERROR!! no matching ObjType for ResType");
+  return ESimpliCityObjectType::None;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ESimpliCityBuildingType USimpliCityFunctionLibrary::GetBuildingFromResource(ESimpliCityResourceType ResType) {
+  if (FSimpliCityFactoryResource::TryFindResource(ResType)) {
+      return ESimpliCityBuildingType::Factory;
+  } else if (FSimpliCityFarmResource::TryFindResource(ResType)) {
+      return ESimpliCityBuildingType::Farm;
+  }
+  return ESimpliCityBuildingType::None;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ESimpliCityZoneType USimpliCityFunctionLibrary::GetZoneFromResource(ESimpliCityResourceType ResType) {
+  switch (ResType) {
+    case ESimpliCityResourceType::Residential:
+      return ESimpliCityZoneType::Residential;
+    case ESimpliCityResourceType::Commercial:
+      return ESimpliCityZoneType::Commercial;
+    case ESimpliCityResourceType::Industrial:
+      return ESimpliCityZoneType::Industrial;
+  }
+  return ESimpliCityZoneType::None;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Getters
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ASimpliCityPlayerController* USimpliCityFunctionLibrary::GetPlayerController(const UObject* WorldContextObject) {

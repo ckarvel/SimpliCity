@@ -17,7 +17,7 @@ protected:
   class ASimpliCityRoadBase* RoadConnection;
 
   UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityBuildingBase", Meta = (ExposeOnSpawn = true))
-  TEnumAsByte<ESimpliCityBuildingType> BuildingType;
+  ESimpliCityBuildingType BuildingType;
 
   UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityBuildingBase")
   float YawOffset;
@@ -34,5 +34,5 @@ public:
   ASimpliCityRoadBase *GetRoadConnection() const { return RoadConnection; }
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingBase")
-  TEnumAsByte<ESimpliCityBuildingType> GetBuildingType() const { return BuildingType; }
+  ESimpliCityBuildingType GetBuildingType() const { return BuildingType; }
 };

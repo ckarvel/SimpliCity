@@ -13,11 +13,11 @@ ASimpliCityBuildingManager::ASimpliCityBuildingManager()
 }
 
 //////////////////////////////////////////////////////////////////////////
-void ASimpliCityBuildingManager::Enable(UTexture2D* NewIcon) {
+void ASimpliCityBuildingManager::Enable(ESimpliCityResourceType _TypeId) {
   // if desired object type is new, change our active object (if exists)
-  if (NewIcon && BuildIcon != NewIcon) {
+  if (ResourceType != _TypeId) {
     BuildEnabled = true;
-    BuildIcon = NewIcon;
+    ResourceType = _TypeId;
     StartBuilding();
   }
 }
@@ -32,7 +32,7 @@ void ASimpliCityBuildingManager::Disable() {
   }
 
   BuildEnabled = false;
-  BuildIcon = nullptr;
+  ResourceType = ESimpliCityResourceType::None;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -44,7 +44,7 @@ void ASimpliCityBuildingManager::StartBuilding() {
     ActiveObject->Destroy();
     ActiveObject = nullptr;
   }
-  ActiveObject = SpawnObjectOfType(DefaultBlueprintClass, FVector(0, 0, -1000), FRotator(0, 0, 0), BuildIcon);
+  ActiveObject = SpawnObjectOfType(DefaultBlueprintClass, FVector(0, 0, -1000), FRotator(0, 0, 0), ResourceType);
 
 #if WITH_EDITOR
   ActiveObject->SetFolderPath("Buildings");

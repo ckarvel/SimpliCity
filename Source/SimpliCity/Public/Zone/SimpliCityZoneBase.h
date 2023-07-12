@@ -17,19 +17,19 @@ public:
   ASimpliCityZoneBase();
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneBase")
-  TEnumAsByte<ESimpliCityZoneType> GetZoneType() const {
+  ESimpliCityZoneType GetZoneType() const {
     return ZoneType;
   }
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneBase")
-  void SetZoneType(UTexture2D* Icon, TEnumAsByte<ESimpliCityZoneType> Type, UMaterialInstance* Material);
+  void SetZoneType(ESimpliCityResourceType TypeId, ESimpliCityZoneType Type, UMaterialInstance* Material);
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneBase")
   void ShowActiveMaterial();
 
 protected:
   UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityZoneBase", Meta = (ExposeOnSpawn = true))
-  TEnumAsByte<ESimpliCityZoneType> ZoneType;
+  ESimpliCityZoneType ZoneType;
 
   UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SimpliCityZoneBase")
   class UMaterialInstance* ActiveMaterial;

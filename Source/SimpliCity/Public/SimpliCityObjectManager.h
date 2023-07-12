@@ -41,7 +41,7 @@ public:
   ASimpliCityObjectBase *GetObjectAtLocation(FVector Location);
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityObjectManager")
-  TArray<ASimpliCityObjectBase *> GetNeighborsOfType(FVector Location, TEnumAsByte<ESimpliCityObjectType> ObjectType);
+  TArray<ASimpliCityObjectBase *> GetNeighborsOfType(FVector Location, ESimpliCityObjectType ObjectType);
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityObjectManager")
   TArray<ASimpliCityObjectBase *> GetAllNeighbors(FVector Location);

@@ -6,6 +6,7 @@
 #include "SimpliCity.h"
 #include "SimpliCityObjectBase.h"
 #include "SimpliCityObjectType.h"
+#include "SimpliCityResourceTypes.h"
 #include "SimpliCityBaseManager.generated.h"
 
 class USimpliObjectBase;
@@ -35,7 +36,7 @@ protected:
   UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "SimpliCityBaseManager")
   TArray<ASimpliCityObjectBase*> PermanentObjectList;
 
-  UTexture2D* BuildIcon;
+  ESimpliCityResourceType ResourceType;
   FVector StartLocation;
   FVector LastLocation;
 
@@ -53,7 +54,7 @@ protected:
 
   UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "SimpliCityBaseManager")
   ASimpliCityObjectBase* SpawnObjectOfType(TSubclassOf<ASimpliCityObjectBase> Class, const FVector Location,
-                                           const FRotator Rotation, UTexture2D* Icon);
+                                           const FRotator Rotation, ESimpliCityResourceType TypeId);
 
 public:
 
@@ -66,16 +67,14 @@ public:
     return BuildEnabled;
   }
 
-  virtual void Enable(UTexture2D* NewIcon) {
-    if (NewIcon) {
-      BuildEnabled = true;
-      BuildIcon = NewIcon;
-    }
+  virtual void Enable(ESimpliCityResourceType _TypeId) {
+    BuildEnabled = true;
+    ResourceType = _TypeId;
   }
 
   virtual void Disable() {
     BuildEnabled = false;
-    BuildIcon = nullptr;
+    ResourceType = ESimpliCityResourceType::None;
   }
 
   UFUNCTION(BlueprintPure, Category = "SimpliCityBaseManager")

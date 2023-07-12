@@ -19,8 +19,8 @@ ASimpliCityRoadManager::ASimpliCityRoadManager() {
 }
 
 //////////////////////////////////////////////////////////////////////////
-void ASimpliCityRoadManager::Enable(UTexture2D* NewIcon) {
-  ASimpliCityBaseManager::Enable(NewIcon);
+void ASimpliCityRoadManager::Enable(ESimpliCityResourceType _TypeId) {
+  ASimpliCityBaseManager::Enable(_TypeId);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -90,7 +90,7 @@ void ASimpliCityRoadManager::CreateTemporaryRoadsAtLocations(const TArray<FVecto
   int length = Locations.Num();
   for (int i = 0; i < length;  i++) {
     auto Location = Locations[i];
-    ASimpliCityObjectBase* TempRoad = SpawnObjectOfType(DefaultBlueprintClass, Location, FRotator(), BuildIcon);
+    ASimpliCityObjectBase* TempRoad = SpawnObjectOfType(DefaultBlueprintClass, Location, FRotator(), ResourceType);
     ASimpliCityRoadBase* Road = Cast<ASimpliCityRoadBase>(TempRoad);
     // todo: a shadow grid so this road isn't valid until its placed
     //ObjectManager->AddObjectToGrid(TempRoad);
@@ -182,7 +182,7 @@ void ASimpliCityRoadManager::FixRoad(ASimpliCityObjectBase* Road) {
     return;
   }
 
-  ASimpliCityObjectBase* FixedRoad = SpawnObjectOfType(OutRoadClass, SpawnLocation, OutRotation, Road->BuildIcon);
+  ASimpliCityObjectBase* FixedRoad = SpawnObjectOfType(OutRoadClass, SpawnLocation, OutRotation, ResourceType);
 
 #if WITH_EDITOR
   FixedRoad->SetFolderPath("Roads");

@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "SimpliCityObjectType.h"
 #include "SimpliObjectBase.h"
+#include "SimpliCityResourceTypes.h"
 #include "SimpliCityObjectBase.generated.h"
 
 UCLASS(Blueprintable)
@@ -15,7 +16,7 @@ class SIMPLICITY_API ASimpliCityObjectBase : public AActor {
 public:
   ASimpliCityObjectBase();
   UFUNCTION(BlueprintPure, Category = "SimpliCityObjectBase")
-  FORCEINLINE TEnumAsByte<ESimpliCityObjectType> Type() const {
+  FORCEINLINE ESimpliCityObjectType Type() const {
     return ObjectType;
   }
 
@@ -38,8 +39,8 @@ public:
     return StaticMeshComponent;
   }
 
-  UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SimpliCityObjectBase")
-  UTexture2D* BuildIcon;
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityObjectBase", Meta = (ExposeOnSpawn = true))
+  ESimpliCityResourceType ResourceType;
 
   virtual void SetNewLocation(FVector Location);
 
@@ -51,5 +52,5 @@ public:
 
 protected:
   UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "SimpliCityObjectBase")
-  TEnumAsByte<ESimpliCityObjectType> ObjectType;
+  ESimpliCityObjectType ObjectType;
 };

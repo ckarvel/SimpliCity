@@ -14,6 +14,7 @@ using SCFL = USimpliCityFunctionLibrary;
 ASimpliCityBaseManager::ASimpliCityBaseManager()
     : BuildEnabled(false)
     , CurrentlyBuilding(false)
+    , ResourceType(ESimpliCityResourceType::None)
     , StartLocation(FVector(-1, -1, -1)) {
   PrimaryActorTick.bCanEverTick = true;
   // PrimaryActorTick.SetTickFunctionEnable(true);

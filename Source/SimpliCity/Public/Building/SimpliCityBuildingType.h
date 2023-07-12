@@ -6,11 +6,9 @@
 #include "SimpliCityBuildingType.generated.h"
 
 UENUM(BlueprintType)
-enum ESimpliCityBuildingType {
-  BuildingType_None UMETA(DisplayName = "None"),
-  BuildingType_Power UMETA(DisplayName = "Power"),
-  BuildingType_Water UMETA(DisplayName = "Water"),
-  BuildingType_Zoned UMETA(DisplayName = "Zoned"),
-  BuildingType_Factory UMETA(DisplayName = "Factory"),
-  BuildingType_Farm UMETA(DisplayName = "Farm")
+enum class ESimpliCityBuildingType : uint8 {
+  None = 0,
+  Factory = 1,
+  Farm = 2,
+  Zoned = 3
 };

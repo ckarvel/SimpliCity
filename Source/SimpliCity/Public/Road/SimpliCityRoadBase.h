@@ -6,6 +6,7 @@
 #include "MarkerPathInterface.h"
 #include "SimpliCity.h"
 #include "SimpliCityObjectBase.h"
+#include "SimpliCityRoadType.h"
 #include "SimpliCityRoadBase.generated.h"
 
 class UMarkerComponent;
@@ -50,6 +51,9 @@ protected:
   TArray<class UMarkerComponent*> VehicleMarkers;
 
   TArray<ASimpliCityRoadBase*> NeighboringRoads;
+
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityRoadBase", Meta = (ExposeOnSpawn = true))
+  ESimpliCityRoadType RoadType;
 
 private:
   ASimpliCityRoadManager* RoadManager;

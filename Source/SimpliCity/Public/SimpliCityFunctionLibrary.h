@@ -16,6 +16,18 @@ class SIMPLICITY_API USimpliCityFunctionLibrary : public UBlueprintFunctionLibra
 public:
   USimpliCityFunctionLibrary() {};
 
+  UFUNCTION(BlueprintPure, Category = "SimpliCityFunctionLibrary")
+  static bool DoesObjectMatchResource(ESimpliCityObjectType ObjType, ESimpliCityResourceType ResType);
+
+  UFUNCTION(BlueprintPure, Category = "SimpliCityFunctionLibrary")
+  static ESimpliCityObjectType GetObjectFromResource(ESimpliCityResourceType ResType);
+
+  UFUNCTION(BlueprintPure, Category = "SimpliCityFunctionLibrary")
+  static ESimpliCityBuildingType GetBuildingFromResource(ESimpliCityResourceType ResType);
+
+  UFUNCTION(BlueprintPure, Category = "SimpliCityFunctionLibrary")
+  static ESimpliCityZoneType GetZoneFromResource(ESimpliCityResourceType ResType);
+
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Getters
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
