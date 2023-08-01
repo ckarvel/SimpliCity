@@ -63,7 +63,8 @@ enum class ESimpliCityResourceType : uint8 {
   TwoWayDirt = 53,
   Residential = 54,
   Commercial = 55,
-  Industrial = 56
+  Industrial = 56,
+  Money = 57,
 };
 
 struct FSimpliCityRoadResource {
