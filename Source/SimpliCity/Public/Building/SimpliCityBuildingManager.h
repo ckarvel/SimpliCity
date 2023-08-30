@@ -29,9 +29,7 @@ protected:
   ASimpliCityObjectBase* ActiveObject;
 
 public:
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingManager")
   virtual void Enable(ESimpliCityResourceType _TypeId) override;
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingManager")
   virtual void Disable() override;
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityBuildingManager")

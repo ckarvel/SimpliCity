@@ -43,9 +43,7 @@ private:
   TArray<ASimpliCityObjectBase*> GetTempAndPermNeighbors(FVector Location) const;
 
 public:
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
   virtual void Enable(ESimpliCityResourceType _TypeId) override;
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")
   virtual void Disable() override;
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityRoadManager")

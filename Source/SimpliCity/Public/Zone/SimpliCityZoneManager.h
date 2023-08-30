@@ -18,10 +18,7 @@ class SIMPLICITY_API ASimpliCityZoneManager : public ASimpliCityBaseManager {
 
 public:
   ASimpliCityZoneManager();
-
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneManager")
   virtual void Enable(ESimpliCityResourceType _TypeId) override;
-  UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneManager")
   virtual void Disable() override;
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityZoneManager")

@@ -36,6 +36,7 @@ protected:
   UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "SimpliCityBaseManager")
   TArray<ASimpliCityObjectBase*> PermanentObjectList;
 
+  UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "SimpliCityBaseManager")
   ESimpliCityResourceType ResourceType;
   FVector StartLocation;
   FVector LastLocation;
@@ -67,11 +68,13 @@ public:
     return BuildEnabled;
   }
 
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityBaseManager")
   virtual void Enable(ESimpliCityResourceType _TypeId) {
     BuildEnabled = true;
     ResourceType = _TypeId;
   }
 
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityBaseManager")
   virtual void Disable() {
     BuildEnabled = false;
     ResourceType = ESimpliCityResourceType::None;
