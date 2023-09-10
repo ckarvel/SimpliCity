@@ -16,18 +16,6 @@ class SIMPLICITY_API USimpliCityFunctionLibrary : public UBlueprintFunctionLibra
 public:
   USimpliCityFunctionLibrary() {};
 
-  UFUNCTION(BlueprintPure, Category = "SimpliCityFunctionLibrary")
-  static bool DoesObjectMatchResource(ESimpliCityObjectType ObjType, ESimpliCityResourceType ResType);
-
-  UFUNCTION(BlueprintPure, Category = "SimpliCityFunctionLibrary")
-  static ESimpliCityObjectType GetObjectFromResource(ESimpliCityResourceType ResType);
-
-  UFUNCTION(BlueprintPure, Category = "SimpliCityFunctionLibrary")
-  static ESimpliCityBuildingType GetBuildingFromResource(ESimpliCityResourceType ResType);
-
-  UFUNCTION(BlueprintPure, Category = "SimpliCityFunctionLibrary")
-  static ESimpliCityZoneType GetZoneFromResource(ESimpliCityResourceType ResType);
-
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Getters
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -37,31 +25,15 @@ public:
 
   UFUNCTION(BlueprintPure, Category = "SimpliCityFunctionLibrary",
     meta = (WorldContext = "WorldContextObject", UnsafeDuringActorConstruction = "true"))
-  static class ASimpliCityPlayerController* GetPlayerController(const UObject* WorldContextObject);
+  static class AObjectPlacer* GetObjectPlacer(const UObject* WorldContextObject);
 
   UFUNCTION(BlueprintPure, Category = "SimpliCityFunctionLibrary",
     meta = (WorldContext = "WorldContextObject", UnsafeDuringActorConstruction = "true"))
-  static class USimpliCityMainUI* GetMainUI(UObject* WorldContextObject);
-
-  UFUNCTION(BlueprintPure, Category = "SimpliCityFunctionLibrary",
-    meta = (WorldContext = "WorldContextObject", UnsafeDuringActorConstruction = "true"))
-  static class ASimpliCityObjectManager* GetObjectManager(const UObject* WorldContextObject);
+  static class AObjectManager* GetObjectManager(const UObject* WorldContextObject);
 
   UFUNCTION(BlueprintPure, Category = "SimpliCityFunctionLibrary",
     meta = (WorldContext = "WorldContextObject", UnsafeDuringActorConstruction = "true"))
   static class AMarkerManager* GetMarkerManager(const UObject* WorldContextObject);
-
-  UFUNCTION(BlueprintPure, Category = "SimpliCityFunctionLibrary",
-    meta = (WorldContext = "WorldContextObject", UnsafeDuringActorConstruction = "true"))
-  static class ASimpliCityRoadManager* GetRoadManager(const UObject* WorldContextObject);
-
-  UFUNCTION(BlueprintPure, Category = "SimpliCityFunctionLibrary",
-    meta = (WorldContext = "WorldContextObject", UnsafeDuringActorConstruction = "true"))
-  static class ASimpliCityZoneManager* GetZoneManager(const UObject* WorldContextObject);
-
-  UFUNCTION(BlueprintPure, Category = "SimpliCityFunctionLibrary",
-    meta = (WorldContext = "WorldContextObject", UnsafeDuringActorConstruction = "true"))
-  static class ASimpliCityBuildingManager* GetBuildingManager(const UObject* WorldContextObject);
 
   template <class ManagerClass>
   static ManagerClass* GetManager(const UObject* WorldContextObject, TSubclassOf<ManagerClass> Class);
@@ -116,4 +88,19 @@ public:
 
   UFUNCTION(BlueprintCallable, Category = "SimpliCityFunctionLibrary")
   static TArray<FVector> QuadraticBezierCurve(FVector P0, FVector P1, FVector P2);
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Misc
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityFunctionLibrary")
+  static FRotator GetRotation(TArray<int> ValidIndexes);
+
+  static float Get3Way(TArray<int> ValidIndexes);
+  static float Get2Way_Straight(TArray<int> ValidIndexes);
+  static float Get2Way_Curve(TArray<int> ValidIndexes);
+  static float Get1Way(TArray<int> ValidIndexes);
+
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityFunctionLibrary")
+  static bool IsCornerMesh(TArray<int> ValidIndexes);
 };
+

@@ -54,8 +54,14 @@ protected:
   virtual void CancelBuilding();
 
   UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "SimpliCityBaseManager")
+  void PayForSpawnedObjects();
+
+  UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "SimpliCityBaseManager")
   ASimpliCityObjectBase* SpawnObjectOfType(TSubclassOf<ASimpliCityObjectBase> Class, const FVector Location,
                                            const FRotator Rotation, ESimpliCityResourceType TypeId);
+
+   UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityBaseManager")
+   bool BuildError;
 
 public:
 

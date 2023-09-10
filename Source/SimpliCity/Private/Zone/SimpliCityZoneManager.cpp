@@ -87,24 +87,17 @@ bool ASimpliCityZoneManager::UpdateBuilding(FVector Location) {
 
 //////////////////////////////////////////////////////////////////////////
 void ASimpliCityZoneManager::FinishBuilding() {
+  // HACK- Add cells to temp list so base manager
+  // can detect if build error
+  // UPDATE - for now don't check zone cost
+  //TArray<ASimpliCityZoneBase*> Cells;
+  // LastZoneStateMap.GenerateKeyArray(Cells);
+  // for (auto Cell : Cells) {
+  //  Temporary_ObjectToLocation.Add(FVector(), Cell);
+  //}
   ASimpliCityBaseManager::FinishBuilding();
   ObjectSelector->FinishSelection();
   ResetCellStates();
-  for (auto Zone : LastZoneStateMap) {
-    // if this zone's type differs from previous
-    ESimpliCityZoneType CurrentType = Zone.Key->GetZoneType();
-    ESimpliCityZoneType LastType = ESimpliCityZoneType::None;
-    ESimpliCityResourceType TypeId = Zone.Value;
-    LastType = BuildIconToType[TypeId];
-    if (CurrentType != LastType) {
-      TArray<ASimpliCityZoneBase*>& List = ZonesPerType.FindOrAdd(CurrentType);
-      List.Add(Zone.Key);
-      //ZonesPerType[CurrentType] = List;
-      List = ZonesPerType.FindOrAdd(LastType);
-      List.Remove(Zone.Key);
-      //ZonesPerType[LastType] = List;
-    }
-  }
 }
 
 //////////////////////////////////////////////////////////////////////////

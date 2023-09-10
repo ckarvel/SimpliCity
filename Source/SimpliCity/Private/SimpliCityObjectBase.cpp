@@ -19,10 +19,15 @@ ASimpliCityObjectBase::ASimpliCityObjectBase()
 void ASimpliCityObjectBase::BeginPlay() {
   Super::BeginPlay();
   GridManager = SCFL::GetGridManager(this);
-  ObjectManager = SCFL::GetObjectManager(this);
+  //ObjectManager = SCFL::GetObjectManager(this);
 }
 
 void ASimpliCityObjectBase::SetNewLocation(FVector Location) {
   SetActorLocation(Location);
-  bIsValidPlacement = ObjectManager->DoesObjectExistHere(Location) == false;
+  //bIsValidPlacement = ObjectManager->DoesObjectExistHere(Location) == false;
+}
+
+void ASimpliCityObjectBase::SetPlacementValid(bool IsValid) {
+  bIsValidPlacement = IsValid;
+  OnValidStateChanged(bIsValidPlacement);
 }

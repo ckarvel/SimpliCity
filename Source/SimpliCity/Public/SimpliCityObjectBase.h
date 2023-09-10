@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "SimpliCityObjectType.h"
-#include "SimpliObjectBase.h"
 #include "SimpliCityResourceTypes.h"
 #include "SimpliCityObjectBase.generated.h"
 
@@ -48,7 +47,14 @@ public:
   UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "SimpliCityObjectBase")
   void OnObjectPlaced();
 
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityObjectBase")
   bool bIsValidPlacement;
+
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityObjectBase")
+  void SetPlacementValid(bool IsValid);
+
+  UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "SimpliCityObjectBase")
+  void OnValidStateChanged(bool IsValid);
 
 protected:
   UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "SimpliCityObjectBase")

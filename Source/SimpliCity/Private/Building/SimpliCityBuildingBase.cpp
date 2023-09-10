@@ -15,7 +15,7 @@ using SCFL = USimpliCityFunctionLibrary;
 
 ASimpliCityBuildingBase::ASimpliCityBuildingBase()
     : YawOffset(-90) {
-  ObjectType = ESimpliCityObjectType::Building;
+  //ObjectType = ESimpliCityObjectType::Building;
 }
 
 void ASimpliCityBuildingBase::SetNewLocation(FVector Location) {

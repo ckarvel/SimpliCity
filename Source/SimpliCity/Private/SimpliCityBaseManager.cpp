@@ -6,7 +6,6 @@
 #include "Kismet/GameplayStatics.h"
 #include "SimpliCityFunctionLibrary.h"
 #include "SimpliCityObjectManager.h"
-#include "SimpliObjectBase.h"
 
 using SCFL = USimpliCityFunctionLibrary;
 
@@ -25,7 +24,7 @@ ASimpliCityBaseManager::ASimpliCityBaseManager()
 void ASimpliCityBaseManager::BeginPlay() {
   Super::BeginPlay();
   GridManager = SCFL::GetGridManager(this);
-  ObjectManager = SCFL::GetObjectManager(this);
+  //ObjectManager = SCFL::GetObjectManager(this);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -73,6 +72,24 @@ void ASimpliCityBaseManager::Tick(float DeltaTime) {
 
 //////////////////////////////////////////////////////////////////////////
 void ASimpliCityBaseManager::FinishBuilding() {
+  // verify all temporary objects are valid if any exist
+  BuildError = false;
+  for (auto Object : Temporary_ObjectToLocation) {
+    auto TempObject = Object.Value;
+    if (TempObject->bIsValidPlacement == false) {
+      BuildError = true;
+      break;
+    }
+  }
+  if (BuildError == false) {
+    PayForSpawnedObjects();
+    // disable build mode
+    ASimpliCityBaseManager::CancelBuilding();
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////
+void ASimpliCityBaseManager::CancelBuilding() {
   CurrentlyBuilding = false;
   StartLocation = FVector(-1, -1, -1);
   LastLocation = FVector(-1, -1, -1);
@@ -80,14 +97,9 @@ void ASimpliCityBaseManager::FinishBuilding() {
 }
 
 //////////////////////////////////////////////////////////////////////////
-void ASimpliCityBaseManager::CancelBuilding() {
-  ASimpliCityBaseManager::FinishBuilding();
-}
-
-//////////////////////////////////////////////////////////////////////////
 void ASimpliCityBaseManager::DestroyObject(ASimpliCityObjectBase* Object) {
   PermanentObjectList.Remove(Object);
-  SCFL::GetObjectManager(this)->RemoveObjectFromGrid(Object);
+  //SCFL::GetObjectManager(this)->RemoveObjectFromGrid(Object);
 }
 
 //////////////////////////////////////////////////////////////////////////

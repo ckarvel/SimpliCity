@@ -9,6 +9,6 @@ UENUM(BlueprintType)
 enum class ESimpliCityObjectType : uint8 {
   None = 0,
   Road = 1,
-  Building = 2,
-  Zone = 3
+  Zone = 2,
+  Prefab = 3
 };

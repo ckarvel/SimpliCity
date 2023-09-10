@@ -17,6 +17,15 @@ public:
 public:
   template <class SelectionClass>
   TArray<SelectionClass*> UpdateSelection(FVector Start, FVector End);
+
+  UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "SimpliCityObjectSelector")
+  TArray<FVector> GetSelectedLocations(ESimpliCityObjectType Type, FVector Start, FVector End);
+
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityObjectSelector")
+  TArray<FVector> GetBoundingBoxSelection(FVector Start, FVector End);
+  UFUNCTION(BlueprintCallable, Category = "SimpliCityObjectSelector")
+  TArray<FVector> GetPathSelection(FVector Start, FVector End);
+
   void FinishSelection();
 
   UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityObjectSelector")
@@ -28,10 +37,16 @@ public:
   UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SimpliCityObjectSelector")
   class UMaterialInstance* SelectionMaterial;
 
+protected:
+  // Called when the game starts or when spawned
+  virtual void BeginPlay() override;
+
 private:
   void DrawSelection(TArray<FVector> Vertices, TArray<int> Triangles);
 
   UMaterialInstanceDynamic* CreateMaterialInstance();
 
   class UProceduralMeshComponent* SelectionMeshComponent;
+
+  class AGridManager* GridManager;
 };

@@ -163,6 +163,30 @@ TArray<FVector> AGridManager::GetNeighbors(FVector Location) const {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
+TArray<FVector> AGridManager::GetAllNeighbors(FVector Location) const {
+  TArray<int32> NeighborIdxs;
+  TArray<FVector> NeighborLocs;
+
+  if (IsLocationValid(Location) == false) {
+    // UtilityLibrary::Warning("Location invalid" + FString(__FUNCTION__));
+    // TRACE_WARNING_PRINTF(LogGridSystem,"Location invalid");
+    return NeighborLocs;
+  }
+  int32 idx = LocationToIndex(Location);
+  GetAllNeighborIndexes(idx, NeighborIdxs);
+
+  // convert indexes to locations
+  for (auto nIdx : NeighborIdxs) {
+    if (nIdx < 0) {
+      NeighborLocs.Add(FVector(-1, -1, -1));
+    } else {
+      NeighborLocs.Add(IndexToLocation(nIdx));
+    }
+  }
+  return NeighborLocs;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
 
 void AGridManager::GenerateGridLayout() {
   if (GridMaterial == nullptr) {

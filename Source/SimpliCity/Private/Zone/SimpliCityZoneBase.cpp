@@ -10,7 +10,7 @@
 
 // Sets default values
 ASimpliCityZoneBase::ASimpliCityZoneBase() {
-  ObjectType = ESimpliCityObjectType::Zone;
+  //ObjectType = ESimpliCityObjectType::Zone;
 }
 
 void ASimpliCityZoneBase::SetZoneType(ESimpliCityResourceType TypeId,

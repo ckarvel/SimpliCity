@@ -11,109 +11,33 @@
 #include "MyAStarPathFinder.h"
 
 #include "SimpliCityGameInstance.h"
-#include "SimpliCityMainUI.h"
-#include "SimpliCityObjectManager.h"
+#include "ObjectManager.h"
+#include "ObjectPlacer.h"
 #include "SimpliCityObjectSelector.h"
-#include "SimpliCityPlayerController.h"
-
-#include "Building/SimpliCityBuildingManager.h"
-#include "Road/SimpliCityRoadManager.h"
-#include "Zone/SimpliCityZoneManager.h"
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool USimpliCityFunctionLibrary::DoesObjectMatchResource(ESimpliCityObjectType ObjType,
-                                                         ESimpliCityResourceType ResType) {
-  switch (ObjType) {
-    case ESimpliCityObjectType::Road:
-      return FSimpliCityRoadResource::TryFindResource(ResType);
-    case ESimpliCityObjectType::Zone:
-      return FSimpliCityZoneResource::TryFindResource(ResType);
-    case ESimpliCityObjectType::Building:
-      return ResType != ESimpliCityResourceType::None;
-  }
-  return false;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-ESimpliCityObjectType USimpliCityFunctionLibrary::GetObjectFromResource(ESimpliCityResourceType ResType) {
-  for (uint8 i = 1; i <= uint8(ESimpliCityObjectType::Zone); i++) {
-      if (USimpliCityFunctionLibrary::DoesObjectMatchResource(ESimpliCityObjectType(i), ResType)) {
-        return ESimpliCityObjectType(i);
-      }
-  }
-  TRACE_ERROR_PRINTF(LogSimpliCity, "ERROR!! no matching ObjType for ResType");
-  return ESimpliCityObjectType::None;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-ESimpliCityBuildingType USimpliCityFunctionLibrary::GetBuildingFromResource(ESimpliCityResourceType ResType) {
-  if (FSimpliCityFactoryResource::TryFindResource(ResType)) {
-      return ESimpliCityBuildingType::Factory;
-  } else if (FSimpliCityFarmResource::TryFindResource(ResType)) {
-      return ESimpliCityBuildingType::Farm;
-  }
-  return ESimpliCityBuildingType::None;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-ESimpliCityZoneType USimpliCityFunctionLibrary::GetZoneFromResource(ESimpliCityResourceType ResType) {
-  switch (ResType) {
-    case ESimpliCityResourceType::Residential:
-      return ESimpliCityZoneType::Residential;
-    case ESimpliCityResourceType::Commercial:
-      return ESimpliCityZoneType::Commercial;
-    case ESimpliCityResourceType::Industrial:
-      return ESimpliCityZoneType::Industrial;
-  }
-  return ESimpliCityZoneType::None;
-}
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Getters
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-ASimpliCityPlayerController* USimpliCityFunctionLibrary::GetPlayerController(const UObject* WorldContextObject) {
-  auto mgr = Cast<ASimpliCityPlayerController>(UGameplayStatics::GetPlayerController(WorldContextObject, 0));
-  if (mgr == nullptr) {
-    TRACE_ERROR_PRINTF(LogSimpliCity, "ERROR!! mgr == nullptr");
-  }
-  return mgr;
-}
-
-USimpliCityMainUI* USimpliCityFunctionLibrary::GetMainUI(UObject* WorldContextObject) {
-  TArray<UUserWidget*> FoundWidgets;
-  UWidgetBlueprintLibrary::GetAllWidgetsOfClass(WorldContextObject, FoundWidgets, USimpliCityMainUI::StaticClass());
-  if (FoundWidgets.Num() <= 0) {
-    TRACE_ERROR_PRINTF(LogSimpliCity, "ERROR!! FoundWidgets.Num() <= 0");
-    return nullptr;
-  }
-  return Cast<USimpliCityMainUI>(FoundWidgets[0]);
-}
-
 AGridManager* USimpliCityFunctionLibrary::GetGridManager(const UObject* WorldContextObject) {
   return GetManager<AGridManager>(WorldContextObject, AGridManager::StaticClass());
 }
 
-ASimpliCityObjectManager* USimpliCityFunctionLibrary::GetObjectManager(const UObject* WorldContextObject) {
-  return GetManager<ASimpliCityObjectManager>(WorldContextObject, ASimpliCityObjectManager::StaticClass());
+//////////////////////////////////////////////////////////////////////////
+AObjectManager* USimpliCityFunctionLibrary::GetObjectManager(const UObject* WorldContextObject) {
+  return GetManager<AObjectManager>(WorldContextObject, AObjectManager::StaticClass());
 }
 
+//////////////////////////////////////////////////////////////////////////
+AObjectPlacer* USimpliCityFunctionLibrary::GetObjectPlacer(const UObject* WorldContextObject) {
+  return GetManager<AObjectPlacer>(WorldContextObject, AObjectPlacer::StaticClass());
+}
+
+//////////////////////////////////////////////////////////////////////////
 AMarkerManager* USimpliCityFunctionLibrary::GetMarkerManager(const UObject* WorldContextObject) {
   return GetManager<AMarkerManager>(WorldContextObject, AMarkerManager::StaticClass());
 }
 
-ASimpliCityRoadManager* USimpliCityFunctionLibrary::GetRoadManager(const UObject* WorldContextObject) {
-  return GetManager<ASimpliCityRoadManager>(WorldContextObject, ASimpliCityRoadManager::StaticClass());
-}
-
-ASimpliCityZoneManager* USimpliCityFunctionLibrary::GetZoneManager(const UObject* WorldContextObject) {
-  return GetManager<ASimpliCityZoneManager>(WorldContextObject, ASimpliCityZoneManager::StaticClass());
-}
-
-ASimpliCityBuildingManager* USimpliCityFunctionLibrary::GetBuildingManager(const UObject* WorldContextObject) {
-  return GetManager<ASimpliCityBuildingManager>(WorldContextObject, ASimpliCityBuildingManager::StaticClass());
-}
-
+//////////////////////////////////////////////////////////////////////////
 template <class ManagerClass>
 ManagerClass* USimpliCityFunctionLibrary::GetManager(const UObject* WorldContextObject,
                                                      TSubclassOf<ManagerClass> Class) {
@@ -124,6 +48,7 @@ ManagerClass* USimpliCityFunctionLibrary::GetManager(const UObject* WorldContext
   return mgr;
 }
 
+//////////////////////////////////////////////////////////////////////////
 ASimpliCityObjectSelector* USimpliCityFunctionLibrary::GetSelector(const UObject* WorldContextObject) {
   ASimpliCityObjectSelector* selector = Cast<ASimpliCityObjectSelector>(
       UGameplayStatics::GetActorOfClass(WorldContextObject, ASimpliCityObjectSelector::StaticClass()));
@@ -140,26 +65,31 @@ bool USimpliCityFunctionLibrary::IsNearlyEqual(float A, float B) {
   return FMath::IsNearlyEqual(A, B, 0.1);
 }
 
+//////////////////////////////////////////////////////////////////////////
 bool USimpliCityFunctionLibrary::AreLocationsEqual(FVector LocationA, FVector LocationB, float Tolerance) {
   FVector ZAdjustedA = FVector(LocationA.X, LocationA.Y, 0.0);
   FVector ZAdjustedB = FVector(LocationB.X, LocationB.Y, 0.0);
   return ZAdjustedA.Equals(ZAdjustedB, Tolerance);
 }
 
+//////////////////////////////////////////////////////////////////////////
 FVector USimpliCityFunctionLibrary::GetMidpointBetween(FVector A, FVector B) {
   float x = (A.X + B.X) / 2.0;
   float y = (A.Y + B.Y) / 2.0;
   return FVector(x, y, 50.0);
 }
 
+//////////////////////////////////////////////////////////////////////////
 FVector USimpliCityFunctionLibrary::VInterpTo(FVector Current, FVector Target, float Delta, float Speed) {
   return FMath::VInterpTo(Current, Target, Delta, Speed);
 }
 
+//////////////////////////////////////////////////////////////////////////
 FRotator USimpliCityFunctionLibrary::RInterpTo(FRotator Current, FRotator Target, float Delta, float Speed) {
   return FMath::RInterpTo(Current, Target, Delta, Speed);
 }
 
+//////////////////////////////////////////////////////////////////////////
 float USimpliCityFunctionLibrary::FInterpTo(float Current, float Target, float Delta, float Speed) {
   return FMath::FInterpTo(Current, Target, Delta, Speed);
 }
@@ -174,6 +104,7 @@ TArray<AActor*> USimpliCityFunctionLibrary::GetDifferenceInArrays(TArray<AActor*
   return diff.Array();
 }
 
+//////////////////////////////////////////////////////////////////////////
 void USimpliCityFunctionLibrary::CalculateSelectionRectangle(FVector Start, FVector End, FVector& OutExtents,
                                                              TArray<FVector>& OutVertices, TArray<int>& OutTriangles) {
   float minX = FMath::Min(Start.X, End.X);
@@ -195,6 +126,7 @@ void USimpliCityFunctionLibrary::CalculateSelectionRectangle(FVector Start, FVec
   OutTriangles = Triangles;
 }
 
+//////////////////////////////////////////////////////////////////////////
 TArray<FVector> USimpliCityFunctionLibrary::GetPathBetween(UObject* Graph, FVector Start, FVector End) {
   if (Graph == nullptr) {
     TRACE_ERROR_PRINTF(LogSimpliCity, "ERROR!! Graph == nullptr");
@@ -207,12 +139,14 @@ TArray<FVector> USimpliCityFunctionLibrary::GetPathBetween(UObject* Graph, FVect
   return Data.path;
 }
 
+//////////////////////////////////////////////////////////////////////////
 bool USimpliCityFunctionLibrary::ArePointsCollinear(FVector A, FVector B, FVector C) {
   // (x2-x1)(y3-y2) - (y2-y1)(x3-x2) = 0
   float result = (B.X - A.X) * (C.Y - B.Y) - (B.Y - A.Y) * (C.X - B.X);
   return result == 0;
 }
 
+//////////////////////////////////////////////////////////////////////////
 TArray<FVector> USimpliCityFunctionLibrary::GetSimplifiedPath(TArray<FVector> Path) {
   if (Path.Num() < 3) {
     TRACE_WARNING_PRINTF(LogSimpliCity, "Warning: Path has less than 3 points");
@@ -231,6 +165,7 @@ TArray<FVector> USimpliCityFunctionLibrary::GetSimplifiedPath(TArray<FVector> Pa
   return Out;
 }
 
+//////////////////////////////////////////////////////////////////////////
 float USimpliCityFunctionLibrary::AngleBetween2Vectors(FVector A, FVector B) {
   A.Normalize();
   B.Normalize();
@@ -239,6 +174,7 @@ float USimpliCityFunctionLibrary::AngleBetween2Vectors(FVector A, FVector B) {
   return FMath::RadiansToDegrees(rads);
 }
 
+//////////////////////////////////////////////////////////////////////////
 TArray<FVector> USimpliCityFunctionLibrary::QuadraticBezierCurve(FVector P0, FVector P1, FVector P2) {
   // B(t) = (1-t)^2 * P0 + 2(1-t)tP1 + t2P2,0 <= t <= 1
   float t = 0;
@@ -255,6 +191,7 @@ TArray<FVector> USimpliCityFunctionLibrary::QuadraticBezierCurve(FVector P0, FVe
   return OutPoints;
 }
 
+//////////////////////////////////////////////////////////////////////////
 TArray<FVector> USimpliCityFunctionLibrary::SmoothCurvedSegments(TArray<FVector> Path) {
   if (Path.Num() < 3) {
     TRACE_WARNING_PRINTF(LogSimpliCity, "Warning: Path has less than 3 points");
@@ -282,4 +219,118 @@ TArray<FVector> USimpliCityFunctionLibrary::SmoothCurvedSegments(TArray<FVector>
     start++;
   }
   return Out;
+}
+
+//////////////////////////////////////////////////////////////////////////
+// 0 - left, right, bottom (0, 1, 3)
+// 90 - left, top, bottom (0, 2, 3)
+// 180 - left, right, top (0, 1, 2)
+// 270 - right, top, bottom (1, 2, 3)
+float USimpliCityFunctionLibrary::Get3Way(TArray<int> ValidIndexes) {
+  int neighbor1 = ValidIndexes[0];
+  int neighbor2 = ValidIndexes[1];
+  int neighbor3 = ValidIndexes[2];
+  if (neighbor1 == 0 && neighbor2 == 1 && neighbor3 == 3) {
+    return 0.0;
+  }
+  if (neighbor1 == 0 && neighbor2 == 2 && neighbor3 == 3) {
+    return 90.0;
+  }
+  if (neighbor1 == 0 && neighbor2 == 1 && neighbor3 == 2) {
+    return 180.0;
+  }
+  return 270.0;
+}
+
+//////////////////////////////////////////////////////////////////////////
+// 0 - top, bottom (2, 3)
+// 90 - left, right (0, 1)
+float USimpliCityFunctionLibrary::Get2Way_Straight(TArray<int> ValidIndexes) {
+  int neighbor1 = ValidIndexes[0];
+  int neighbor2 = ValidIndexes[1];
+  if (neighbor1 == 2 && neighbor2 == 3) {
+    return 0.0;
+  }
+  if (neighbor1 == 0 && neighbor2 == 1) {
+    return 90.0;
+  }
+  // HACK: this value used to determine if straight or curve mesh
+  return 360; // curve
+}
+
+//////////////////////////////////////////////////////////////////////////
+// 0 - right, top (1, 2)
+// 90 - right, bottom (1, 3)
+// 180 - left, bottom (0, 3)
+// 270 - left, top (0, 2)
+float USimpliCityFunctionLibrary::Get2Way_Curve(TArray<int> ValidIndexes) {
+  int neighbor1 = ValidIndexes[0];
+  int neighbor2 = ValidIndexes[1];
+  if (neighbor1 == 1 && neighbor2 == 2) {
+    return 0.0;
+  }
+  if (neighbor1 == 1 && neighbor2 == 3) {
+    return 90.0;
+  }
+  if (neighbor1 == 0 && neighbor2 == 3) {
+    return 180.0;
+  }
+  return 270.0;
+}
+
+//////////////////////////////////////////////////////////////////////////
+// 0 - bottom (3)
+// 90 - left (0)
+// 180 - top (2)
+// 270 - right (1)
+float USimpliCityFunctionLibrary::Get1Way(TArray<int> ValidIndexes) {
+  int neighbor1 = ValidIndexes[0];
+  if (neighbor1 == 3) {
+    return 0.0;
+  }
+  if (neighbor1 == 0) {
+    return 90.0;
+  }
+  if (neighbor1 == 2) {
+    return 180.0;
+  }
+  return 270.0;
+}
+
+//////////////////////////////////////////////////////////////////////////
+bool USimpliCityFunctionLibrary::IsCornerMesh(TArray<int> ValidIndexes) {
+  if (USimpliCityFunctionLibrary::Get2Way_Straight(ValidIndexes) == 360) {
+    return true;
+  }
+  return false;
+}
+
+//////////////////////////////////////////////////////////////////////////
+FRotator USimpliCityFunctionLibrary::GetRotation(TArray<int> ValidIndexes) {
+  FRotator OutRotation = FRotator(0, 0, 0);
+  float yaw = 0;
+  int neighborCount = ValidIndexes.Num();
+  if (neighborCount == 0) {
+    return OutRotation;
+  }
+  switch (neighborCount) {
+  case 4:
+    yaw = 0.0;
+    break;
+  case 3:
+    yaw = USimpliCityFunctionLibrary::Get3Way(ValidIndexes);
+    break;
+  case 2:
+    if (USimpliCityFunctionLibrary::IsCornerMesh(ValidIndexes)) {
+      yaw = USimpliCityFunctionLibrary::Get2Way_Curve(ValidIndexes);
+    } else {
+      yaw = USimpliCityFunctionLibrary::Get2Way_Straight(ValidIndexes);
+    }
+    break;
+  default:
+    yaw = USimpliCityFunctionLibrary::Get1Way(ValidIndexes);
+    break;
+  };
+  OutRotation.Yaw = yaw;
+  return OutRotation;
 }

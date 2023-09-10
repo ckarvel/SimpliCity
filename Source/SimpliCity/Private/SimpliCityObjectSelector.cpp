@@ -7,7 +7,11 @@
 #include "Materials/MaterialInstanceDynamic.h"
 #include "ProceduralMeshComponent.h"
 #include "SimpliCityFunctionLibrary.h"
+#include "GridManager.h"
 #include "Zone/SimpliCityZoneBase.h"
+#include "Algo/Reverse.h"
+
+using SCFL = USimpliCityFunctionLibrary;
 
 //////////////////////////////////////////////////////////////////////////
 ASimpliCityObjectSelector::ASimpliCityObjectSelector()
@@ -18,13 +22,19 @@ ASimpliCityObjectSelector::ASimpliCityObjectSelector()
 }
 
 //////////////////////////////////////////////////////////////////////////
+void ASimpliCityObjectSelector::BeginPlay() {
+  Super::BeginPlay();
+  GridManager = SCFL::GetGridManager(this);
+}
+
+//////////////////////////////////////////////////////////////////////////
 template <class SelectionClass>
 TArray<SelectionClass*> ASimpliCityObjectSelector::UpdateSelection(FVector Start, FVector End) {
   TArray<SelectionClass*> SelectedObjects;
   FVector Extents;
   TArray<FVector> Vertices;
   TArray<int> Triangles;
-  USimpliCityFunctionLibrary::CalculateSelectionRectangle(Start, End, Extents, Vertices, Triangles);
+  SCFL::CalculateSelectionRectangle(Start, End, Extents, Vertices, Triangles);
 
   // reset selection list
   SelectedObjects.Empty();
@@ -35,7 +45,7 @@ TArray<SelectionClass*> ASimpliCityObjectSelector::UpdateSelection(FVector Start
   }
 
   // store objects in selection area
-  FVector BoxPos = USimpliCityFunctionLibrary::GetMidpointBetween(Start, End);
+  FVector BoxPos = SCFL::GetMidpointBetween(Start, End);
   FVector BoxExtent = FVector(Extents.X, Extents.Y, 100); // set height large enough to overlap world actors
   TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes = {
       UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldStatic)};
@@ -47,8 +57,42 @@ TArray<SelectionClass*> ASimpliCityObjectSelector::UpdateSelection(FVector Start
   for (AActor* Actor : OutActors) {
     SelectedObjects.Add(Cast<SelectionClass>(Actor));
   }
-
   return SelectedObjects;
+}
+
+//////////////////////////////////////////////////////////////////////////
+TArray<FVector> ASimpliCityObjectSelector::GetBoundingBoxSelection(FVector Start, FVector End) {
+  TArray<FVector> SelectedPoints;
+  int StartRow, StartCol = 0;
+  int EndRow, EndCol = 0;
+  GridManager->LocationToTile(Start, StartRow, StartCol);
+  GridManager->LocationToTile(End, EndRow, EndCol);
+
+  // from start row, step row until you hit end's row
+  // from start col, step until you hit end's col
+  int rowIncrement = StartRow < EndRow ? 1 : -1;
+  int colIncrement = StartCol < EndCol ? 1 : -1;
+  int nextRow = StartRow;
+  // iterate over rows & columns adding each point found
+  while (nextRow != EndRow + rowIncrement) {
+    int nextCol = StartCol; // reset column for next row
+    while (nextCol != EndCol + colIncrement) {
+      FVector Point = GridManager->TileToLocation(nextRow, nextCol);
+      if (GridManager->IsLocationValid(Point)) {
+        SelectedPoints.Add(Point);
+      }
+      nextCol += colIncrement;
+    }
+    nextRow += rowIncrement;
+  }
+  return SelectedPoints;
+}
+
+//////////////////////////////////////////////////////////////////////////
+TArray<FVector> ASimpliCityObjectSelector::GetPathSelection(FVector Start, FVector End) {
+  FVector StartCenter = GridManager->LocationToCenter(Start);
+  FVector EndCenter = GridManager->LocationToCenter(End);
+  return SCFL::GetPathBetween(GridManager, StartCenter, EndCenter);
 }
 
 //////////////////////////////////////////////////////////////////////////

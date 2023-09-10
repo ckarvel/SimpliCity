@@ -6,8 +6,7 @@
 #include "MarkerComponent.h"
 #include "MarkerManager.h"
 #include "SimpliCityFunctionLibrary.h"
-#include "SimpliCityObjectManager.h"
-#include "Road/SimpliCityRoadManager.h"
+#include "ObjectManager.h"
 #include "GridManager.h"
 
 using SCFL = USimpliCityFunctionLibrary;
@@ -18,7 +17,7 @@ ASimpliCityRoadBase::ASimpliCityRoadBase() {
 
 void ASimpliCityRoadBase::BeginPlay() {
   Super::BeginPlay();
-  RoadManager = SCFL::GetRoadManager(this);
+  //RoadManager = SCFL::GetRoadManager(this);
 }
 
 // only for use with vehicle markers
@@ -98,8 +97,7 @@ TArray<UMarkerComponent*> ASimpliCityRoadBase::GetVehicleMarkers() const {
 
 TArray<UObject*> ASimpliCityRoadBase::GetNeighborsOfSameType() const {
   TArray<UObject*> OutNeighbors;
-  TArray<ASimpliCityObjectBase*> Neighbors =
-      USimpliCityFunctionLibrary::GetObjectManager(this)->GetNeighborsOfType(GetActorLocation(), ObjectType);
-  OutNeighbors.Append(Neighbors);
+  //TArray<ASimpliCityObjectBase*> Neighbors = USimpliCityFunctionLibrary::GetObjectManager(this)->GetNeighborsOfType(GetActorLocation(), ObjectType);
+  //OutNeighbors.Append(Neighbors);
   return OutNeighbors;
 }

@@ -78,6 +78,11 @@ public:
   UFUNCTION(BlueprintCallable, Category = "GridManager")
   virtual TArray<FVector> GetNeighbors(FVector Location) const override;
 
+  // get locations in order: left, right, top, bottom. can return -1,-1,-1
+  // location -1,-1,-1 means it doesn't exist (on boundary)
+  UFUNCTION(BlueprintCallable, Category = "GridManager")
+  virtual TArray<FVector> GetAllNeighbors(FVector Location) const;
+
   UFUNCTION(BlueprintCallable, Category = "GridManager")
   virtual float GetCost(FVector Location) const override { return 1.0; } // todo
 

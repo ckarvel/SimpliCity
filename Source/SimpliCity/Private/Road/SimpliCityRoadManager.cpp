@@ -68,6 +68,10 @@ bool ASimpliCityRoadManager::UpdateBuilding(FVector Location) {
 //////////////////////////////////////////////////////////////////////////
 void ASimpliCityRoadManager::FinishBuilding() {
   ASimpliCityBaseManager::FinishBuilding();
+  if (BuildError) {
+    CancelBuilding();
+    return;
+  }
   oldPath.Empty();
   ConvertAllTemporaryToPermanent();
   TArray<UObject*> NewRoads;
@@ -92,8 +96,6 @@ void ASimpliCityRoadManager::CreateTemporaryRoadsAtLocations(const TArray<FVecto
     auto Location = Locations[i];
     ASimpliCityObjectBase* TempRoad = SpawnObjectOfType(DefaultBlueprintClass, Location, FRotator(), ResourceType);
     ASimpliCityRoadBase* Road = Cast<ASimpliCityRoadBase>(TempRoad);
-    // todo: a shadow grid so this road isn't valid until its placed
-    //ObjectManager->AddObjectToGrid(TempRoad);
     Temporary_ObjectToLocation.Add(Location, TempRoad);
     FixRoadAndNeighbors(TempRoad);
   }

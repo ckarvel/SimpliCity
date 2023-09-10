@@ -70,17 +70,24 @@ void ASimpliCityBuildingManager::FinishBuilding() {
     ASimpliCityBaseManager::FinishBuilding();
     return;
   }
-
-  if (ActiveObject->bIsValidPlacement) {
-    ASimpliCityBaseManager::FinishBuilding();
-    PermanentObjectList.Add(ActiveObject);
-    ObjectManager->AddObjectToGrid(ActiveObject);
-    ActiveObject->OnObjectPlaced();
-    ActiveObject = nullptr;
-
-    // get a new building
-    StartBuilding();
+  // HACK- Add active object to temp list so base manager
+  // can detect if build error
+  Temporary_ObjectToLocation.Empty();
+  Temporary_ObjectToLocation.Add(FVector(), ActiveObject);
+  ASimpliCityBaseManager::FinishBuilding();
+  if (BuildError) {
+    return;
   }
+  PermanentObjectList.Add(ActiveObject);
+  ObjectManager->AddObjectToGrid(ActiveObject);
+  ActiveObject->OnObjectPlaced();
+  ActiveObject = nullptr;
+
+  // sabotage so we can re-enable
+  ESimpliCityResourceType CurrentResourceType = ResourceType;
+  ResourceType = ESimpliCityResourceType::None;
+  // start over with a new building (same resource)
+  Enable(CurrentResourceType);
 }
 
 //////////////////////////////////////////////////////////////////////////
