@@ -35,11 +35,6 @@
 			]
 		},
 		{
-			"Name": "UniversalCameraPlugin",
-			"Enabled": true,
-			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/a9172fdfc87c464eae3a49860ee2610f"
-		},
-		{
 			"Name": "AudioModulation",
 			"Enabled": true
 		},
@@ -53,6 +48,14 @@
 		},
 		{
 			"Name": "GeometryScripting",
+			"Enabled": true
+		},
+		{
+			"Name": "ZoneGraph",
+			"Enabled": true
+		},
+		{
+			"Name": "ZoneGraphAnnotations",
 			"Enabled": true
 		}
 	],
