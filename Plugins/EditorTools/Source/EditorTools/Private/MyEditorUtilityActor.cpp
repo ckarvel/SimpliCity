@@ -44,7 +44,7 @@ void AMyEditorUtilityActor::DrawArrow(const FVector& Start, const FVector& End, 
 
   // since dir is x direction, my arrow will be pointing +y, -x and -y, -x
   float ArrowSqrt = FMath::Sqrt(ArrowSize);
-  FVector ArrowPos;
+  //FVector ArrowPos;
   DrawLine(End, End + TM.TransformPosition(FVector(-ArrowSqrt, ArrowSqrt, 0)), FLinearColor(Color), Thickness, LifeTime,
            DepthPriority);
   DrawLine(End, End + TM.TransformPosition(FVector(-ArrowSqrt, -ArrowSqrt, 0)), FLinearColor(Color), Thickness,
