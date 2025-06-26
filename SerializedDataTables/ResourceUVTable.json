@@ -1,0 +1,618 @@
+[
+	{
+		"Name": "NewRow",
+		"Resource": "Bread",
+		"AtlasU": 0,
+		"AtlasV": 0,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_0",
+		"Resource": "Pancakes",
+		"AtlasU": 1,
+		"AtlasV": 0,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_1",
+		"Resource": "Donuts",
+		"AtlasU": 2,
+		"AtlasV": 0,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_2",
+		"Resource": "Chocolate",
+		"AtlasU": 3,
+		"AtlasV": 0,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_3",
+		"Resource": "Flour",
+		"AtlasU": 4,
+		"AtlasV": 0,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_4",
+		"Resource": "Soda",
+		"AtlasU": 5,
+		"AtlasV": 0,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_5",
+		"Resource": "Wine",
+		"AtlasU": 6,
+		"AtlasV": 0,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_6",
+		"Resource": "Sausage",
+		"AtlasU": 7,
+		"AtlasV": 0,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_7",
+		"Resource": "Coffee",
+		"AtlasU": 8,
+		"AtlasV": 0,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_8",
+		"Resource": "Popcorn",
+		"AtlasU": 9,
+		"AtlasV": 0,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_9",
+		"Resource": "HotDogs",
+		"AtlasU": 0,
+		"AtlasV": 1,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_10",
+		"Resource": "Milk",
+		"AtlasU": 1,
+		"AtlasV": 1,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_11",
+		"Resource": "Tea",
+		"AtlasU": 2,
+		"AtlasV": 1,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_12",
+		"Resource": "IceCream",
+		"AtlasU": 3,
+		"AtlasV": 1,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_13",
+		"Resource": "Chips",
+		"AtlasU": 4,
+		"AtlasV": 1,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_14",
+		"Resource": "Fish",
+		"AtlasU": 5,
+		"AtlasV": 1,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_15",
+		"Resource": "Wood",
+		"AtlasU": 6,
+		"AtlasV": 1,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_16",
+		"Resource": "Lumber",
+		"AtlasU": 7,
+		"AtlasV": 1,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_17",
+		"Resource": "Clay",
+		"AtlasU": 8,
+		"AtlasV": 1,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_18",
+		"Resource": "Brick",
+		"AtlasU": 9,
+		"AtlasV": 1,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_19",
+		"Resource": "Iron",
+		"AtlasU": 0,
+		"AtlasV": 2,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_20",
+		"Resource": "Steel",
+		"AtlasU": 1,
+		"AtlasV": 2,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_21",
+		"Resource": "Beer",
+		"AtlasU": 2,
+		"AtlasV": 2,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_22",
+		"Resource": "Squid",
+		"AtlasU": 3,
+		"AtlasV": 2,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_23",
+		"Resource": "OrangeJuice",
+		"AtlasU": 4,
+		"AtlasV": 2,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_24",
+		"Resource": "Burrito",
+		"AtlasU": 5,
+		"AtlasV": 2,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_25",
+		"Resource": "Quesadilla",
+		"AtlasU": 6,
+		"AtlasV": 2,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_26",
+		"Resource": "Jam",
+		"AtlasU": 7,
+		"AtlasV": 2,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_27",
+		"Resource": "Burger",
+		"AtlasU": 8,
+		"AtlasV": 2,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_28",
+		"Resource": "FrenchFries",
+		"AtlasU": 9,
+		"AtlasV": 2,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_29",
+		"Resource": "Ketchup",
+		"AtlasU": 0,
+		"AtlasV": 3,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_30",
+		"Resource": "Cheese",
+		"AtlasU": 1,
+		"AtlasV": 3,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_31",
+		"Resource": "TomatoSoup",
+		"AtlasU": 2,
+		"AtlasV": 3,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_32",
+		"Resource": "Power",
+		"AtlasU": 3,
+		"AtlasV": 3,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_33",
+		"Resource": "Water",
+		"AtlasU": 4,
+		"AtlasV": 3,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_34",
+		"Resource": "CoffeeBeans",
+		"AtlasU": 5,
+		"AtlasV": 3,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_35",
+		"Resource": "Corn",
+		"AtlasU": 6,
+		"AtlasV": 3,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_36",
+		"Resource": "Apples",
+		"AtlasU": 7,
+		"AtlasV": 3,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_37",
+		"Resource": "Oranges",
+		"AtlasU": 8,
+		"AtlasV": 3,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_38",
+		"Resource": "Bananas",
+		"AtlasU": 9,
+		"AtlasV": 3,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_39",
+		"Resource": "RedPeppers",
+		"AtlasU": 0,
+		"AtlasV": 4,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_40",
+		"Resource": "Potatoes",
+		"AtlasU": 1,
+		"AtlasV": 4,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_41",
+		"Resource": "Grapes",
+		"AtlasU": 2,
+		"AtlasV": 4,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_42",
+		"Resource": "TeaLeaves",
+		"AtlasU": 3,
+		"AtlasV": 4,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_43",
+		"Resource": "Wheat",
+		"AtlasU": 4,
+		"AtlasV": 4,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_44",
+		"Resource": "Garlic",
+		"AtlasU": 5,
+		"AtlasV": 4,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_45",
+		"Resource": "BellPepper",
+		"AtlasU": 6,
+		"AtlasV": 4,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_46",
+		"Resource": "Beef",
+		"AtlasU": 7,
+		"AtlasV": 4,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_47",
+		"Resource": "Peanuts",
+		"AtlasU": 8,
+		"AtlasV": 4,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_48",
+		"Resource": "Pumpkin",
+		"AtlasU": 9,
+		"AtlasV": 4,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_49",
+		"Resource": "Tomatoes",
+		"AtlasU": 0,
+		"AtlasV": 5,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_50",
+		"Resource": "TwoWayPaved",
+		"AtlasU": 1,
+		"AtlasV": 5,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_51",
+		"Resource": "TwoWayDirt",
+		"AtlasU": 2,
+		"AtlasV": 5,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_52",
+		"Resource": "Residential",
+		"AtlasU": 3,
+		"AtlasV": 5,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_53",
+		"Resource": "Commercial",
+		"AtlasU": 4,
+		"AtlasV": 5,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	},
+	{
+		"Name": "NewRow_54",
+		"Resource": "Industrial",
+		"AtlasU": 5,
+		"AtlasV": 5,
+		"AtlasSize":
+		{
+			"X": 0.10000000000000001,
+			"Y": 0.10000000000000001
+		}
+	}
+]

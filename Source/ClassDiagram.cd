@@ -1,0 +1,312 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ASimpliCityBaseManager" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQgAAgAACAQxACEAAEAGAAAggEAAggAgAogBQAoQAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\SimpliCityBaseManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ASimpliCityCharacter" Collapsed="true">
+    <Position X="16" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAIEAAQAAAAAAAEIAgAgAAAgEAAAABCAAAgIAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\SimpliCityCharacter.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="USimpliCityFunctionLibrary" Collapsed="true">
+    <Position X="17.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAABAAIEJcBAQAAEAgAACIADAALACAAAAACDAIAAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\SimpliCityFunctionLibrary.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="USimpliCityGameInstance" Collapsed="true">
+    <Position X="19.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\SimpliCityGameInstance.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ASimpliCityGameMode" Collapsed="true">
+    <Position X="17.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\SimpliCityGameMode.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ASimpliCityGameState" Collapsed="true">
+    <Position X="19.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\SimpliCityGameState.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="USimpliCityMainUI" Collapsed="true">
+    <Position X="21.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\SimpliCityMainUI.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ASimpliCityObjectBase" Collapsed="true">
+    <Position X="3.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAgAAAAAAAAAACBAAAAAAAAYAAAAAgAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\SimpliCityObjectBase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ASimpliCityObjectManager" Collapsed="true">
+    <Position X="21.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEBAABEgAAYAAAAAAAAAAAAgAARQAgAEAgAABAAiAQA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\SimpliCityObjectManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ASimpliCityObjectSelector" Collapsed="true">
+    <Position X="14.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAAAAQAAIAAAEhAAQAAACA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\SimpliCityObjectSelector.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ASimpliCityPlayerController" Collapsed="true">
+    <Position X="16" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAADQAQADAAAQABIAAAAAAQAEAACAACAggAAAAyAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\SimpliCityPlayerController.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="USimpliObjectBase" Collapsed="true">
+    <Position X="3.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAgAAAAAAAAAIAABABAAAAQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\SimpliObjectBase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="USimpliRoadBase" Collapsed="true">
+    <Position X="1.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAACAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\SimpliObjectBase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="USimpliBuildingBase" Collapsed="true">
+    <Position X="3.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\SimpliObjectBase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="USimpliZoneBase" Collapsed="true">
+    <Position X="5.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\SimpliObjectBase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ASimpliCityBuildingBase" Collapsed="true">
+    <Position X="2.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAQgAAgAAAAAAAAAAABAAAAAAAAhAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\Building\SimpliCityBuildingBase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ASimpliCityBuildingManager" Collapsed="true">
+    <Position X="9.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAQCQAACAAAAACAAAgAAIAAAAAAogARCgAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\Building\SimpliCityBuildingManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ASimpliCityRoadBase" Collapsed="true">
+    <Position X="3.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAIAAAAAAAAAgAAMAIAAAAQAAAAAgAAAAABAgABA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\Road\SimpliCityRoadBase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="USimpliCityRoadFixerComponent" Collapsed="true">
+    <Position X="14.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAACAgAAEGBBACBAAAAIACAAAAAAAEAkAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\Road\SimpliCityRoadFixerComponent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ASimpliCityRoadManager" Collapsed="true">
+    <Position X="1.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAQAAIAAAAQQACAAAAACAAAhAQhAAACAAogESAAACA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\Road\SimpliCityRoadManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ASimpliCityZoneBase" Collapsed="true">
+    <Position X="4.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAIAAAAAAAAQgAAAAAAAAAAAAAABIAAAAAAAgAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\Zone\SimpliCityZoneBase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ASimpliCityZoneCell" Collapsed="true">
+    <Position X="17.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACEIAAAAAAQAAAgAAoAAAAAAIAAAAAACAAAAAgAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\Zone\SimpliCityZoneCell.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ASimpliCityZoneManager" Collapsed="true">
+    <Position X="11.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>SAAAAAEAAgAQAACAAgAICIAAqAAIAAAMAApoBQwiAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\Zone\SimpliCityZoneManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FAStarPathFinderModule" Collapsed="true">
+    <Position X="19.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Plugins\AStarPathFinder\Source\AStarPathFinder\Public\AStarPathFinder.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyAStarPathFinder" Collapsed="true">
+    <Position X="17.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAACAAAAAAAAAAAAAAAAAAAAAAABAACAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Plugins\AStarPathFinder\Source\AStarPathFinder\Public\MyAStarPathFinder.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UPathFinderInterface" Collapsed="true">
+    <Position X="16" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Plugins\AStarPathFinder\Source\AStarPathFinder\Public\PathFinderInterface.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IPathFinderInterface" Collapsed="true">
+    <Position X="3.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Plugins\AStarPathFinder\Source\AStarPathFinder\Public\PathFinderInterface.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TPriorityQueue&lt;InElementType&gt;" Collapsed="true">
+    <Position X="19.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAhAAAAAAAAECAAAAAAAAAAAAACAAAAAAAIAAAAACAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Plugins\AStarPathFinder\Source\AStarPathFinder\Public\PriorityQueueImpl.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FEditorToolsModule" Collapsed="true">
+    <Position X="21.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Plugins\EditorTools\Source\EditorTools\Public\EditorTools.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AMyEditorUtilityActor" Collapsed="true">
+    <Position X="14.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAMAAAAIAAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Plugins\EditorTools\Source\EditorTools\Public\MyEditorUtilityActor.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AGridManager" Collapsed="true">
+    <Position X="4.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AaDCAC8EIAQBEBEIAUIYAAAAAAABA4ACAUkAgQAgAFA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Plugins\GridSystem\Source\GridSystem\Public\GridManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FGridSystemModule" Collapsed="true">
+    <Position X="14.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Plugins\GridSystem\Source\GridSystem\Public\GridSystem.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UMarkerComponent" Collapsed="true">
+    <Position X="21.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>KAUAAAAgAAAAAAAAgIIBAAEAAAEAAAAAAAAAQAAgAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Plugins\MarkerSystem\Source\MarkerSystem\Public\MarkerComponent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AMarkerManager" Collapsed="true">
+    <Position X="7" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAEYAIhAEAAAAAACAAACAAgQAMAAAAAAAAgAAEgAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Plugins\MarkerSystem\Source\MarkerSystem\Public\MarkerManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UMarkerPathInterface" Collapsed="true">
+    <Position X="14.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Plugins\MarkerSystem\Source\MarkerSystem\Public\MarkerPathInterface.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IMarkerPathInterface" Collapsed="true">
+    <Position X="7.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAIAAAAQAAAAAAAAAAABAAABA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Plugins\MarkerSystem\Source\MarkerSystem\Public\MarkerPathInterface.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FMarkerSystemModule" Collapsed="true">
+    <Position X="16" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Plugins\MarkerSystem\Source\MarkerSystem\Public\MarkerSystem.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="MyAStarData" Collapsed="true">
+    <Position X="14.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAECAAAAAAAABAAAAAAAAAAAACA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Plugins\AStarPathFinder\Source\AStarPathFinder\Public\MyAStarPathFinder.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="TPriorityQueueNode&lt;InElementType&gt;" Collapsed="true">
+    <Position X="16" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAgAAAAAAAAAAAAAAAAgABAAAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Plugins\AStarPathFinder\Source\AStarPathFinder\Public\PriorityQueueImpl.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="ESimpliCityInteractionMode" Collapsed="true">
+    <Position X="16" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\SimpliCityInteractionMode.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ESimpliCityObjectType" Collapsed="true">
+    <Position X="17.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAIBAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\SimpliCityObjectType.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ESimpliCityBuildingType" Collapsed="true">
+    <Position X="14.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\Building\SimpliCityBuildingType.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ESimpliCityRoadType" Collapsed="true">
+    <Position X="19.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\Road\SimpliCityRoadType.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ESimpliCityZoneType" Collapsed="true">
+    <Position X="21.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\Users\Leaf\Documents\SimpliCity\Source\SimpliCity\Public\Zone\SimpliCityZoneType.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

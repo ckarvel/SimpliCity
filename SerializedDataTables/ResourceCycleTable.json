@@ -1,0 +1,640 @@
+[
+	{
+		"Name": "NewRow",
+		"Resource": "Bread",
+		"ConsumeRate":
+		{
+			"Money": 5,
+			"Flour": 1
+		},
+		"ProduceRate":
+		{
+			"Bread": 1
+		}
+	},
+	{
+		"Name": "NewRow_0",
+		"Resource": "Pancakes",
+		"ConsumeRate":
+		{
+			"Money": 5,
+			"Flour": 1
+		},
+		"ProduceRate":
+		{
+			"Pancakes": 1
+		}
+	},
+	{
+		"Name": "NewRow_1",
+		"Resource": "Donuts",
+		"ConsumeRate":
+		{
+			"Money": 5,
+			"Flour": 1
+		},
+		"ProduceRate":
+		{
+			"Donuts": 1
+		}
+	},
+	{
+		"Name": "NewRow_2",
+		"Resource": "Chocolate",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"Chocolate": 1
+		}
+	},
+	{
+		"Name": "NewRow_3",
+		"Resource": "Flour",
+		"ConsumeRate":
+		{
+			"Money": 5,
+			"Wheat": 2
+		},
+		"ProduceRate":
+		{
+			"Flour": 1
+		}
+	},
+	{
+		"Name": "NewRow_4",
+		"Resource": "Soda",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"Soda": 1
+		}
+	},
+	{
+		"Name": "NewRow_5",
+		"Resource": "Wine",
+		"ConsumeRate":
+		{
+			"Money": 5,
+			"Grapes": 2
+		},
+		"ProduceRate":
+		{
+			"Wine": 1
+		}
+	},
+	{
+		"Name": "NewRow_6",
+		"Resource": "Sausage",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"Sausage": 1
+		}
+	},
+	{
+		"Name": "NewRow_7",
+		"Resource": "Coffee",
+		"ConsumeRate":
+		{
+			"Money": 5,
+			"CoffeeBeans": 2
+		},
+		"ProduceRate":
+		{
+			"Coffee": 1
+		}
+	},
+	{
+		"Name": "NewRow_8",
+		"Resource": "Popcorn",
+		"ConsumeRate":
+		{
+			"Money": 5,
+			"Corn": 1
+		},
+		"ProduceRate":
+		{
+			"Popcorn": 1
+		}
+	},
+	{
+		"Name": "NewRow_9",
+		"Resource": "HotDogs",
+		"ConsumeRate":
+		{
+			"Money": 5,
+			"Sausage": 1
+		},
+		"ProduceRate":
+		{
+			"HotDogs": 1
+		}
+	},
+	{
+		"Name": "NewRow_10",
+		"Resource": "Milk",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"Milk": 1
+		}
+	},
+	{
+		"Name": "NewRow_11",
+		"Resource": "Tea",
+		"ConsumeRate":
+		{
+			"Money": 5,
+			"TeaLeaves": 1
+		},
+		"ProduceRate":
+		{
+			"Tea": 1
+		}
+	},
+	{
+		"Name": "NewRow_12",
+		"Resource": "IceCream",
+		"ConsumeRate":
+		{
+			"Money": 5,
+			"Milk": 2
+		},
+		"ProduceRate":
+		{
+			"IceCream": 1
+		}
+	},
+	{
+		"Name": "NewRow_13",
+		"Resource": "Chips",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"Chips": 1
+		}
+	},
+	{
+		"Name": "NewRow_14",
+		"Resource": "Fish",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"Fish": 1
+		}
+	},
+	{
+		"Name": "NewRow_15",
+		"Resource": "Wood",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"Wood": 1
+		}
+	},
+	{
+		"Name": "NewRow_16",
+		"Resource": "Lumber",
+		"ConsumeRate":
+		{
+			"Money": 5,
+			"Wood": 1
+		},
+		"ProduceRate":
+		{
+			"Lumber": 1
+		}
+	},
+	{
+		"Name": "NewRow_17",
+		"Resource": "Clay",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"Clay": 1
+		}
+	},
+	{
+		"Name": "NewRow_18",
+		"Resource": "Brick",
+		"ConsumeRate":
+		{
+			"Money": 5,
+			"Clay": 1
+		},
+		"ProduceRate":
+		{
+			"Brick": 1
+		}
+	},
+	{
+		"Name": "NewRow_19",
+		"Resource": "Iron",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"Iron": 1
+		}
+	},
+	{
+		"Name": "NewRow_20",
+		"Resource": "Steel",
+		"ConsumeRate":
+		{
+			"Money": 5,
+			"Iron": 1
+		},
+		"ProduceRate":
+		{
+			"Steel": 1
+		}
+	},
+	{
+		"Name": "NewRow_21",
+		"Resource": "Beer",
+		"ConsumeRate":
+		{
+			"Money": 5,
+			"Wheat": 2
+		},
+		"ProduceRate":
+		{
+			"Beer": 1
+		}
+	},
+	{
+		"Name": "NewRow_22",
+		"Resource": "Squid",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"Squid": 1
+		}
+	},
+	{
+		"Name": "NewRow_23",
+		"Resource": "OrangeJuice",
+		"ConsumeRate":
+		{
+			"Money": 5,
+			"Oranges": 1
+		},
+		"ProduceRate":
+		{
+			"OrangeJuice": 1
+		}
+	},
+	{
+		"Name": "NewRow_24",
+		"Resource": "Burrito",
+		"ConsumeRate":
+		{
+			"Money": 5,
+			"Beef": 1,
+			"Corn": 1
+		},
+		"ProduceRate":
+		{
+			"Burrito": 1
+		}
+	},
+	{
+		"Name": "NewRow_25",
+		"Resource": "Quesadilla",
+		"ConsumeRate":
+		{
+			"Money": 5,
+			"Cheese": 1
+		},
+		"ProduceRate":
+		{
+			"Quesadilla": 1
+		}
+	},
+	{
+		"Name": "NewRow_26",
+		"Resource": "Jam",
+		"ConsumeRate":
+		{
+			"Money": 5,
+			"Pumpkin": 1
+		},
+		"ProduceRate":
+		{
+			"Jam": 1
+		}
+	},
+	{
+		"Name": "NewRow_27",
+		"Resource": "Burger",
+		"ConsumeRate":
+		{
+			"Money": 5,
+			"Beef": 1,
+			"Cheese": 1,
+			"Bread": 1
+		},
+		"ProduceRate":
+		{
+			"Burger": 1
+		}
+	},
+	{
+		"Name": "NewRow_28",
+		"Resource": "FrenchFries",
+		"ConsumeRate":
+		{
+			"Money": 5,
+			"Potatoes": 1
+		},
+		"ProduceRate":
+		{
+			"FrenchFries": 1
+		}
+	},
+	{
+		"Name": "NewRow_29",
+		"Resource": "Ketchup",
+		"ConsumeRate":
+		{
+			"Money": 5,
+			"Tomatoes": 2
+		},
+		"ProduceRate":
+		{
+			"Ketchup": 1
+		}
+	},
+	{
+		"Name": "NewRow_30",
+		"Resource": "Cheese",
+		"ConsumeRate":
+		{
+			"Money": 5,
+			"Milk": 1
+		},
+		"ProduceRate":
+		{
+			"Cheese": 1
+		}
+	},
+	{
+		"Name": "NewRow_31",
+		"Resource": "TomatoSoup",
+		"ConsumeRate":
+		{
+			"Money": 5,
+			"Tomatoes": 1
+		},
+		"ProduceRate":
+		{
+			"TomatoSoup": 1
+		}
+	},
+	{
+		"Name": "NewRow_32",
+		"Resource": "Power",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"Power": 1
+		}
+	},
+	{
+		"Name": "NewRow_33",
+		"Resource": "Water",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"Water": 1
+		}
+	},
+	{
+		"Name": "NewRow_34",
+		"Resource": "CoffeeBeans",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"CoffeeBeans": 1
+		}
+	},
+	{
+		"Name": "NewRow_35",
+		"Resource": "Corn",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"Corn": 1
+		}
+	},
+	{
+		"Name": "NewRow_36",
+		"Resource": "Apples",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"Apples": 1
+		}
+	},
+	{
+		"Name": "NewRow_37",
+		"Resource": "Oranges",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"Oranges": 1
+		}
+	},
+	{
+		"Name": "NewRow_38",
+		"Resource": "Bananas",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"Bananas": 1
+		}
+	},
+	{
+		"Name": "NewRow_39",
+		"Resource": "RedPeppers",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"RedPeppers": 1
+		}
+	},
+	{
+		"Name": "NewRow_40",
+		"Resource": "Potatoes",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"Potatoes": 1
+		}
+	},
+	{
+		"Name": "NewRow_41",
+		"Resource": "Grapes",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"Grapes": 1
+		}
+	},
+	{
+		"Name": "NewRow_42",
+		"Resource": "TeaLeaves",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"TeaLeaves": 1
+		}
+	},
+	{
+		"Name": "NewRow_43",
+		"Resource": "Wheat",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"Wheat": 1
+		}
+	},
+	{
+		"Name": "NewRow_44",
+		"Resource": "Garlic",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"Garlic": 1
+		}
+	},
+	{
+		"Name": "NewRow_45",
+		"Resource": "BellPepper",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"BellPepper": 1
+		}
+	},
+	{
+		"Name": "NewRow_46",
+		"Resource": "Beef",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"Beef": 1
+		}
+	},
+	{
+		"Name": "NewRow_47",
+		"Resource": "Peanuts",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"Peanuts": 1
+		}
+	},
+	{
+		"Name": "NewRow_48",
+		"Resource": "Pumpkin",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"Pumpkin": 1
+		}
+	},
+	{
+		"Name": "NewRow_49",
+		"Resource": "Tomatoes",
+		"ConsumeRate":
+		{
+			"Money": 5
+		},
+		"ProduceRate":
+		{
+			"Tomatoes": 1
+		}
+	}
+]
