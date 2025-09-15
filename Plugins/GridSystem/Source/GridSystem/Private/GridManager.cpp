@@ -78,8 +78,8 @@ bool AGridManager::IsIndexValid(int Index) const {
 }
 
 bool AGridManager::IsLocationValid(FVector Location) const {
-  if (Location.X < 0 || Location.Y < 0)
-    return false;
+  //if (Location.X < 0 || Location.Y < 0)
+  //  return false;
   int OutRow, OutCol;
   LocationToTile(Location, OutRow, OutCol);
   return IsTileValid(OutRow, OutCol);

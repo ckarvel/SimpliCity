@@ -12,6 +12,7 @@
 
 #include "SimpliCityGameInstance.h"
 #include "ObjectManager.h"
+#include "SimpliCityObjectManager.h"
 #include "ObjectPlacer.h"
 #include "SimpliCityObjectSelector.h"
 
@@ -25,6 +26,11 @@ AGridManager* USimpliCityFunctionLibrary::GetGridManager(const UObject* WorldCon
 //////////////////////////////////////////////////////////////////////////
 AObjectManager* USimpliCityFunctionLibrary::GetObjectManager(const UObject* WorldContextObject) {
   return GetManager<AObjectManager>(WorldContextObject, AObjectManager::StaticClass());
+}
+
+//////////////////////////////////////////////////////////////////////////
+ASimpliCityObjectManager* USimpliCityFunctionLibrary::GetSimpliCityObjectManager(const UObject* WorldContextObject) {
+  return GetManager<ASimpliCityObjectManager>(WorldContextObject, ASimpliCityObjectManager::StaticClass());
 }
 
 //////////////////////////////////////////////////////////////////////////

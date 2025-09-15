@@ -65,7 +65,9 @@ void AObjectPlacer::StartPlacement(ESimpliCityObjectType objectType, ESimpliCity
   Cleanup();
 
   // spawn our first object
-  TemporaryObjectLocationMap.Add(FVector(), SpawnObject(ObjectType, ResourceType, FVector(0, 0, -1000)));
+  AObjectBase* Actor = SpawnObject(ObjectType, ResourceType, FVector(0, 0, -1000));
+  Actor->SetActorScale3D(FVector(0.5,0.5,1));
+  TemporaryObjectLocationMap.Add(FVector(), Actor);
 
   ObjectSelector->VisualizeSelection = false;
   PrimaryActorTick.SetTickFunctionEnable(true);

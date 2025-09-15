@@ -32,6 +32,10 @@ public:
   static class AObjectManager* GetObjectManager(const UObject* WorldContextObject);
 
   UFUNCTION(BlueprintPure, Category = "SimpliCityFunctionLibrary",
+     meta = (WorldContext = "WorldContextObject", UnsafeDuringActorConstruction = "true"))
+  static class ASimpliCityObjectManager* GetSimpliCityObjectManager(const UObject* WorldContextObject);
+
+  UFUNCTION(BlueprintPure, Category = "SimpliCityFunctionLibrary",
     meta = (WorldContext = "WorldContextObject", UnsafeDuringActorConstruction = "true"))
   static class AMarkerManager* GetMarkerManager(const UObject* WorldContextObject);
 

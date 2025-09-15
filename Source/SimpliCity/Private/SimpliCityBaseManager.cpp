@@ -24,7 +24,7 @@ ASimpliCityBaseManager::ASimpliCityBaseManager()
 void ASimpliCityBaseManager::BeginPlay() {
   Super::BeginPlay();
   GridManager = SCFL::GetGridManager(this);
-  //ObjectManager = SCFL::GetObjectManager(this);
+  ObjectManager = SCFL::GetSimpliCityObjectManager(this);
 }
 
 //////////////////////////////////////////////////////////////////////////
