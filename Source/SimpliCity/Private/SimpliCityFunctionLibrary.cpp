@@ -15,6 +15,7 @@
 #include "SimpliCityObjectManager.h"
 #include "ObjectPlacer.h"
 #include "SimpliCityObjectSelector.h"
+#include "Road/SimpliCityRoadManager.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Getters
@@ -41,6 +42,11 @@ AObjectPlacer* USimpliCityFunctionLibrary::GetObjectPlacer(const UObject* WorldC
 //////////////////////////////////////////////////////////////////////////
 AMarkerManager* USimpliCityFunctionLibrary::GetMarkerManager(const UObject* WorldContextObject) {
   return GetManager<AMarkerManager>(WorldContextObject, AMarkerManager::StaticClass());
+}
+
+//////////////////////////////////////////////////////////////////////////
+ASimpliCityRoadManager* USimpliCityFunctionLibrary::GetRoadManager(const UObject* WorldContextObject) {
+  return GetManager<ASimpliCityRoadManager>(WorldContextObject, ASimpliCityRoadManager::StaticClass());
 }
 
 //////////////////////////////////////////////////////////////////////////

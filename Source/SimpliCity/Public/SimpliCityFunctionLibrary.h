@@ -39,6 +39,10 @@ public:
     meta = (WorldContext = "WorldContextObject", UnsafeDuringActorConstruction = "true"))
   static class AMarkerManager* GetMarkerManager(const UObject* WorldContextObject);
 
+  UFUNCTION(BlueprintPure, Category = "SimpliCityFunctionLibrary",
+            meta = (WorldContext = "WorldContextObject", UnsafeDuringActorConstruction = "true"))
+  static class ASimpliCityRoadManager* GetRoadManager(const UObject* WorldContextObject);
+
   template <class ManagerClass>
   static ManagerClass* GetManager(const UObject* WorldContextObject, TSubclassOf<ManagerClass> Class);
 

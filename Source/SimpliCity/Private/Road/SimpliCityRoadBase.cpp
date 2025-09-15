@@ -7,6 +7,7 @@
 #include "MarkerManager.h"
 #include "SimpliCityFunctionLibrary.h"
 #include "ObjectManager.h"
+#include "SimpliCityObjectManager.h"
 #include "GridManager.h"
 
 using SCFL = USimpliCityFunctionLibrary;
@@ -97,7 +98,7 @@ TArray<UMarkerComponent*> ASimpliCityRoadBase::GetVehicleMarkers() const {
 
 TArray<UObject*> ASimpliCityRoadBase::GetNeighborsOfSameType() const {
   TArray<UObject*> OutNeighbors;
-  //TArray<ASimpliCityObjectBase*> Neighbors = USimpliCityFunctionLibrary::GetObjectManager(this)->GetNeighborsOfType(GetActorLocation(), ObjectType);
-  //OutNeighbors.Append(Neighbors);
+  TArray<ASimpliCityObjectBase*> Neighbors = USimpliCityFunctionLibrary::GetSimpliCityObjectManager(this)->GetNeighborsOfType(GetActorLocation(), ObjectType);
+  OutNeighbors.Append(Neighbors);
   return OutNeighbors;
 }
