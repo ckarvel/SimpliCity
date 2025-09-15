@@ -78,6 +78,7 @@ void AObjectManager::RemoveObject(AObjectBase* Object) {
 //////////////////////////////////////////////////////////////////////////
 TArray<AObjectBase*> AObjectManager::GetObjects(FVector Location) {
   FVector CenterLocation = GridManager->LocationToCenter(Location);
+  //CenterLocation.Z = 0.0;
   if (LocationObjectMap.Contains(CenterLocation)) {
     return *LocationObjectMap.Find(CenterLocation);
   }
