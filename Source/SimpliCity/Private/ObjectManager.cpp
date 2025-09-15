@@ -91,3 +91,21 @@ TArray<AObjectBase*> AObjectManager::GetObjectsOfType(ESimpliCityObjectType Type
   }
   return TArray<AObjectBase*>();
 }
+
+//////////////////////////////////////////////////////////////////////////
+TArray<AObjectBase*> AObjectManager::GetNeighborsOfType(FVector Location,ESimpliCityObjectType ObjectType) {
+  int32 currentIdx = GridManager->LocationToIndex(Location);
+  TArray<int32> neighborIdxs;
+  GridManager->GetValidNeighborIndexes(currentIdx, neighborIdxs);
+  TArray<AObjectBase*> neighborsFound;
+  for (auto idx : neighborIdxs) {
+    FVector neighborLoc = GridManager->IndexToLocation(idx);
+    TArray<AObjectBase*> Objs = GetObjects(neighborLoc);
+    if (Objs.Num() > 0) {
+      if (Objs[0]->GetObjectType() == ObjectType) {
+        neighborsFound.Add(Objs[0]);
+      }
+    }
+  }
+  return neighborsFound;
+}

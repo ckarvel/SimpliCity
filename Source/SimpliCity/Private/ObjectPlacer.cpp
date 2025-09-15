@@ -66,7 +66,11 @@ void AObjectPlacer::StartPlacement(ESimpliCityObjectType objectType, ESimpliCity
 
   // spawn our first object
   AObjectBase* Actor = SpawnObject(ObjectType, ResourceType, FVector(0, 0, -1000));
-  Actor->SetActorScale3D(FVector(0.5,0.5,1));
+  FVector ActorScale = FVector(0.05, 0.05, 0.05);
+  if (ObjectType == ESimpliCityObjectType::Road) {
+    ActorScale = FVector(0.5, 0.5, 0.05);
+  }
+  Actor->SetActorScale3D(ActorScale);
   TemporaryObjectLocationMap.Add(FVector(), Actor);
 
   ObjectSelector->VisualizeSelection = false;

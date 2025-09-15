@@ -47,6 +47,11 @@ public:
   UFUNCTION(BlueprintCallable, Category = "ObjectManager")
   TArray<AObjectBase*> GetObjectsOfType(ESimpliCityObjectType Type);
 
+  UFUNCTION(BlueprintCallable, Category = "ObjectManager")
+  TArray<AObjectBase*> GetNeighborsOfType(FVector Location, ESimpliCityObjectType ObjectType);
+  
+  UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SimpliCityObjectManager")
+  TArray<AObjectBase*> ObjectGrid;
   TMap<FVector, TArray<AObjectBase*>> LocationObjectMap;
   TMap<ESimpliCityObjectType, TArray<AObjectBase*>> ObjectsPerTypeMap;
 };
