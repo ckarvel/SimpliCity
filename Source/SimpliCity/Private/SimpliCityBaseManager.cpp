@@ -29,21 +29,19 @@ void ASimpliCityBaseManager::BeginPlay() {
 
 //////////////////////////////////////////////////////////////////////////
 void ASimpliCityBaseManager::StartBuilding() {
-  CurrentlyBuilding = true;
+  //CurrentlyBuilding = true;
   PrimaryActorTick.SetTickFunctionEnable(true);
 }
 
 //////////////////////////////////////////////////////////////////////////
 bool ASimpliCityBaseManager::UpdateBuilding(FVector Location) {
-  if (CurrentlyBuilding == false) {
-    return false;
-  }
-
   FVector currentLocation = GridManager->LocationToCenter(Location);
 
   // if just started, set start location
-  if (GridManager->IsLocationValid(StartLocation) == false) {
+  //if (GridManager->IsLocationValid(StartLocation) == false) {
+  if (CurrentlyBuilding == false) {
     StartLocation = currentLocation;
+    CurrentlyBuilding = true;
   }
 
   if (LastLocation == currentLocation) {
@@ -51,6 +49,10 @@ bool ASimpliCityBaseManager::UpdateBuilding(FVector Location) {
   }
 
   LastLocation = currentLocation;
+
+  if (CurrentlyBuilding == false) {
+    return false;
+  }
 
   // return true if we received a new location
   return true;
